@@ -1,3 +1,6 @@
 # Start 
 
-![](Produkt\Fotos\start.png "Start")
+## Woche 1
+---
+
+![Alt text](./Fotos/start.png)
