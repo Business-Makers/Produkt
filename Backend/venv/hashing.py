@@ -1,6 +1,13 @@
 from passlib.context import CryptContext
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+from jose import jwt
+from datetime import datetime, timedelta
+from fastapi import HTTPException, status
+from .database import SessionLocal
+from sqlalchemy.orm import Session
+# from .models import User
+from fastapi.security import OAuth2PasswordBearer
 
+pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 def get_hashed_password(password: str) -> str:
     return pwd_context.hash(password)
