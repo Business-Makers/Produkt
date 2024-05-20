@@ -9,16 +9,18 @@ function App() {
   return (
     <Router>
       <div className="App">
+
         <header className="App-header">
+
           <nav className="nav">
             <div className="logo">
               <Link to="/">
                 <img src="/strade.png" alt="logo"/>
               </Link>
             </div>
-            <nav className="nav">
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Sign Up</Link>
+            <nav className="nav-links">
+              <Link to="/signup">Sign Up</Link>
+              <Link to="/login">Login</Link>
             </nav>
           </nav>
         </header>
@@ -30,6 +32,14 @@ function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
+        <footer className="App-footer">
+          <div className="footer-content">
+            <p>&copy; 2024 $TRADE</p>
+            <Link to="/impressum">Impressum</Link>  {/* Link zum Impressum */}
+            <Link to="/datenschutz">Datenschutz</Link>  {/* Link für Datenschutz hinzufügen */}
+          </div>
+        </footer>
+
       </div>
     </Router>
   );
