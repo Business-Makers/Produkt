@@ -30,6 +30,10 @@ function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </main>
+        <footer className = "App-footer">
+          <Link to="/">Impressum</Link>
+          <Link to="/">About us</Link>
+        </footer>
       </div>
     </Router>
   );

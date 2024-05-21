@@ -32,17 +32,6 @@ const SignUp = () => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div className="logo">
-          <Link to="/">
-            <img src="/strade.png" alt="Logo" />
-          </Link>
-        </div>
-        <nav className="nav">
-          <Link to="/login">Log In</Link>
-          <Link to="#">Support</Link>
-        </nav>
-      </header>
     <form className="signup-form" onSubmit={handleSubmit}>
       <h1>Sign up</h1>
       <input
@@ -124,10 +113,6 @@ const SignUp = () => {
       />
       <button type="submit">Sign up</button>
     </form>
-    <footer className="App-footer">
-        <a href="#">Impressum</a>
-        <a href="#">About us</a>
-      </footer>
     </div>
   );
 };

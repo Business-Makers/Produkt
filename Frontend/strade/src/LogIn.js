@@ -30,17 +30,6 @@ function LogIn() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div className="logo">
-          <Link to="/">
-            <img src="/strade.png" alt="Logo" />
-          </Link>
-        </div>
-        <nav className="nav">
-          <Link to="/signup">Sign up</Link>
-          <Link to="#">Support</Link>
-        </nav>
-      </header>
       <div className="login-container">
         <h2>Login</h2>
         <form onSubmit={handleSubmit} className="input-container">
@@ -76,10 +65,6 @@ function LogIn() {
           </p>
         </form>
       </div>
-      <footer className="App-footer">
-        <a href="#">Impressum</a>
-        <a href="#">About us</a>
-      </footer>
     </div>
   );
 }
