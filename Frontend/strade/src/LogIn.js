@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import './App.css';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-function LogIn() {
+
+async function loginUser(credentials) {
+  return fetch('http://localhost:8000/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+ }
+
+export default function LogIn({ setToken}) {
   const [formData, setFormData] = useState({
     usernameOrEmail: '',
     password: ''
   });
-  const [passwordVisible, setPasswordVisible] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,9 +28,12 @@ function LogIn() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const jsonData = JSON.stringify(formData);
+    const token = await loginUser({
+      formData
+    });
+    setToken(token);
   };
 
   return (
@@ -43,7 +52,7 @@ function LogIn() {
           />
           <div className="password-container">
             <input
-              type={passwordVisible ? 'text' : 'password'}
+              type="password"
               name="password"
               placeholder="Enter Password"
               className="input-field"
@@ -51,12 +60,6 @@ function LogIn() {
               onChange={handleChange}
               required
             />
-            <span
-              onClick={togglePasswordVisibility}
-              className="password-toggle-icon"
-            >
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
           <button type="submit" className="login-button">Login</button>
           <p>
@@ -67,6 +70,3 @@ function LogIn() {
     </div>
   );
 }
-
-
-export default LogIn;

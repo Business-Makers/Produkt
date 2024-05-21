@@ -3,17 +3,28 @@ import './SignUp.css';
 import './App.css';
 import { countryOptions } from './countryOptions';
 
-const SignUp = () => {
+async function signupUser(credentials) {
+  return fetch('http://localhost:8000/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then(data => data.json())
+ }
+
+export default function SignUp ({setToken}) {
   const [formData, setFormData] = useState({
-    username: '',
     firstName: '',
     lastName: '',
     birthDate: '',
-    country: '',
-    phoneNumber: '',
     email: '',
-    password: '',
-    confirmPassword: '',
+    phoneNumber: '',
+    address:'',
+    country: '',
+    username: '',
+    password: ''
   });
 
   const handleChange = (e) => {
@@ -24,9 +35,12 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    const jsonData = JSON.stringify(formData);
+    const token = await signupUser({
+      formData
+    });
+    setToken(token);
   };
 
   return (
@@ -69,7 +83,6 @@ const SignUp = () => {
         name="country"
         value={formData.country}
         onChange={handleChange}
-        required
       >
         <option value="">Select Country</option>
           {countryOptions.map((country) => (
@@ -79,6 +92,13 @@ const SignUp = () => {
           ))}
         
       </select>
+      <input 
+        type="text"
+        name="address"
+        placeholder="Enter Adress"
+        value={formData.address}
+        onChange={handleChange}
+        />
       <input
         type="text"
         name="phoneNumber"
@@ -106,7 +126,6 @@ const SignUp = () => {
         type="password"
         name="confirmPassword"
         placeholder="Confirm Password"
-        value={formData.confirmPassword}
         onChange={handleChange}
         required
       />
@@ -115,5 +134,3 @@ const SignUp = () => {
     </div>
   );
 };
-
-export default SignUp;

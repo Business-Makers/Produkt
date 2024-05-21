@@ -11,3 +11,4 @@
 - React-Module, die noch hinzugefügt werden müssen:
   - npm install react-router-dom
   - npm install react-icons
+  - npm install --save prop-types
