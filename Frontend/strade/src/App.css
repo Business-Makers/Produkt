@@ -25,7 +25,6 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0F2310;
   box-sizing: border-box;
 }
 
@@ -64,9 +63,8 @@ main {
   margin: 50px;
 }
 
-.login-container h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
+.login-container h1 {
+  text-decoration: underline;
 }
 
 .input-container {
@@ -135,16 +133,10 @@ p {
 .App-footer {
   color: black;
   width: 100%;
-  padding: 20px;
+  padding: 1em;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #436851;
   box-sizing: border-box;
-}
-
-@media (max-width: 500px) {
-  .login-container {
-    padding: 20px 30px;
-  }
 }

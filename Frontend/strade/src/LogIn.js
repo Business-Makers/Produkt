@@ -24,14 +24,13 @@ function LogIn() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Hier kannst du die Formularvalidierung und das Absenden hinzufügen
-    console.log('Form data:', formData);
+    const jsonData = JSON.stringify(formData);
   };
 
   return (
     <div className="App">
       <div className="login-container">
-        <h2>Login</h2>
+        <h1>Login</h1>
         <form onSubmit={handleSubmit} className="input-container">
           <input
             type="text"

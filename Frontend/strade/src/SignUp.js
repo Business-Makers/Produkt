@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './SignUp.css';
 import './App.css';
 import { countryOptions } from './countryOptions';
@@ -27,7 +26,7 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Form data:', formData);
+    const jsonData = JSON.stringify(formData);
   };
 
   return (
