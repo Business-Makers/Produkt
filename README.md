@@ -1,19 +1,48 @@
-# Start 
+# Frontend
 
-## Woche 1
----
+## Description
+This frontend is built using React, including the following modules:
 
-![Alt text](./Fotos/start.png)
+* react-router-dom: A package for implementing dynamic routing in a React application.
+* react-icons: A library for including popular icons in your React projects using ES6 imports.
+* prop-types: A runtime type-checking library for React props to ensure components receive valid props.
+* axios: A promise-based HTTP client for making HTTP requests in JavaScript.
 
----
-## Woche 2
+## Installation
+* npm install react-router-dom
+* npm install react-icons
+* npm install --save prop-types
+* npm install axios
 
-- React-Module, die noch hinzugefügt werden müssen:
-  - npm install react-router-dom
-  - npm install react-icons
-  - npm install --save prop-types
-  - npm install axios
+## Contact
 
-- pip-Module, die auf diesem Branch benötigt sind (im venv)
-  - python -m pip install uvicorn
-  - python -m pip install fastapi
+- Simon Fedrau - https://github.com/SimBezzo
+- Philipp Deimel - https://github.com/PDeimel
+
+# Backend
+
+## Description
+This project is built using FastAPI, a modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints. The key features of this project include:
+
+* FastAPI framework, for building APIs.
+* Uvicorn for serving the application.
+* SQLAlchemy for ORM (Object Relational Mapping).
+* Pydantic for data validation and settings management using Python type annotations.
+* aiocache for caching mechanisms.
+* Python-Jose for JWT token generation and verification.
+* pytest for running tests.
+
+
+This setup is intended for applications requiring high performance and easy scalability.
+
+## Installation
+To set up this project, run the following commands:
+
+```bash
+pip install fastapi uvicorn sqlalchemy pydantic aiocache "python-jose[cryptography]" pytest aiocache
+```
+
+## Contact
+- Wael Eskeif - weski17@github.com
+- Anna Heim - AnnaSabr@github.com
+- Project Link: [https://github.com/Business-Makers/Produkt](https://github.com/Business-Makers/Produkt)
