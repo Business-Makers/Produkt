@@ -1,26 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-
-async function loginUser(username) {
+async function loginUser(credentials) {
   try {
     // Send a POST request to the login endpoint
-    const response = await fetch('http://localhost:8000/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json' // Inform the server that the body contains JSON
-      },
-      body: JSON.stringify({ login_name: username }) // Convert the username into JSON format
-    });
+    const response = await axios.post('http://localhost:8000/login', credentials);
+    return response.data;
 
-    // Check if the response is not ok (status code is not in the 200-299 range)
-    if (!response.ok) {
-      throw new Error('Failed to log in'); // Throw an error if the login failed
-    }
-
-    // Parse the JSON response and return it
-    return response.json();
   } catch (error) {
     console.error('Error during login:', error); // Log any errors that occurred during the login process
     throw error; // Re-throw the error so it can be handled by the calling code
@@ -28,14 +16,14 @@ async function loginUser(username) {
 }
 
 export default function LogIn({ setToken }) {
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const data = await loginUser(username);
-      setToken(data.token); // Assuming the API response contains the token
+      const data = await loginUser({login_name: username, password: password});
+      setToken("logged_in"); // TODO: Das hier ist absolut unsicher, dafuer muessen wir noch richtige Tokens verwenden.
       console.log('Login successful:', data);
     } catch (error) {
       console.error('Login failed:', error);
@@ -52,7 +40,8 @@ export default function LogIn({ setToken }) {
             name="usernameOrEmail"
             placeholder="Enter Username or Email"
             className="input-field"
-            onChange={e => setUserName(e.target.value)}
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
             required
           />
           <div className="password-container">
@@ -61,7 +50,8 @@ export default function LogIn({ setToken }) {
               name="password"
               placeholder="Enter Password"
               className="input-field"
-              onChange={e => setPassword(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>

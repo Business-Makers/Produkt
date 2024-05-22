@@ -14,6 +14,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from requests import Session
 import logging
 from pydantic import BaseModel
+import jwt
 
 """
 This module defines the database schema for a system that manages members, accounts, and various transactions.
@@ -220,17 +221,24 @@ def get_db():
 
 logger = logging.getLogger(__name__)
 
+class LoginRequest(BaseModel):
+    login_name: str
+    password: str
+
+
 @app.post("/login")
-def login(login_name: str, db: Session = Depends(get_db)):
+def login(request: LoginRequest, db: Session = Depends(get_db)):
+    login_name = request.login_name
+    password = request.password
     logger.info(f"Versuch, sich mit Benutzername {login_name} einzuloggen")
 
     db_user = db.query(Account).filter(Account.login_name == login_name).first()
-    if not db_user:
+    if not db_user or db_user.hashed_password != password:
         logger.warning(f"Anmeldeversuch fehlgeschlagen für Benutzer: {login_name}")
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
     logger.info(f"Benutzer {login_name} erfolgreich eingeloggt")
-    return {"message": "Logged in successfully", "token": token}
+    return {"message": "Logged in successfully"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
