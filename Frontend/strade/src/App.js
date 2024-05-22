@@ -4,6 +4,7 @@ import './App.css';
 import Homepage from './Homepage';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
+import Subscription from './Subscription';
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
               </Link>
             </div>
             <nav className="nav-links">
+
+            <Link to="/subscription">Subscription</Link>
               <Link to="/signup">Sign Up</Link>
               <Link to="/login">Login</Link>
             </nav>
@@ -26,6 +29,7 @@ function App() {
         </header>
         <main>
           <Routes>
+          <Route path="/subscription" element={<Subscription />} />
             <Route path="/login" element={<LogIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/" element={<Homepage />} />
