@@ -30,7 +30,7 @@ function App() {
         </header>
         <main>
           <Routes>
-            <Route path="/login" element={<LogIn />} />
+            <Route path="/login" element={<LogIn setToken={setToken}/>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/" element={<Homepage />} />
             <Route path="*" element={<Navigate to="/" />} />

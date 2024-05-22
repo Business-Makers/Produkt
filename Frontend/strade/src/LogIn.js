@@ -3,37 +3,43 @@ import './App.css';
 import { Link } from 'react-router-dom';
 
 
-async function loginUser(credentials) {
-  return fetch('http://localhost:8000/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
- }
-
-export default function LogIn({ setToken}) {
-  const [formData, setFormData] = useState({
-    usernameOrEmail: '',
-    password: ''
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
+async function loginUser(username) {
+  try {
+    // Send a POST request to the login endpoint
+    const response = await fetch('http://localhost:8000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // Inform the server that the body contains JSON
+      },
+      body: JSON.stringify({ login_name: username }) // Convert the username into JSON format
     });
-  };
+
+    // Check if the response is not ok (status code is not in the 200-299 range)
+    if (!response.ok) {
+      throw new Error('Failed to log in'); // Throw an error if the login failed
+    }
+
+    // Parse the JSON response and return it
+    return response.json();
+  } catch (error) {
+    console.error('Error during login:', error); // Log any errors that occurred during the login process
+    throw error; // Re-throw the error so it can be handled by the calling code
+  }
+}
+
+export default function LogIn({ setToken }) {
+  const [username, setUserName] = useState();
+  const [password, setPassword] = useState();
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = await loginUser({
-      formData
-    });
-    setToken(token);
+    try {
+      const data = await loginUser(username);
+      setToken(data.token); // Assuming the API response contains the token
+      console.log('Login successful:', data);
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   return (
@@ -46,8 +52,7 @@ export default function LogIn({ setToken}) {
             name="usernameOrEmail"
             placeholder="Enter Username or Email"
             className="input-field"
-            value={formData.usernameOrEmail}
-            onChange={handleChange}
+            onChange={e => setUserName(e.target.value)}
             required
           />
           <div className="password-container">
@@ -56,8 +61,7 @@ export default function LogIn({ setToken}) {
               name="password"
               placeholder="Enter Password"
               className="input-field"
-              value={formData.password}
-              onChange={handleChange}
+              onChange={e => setPassword(e.target.value)}
               required
             />
           </div>
