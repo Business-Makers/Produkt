@@ -2,28 +2,33 @@ import React, { useState } from 'react';
 import './SignUp.css';
 import './App.css';
 import { countryOptions } from './countryOptions';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 async function signupUser(credentials) {
-  return fetch('http://localhost:8000/register', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(credentials)
-  })
-    .then(data => data.json())
- }
+  try {
+    // Send a POST request to the signup endpoint
+    const response = await axios.post('http://localhost:8000/register', credentials);
+    return response.data;
 
-export default function SignUp ({setToken}) {
+  } catch (error) {
+    console.error('Error during signup:', error); // Log any errors that occurred during the login process
+    throw error; // Re-throw the error so it can be handled by the calling code
+  }
+}
+
+export default function SignUp () {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    birthDate: '',
-    email: '',
-    phoneNumber: '',
+    firstname: '',
+    lastname: '',
+    birthday: '',
+    eMail: '',
+    phone_number: '',
     address:'',
     country: '',
-    username: '',
+    login_name: '',
     password: ''
   });
 
@@ -37,10 +42,22 @@ export default function SignUp ({setToken}) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = await signupUser({
-      formData
-    });
-    setToken(token);
+    try {
+      const data = await signupUser({
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        birthday: formData.birthday,
+        eMail: formData.eMail,
+        phone_number: formData.phone_number,
+        address: formData.address,
+        country: formData.country,
+        login_name: formData.login_name,
+        password: formData.password});
+      window.alert("Registration successful");
+      navigate('/');
+    } catch (error) {
+      window.alert("Registration failed");
+    }
   };
 
   return (
@@ -51,7 +68,7 @@ export default function SignUp ({setToken}) {
         type="text"
         name="username"
         placeholder="Enter Username"
-        value={formData.username}
+        value={formData.login_name}
         onChange={handleChange}
         required
       />
@@ -59,7 +76,7 @@ export default function SignUp ({setToken}) {
         type="text"
         name="firstName"
         placeholder="Enter first name"
-        value={formData.firstName}
+        value={formData.firstname}
         onChange={handleChange}
         required
       />
@@ -67,7 +84,7 @@ export default function SignUp ({setToken}) {
         type="text"
         name="lastName"
         placeholder="Enter last name"
-        value={formData.lastName}
+        value={formData.lastname}
         onChange={handleChange}
         required
       />
@@ -75,7 +92,7 @@ export default function SignUp ({setToken}) {
         type="date"
         name="birthDate"
         placeholder="DD/MM/YYYY"
-        value={formData.birthDate}
+        value={formData.birthday}
         onChange={handleChange}
         required
       />
@@ -103,14 +120,14 @@ export default function SignUp ({setToken}) {
         type="text"
         name="phoneNumber"
         placeholder="Enter Phone Number (optional)"
-        value={formData.phoneNumber}
+        value={formData.phone_number}
         onChange={handleChange}
       />
       <input
         type="email"
         name="email"
         placeholder="Enter Email"
-        value={formData.email}
+        value={formData.eMail}
         onChange={handleChange}
         required
       />

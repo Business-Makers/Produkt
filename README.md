@@ -43,6 +43,6 @@ pip install fastapi uvicorn sqlalchemy pydantic aiocache "python-jose[cryptograp
 ```
 
 ## Contact
-- Wael Eskeif - weski17@github.com
-- Anna Heim - AnnaSabr@github.com
+- Wael Eskeif - https://github.com/weski17
+- Anna Heim - https://github.com/AnnaSabr
 - Project Link: [https://github.com/Business-Makers/Produkt](https://github.com/Business-Makers/Produkt)
