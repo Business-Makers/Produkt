@@ -13,3 +13,7 @@
   - npm install react-icons
   - npm install --save prop-types
   - npm install axios
+
+- pip-Module, die auf diesem Branch benötigt sind (im venv)
+  - python -m pip install uvicorn
+  - python -m pip install fastapi
