@@ -33,13 +33,13 @@ function App() {
           </Routes>
         </main>
         <footer className="App-footer">
+
           <div className="footer-content">
             <p>&copy; 2024 $TRADE</p>
             <Link to="/impressum">Impressum</Link>  {/* Link zum Impressum */}
             <Link to="/datenschutz">Datenschutz</Link>  {/* Link für Datenschutz hinzufügen */}
           </div>
         </footer>
-
       </div>
     </Router>
   );
