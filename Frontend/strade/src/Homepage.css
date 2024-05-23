@@ -1,22 +1,24 @@
-.homepage {
-    padding: 120px;
-    background-color: #f8f9fa;
-    color: #287e36;
+.home {
+    padding: 80px;
+    color: #c5c5c5;
+    background-color: #1c331d;
+    border-radius: 25px;
+    background: radial-gradient(to right, #0F2310, #1c331d);
   }
   
   .intro {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
+    color: #ffffff;
+    stroke: #000000;
   }
   
   .intro h1 {
     font-size: 4em;
-    color: #12372A;
   }
   
   .intro p {
-    font-size: 1.2em;
-    color: #5a6268;
+    font-size: 1.5em;
   }
   
   .features, .reviews, .faq {
@@ -25,7 +27,7 @@
   
   .features h2, .reviews h2, .faq h2 {
     font-size: 2em;
-    color: #12372A;
+    color: #0e60f7;
     margin-bottom: 20px;
   }
   
@@ -39,16 +41,13 @@
     margin-bottom: 10px;
   }
   
-  .reviews .review {
+  .reviews p {
+    color: black;
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .reviews .review p {
-    margin: 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   .faq .faq-item {
@@ -57,30 +56,11 @@
   
   .faq .faq-item h3 {
     font-size: 1.2em;
-    color: #12372A;
+    color: #a2a2a2;
   }
   
   .faq .faq-item p {
     font-size: 1em;
-    color: #287e36;
+    color: #e8e8e8;
   }
-
-  .scrollbar {
-    overflow-y: auto;
-    max-height: calc(70vh - 100px); 
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
