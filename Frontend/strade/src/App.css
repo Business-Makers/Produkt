@@ -71,7 +71,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px;
+  margin: 50px auto;
 }
 
 .login-container h1 {
@@ -118,9 +118,11 @@ main {
   border-radius: 25px;
   cursor: pointer;
   font-size: 18px;
-  margin-top: 20px;
+  margin-top: 50px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   stroke: black;
+  position: relative;
+  display: block;
 }
 
 .login-button:hover {
@@ -137,7 +139,6 @@ a:hover {
 }
 
 p {
-  margin-top: 20px;
   font-size: 14px;
 }
 

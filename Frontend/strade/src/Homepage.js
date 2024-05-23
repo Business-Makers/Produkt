@@ -1,10 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './Homepage.css'; // Separate CSS file for homepage styles
 
 function Homepage() {
   return (
-    <div className="homepage scrollbar">
+    <div className="home">
       <section className="intro">
         <p>Erleben Sie den Handel auf einer neuen Ebene mit unseren einzigartigen Funktionen.</p>
       </section>
@@ -18,7 +17,7 @@ function Homepage() {
       </section>
       <section className="reviews">
         <h2>Bewertungen</h2>
-        <p>Lesen Sie, was unsere zufriedenen Kunden sagen.</p>
+        <h4>Lesen Sie, was unsere zufriedenen Kunden sagen.</h4>
         <p>"Diese App hat meine Trading-Erfahrung revolutioniert!" - Max M.</p>
         <p>"Sicher, schnell und zuverlässig. Absolut empfehlenswert." - Anna K.</p>
       </section>
@@ -27,14 +26,6 @@ function Homepage() {
         <div className="faq-item">
           <h3>Wie sicher ist die App?</h3>
           <p>Unsere App verwendet die neuesten Sicherheitsstandards, um Ihre Daten zu schützen.</p>
-        </div>
-        <div className="faq-item">
-          <h3>Wie funktionieren die Trading-Bots?</h3>
-          <p>Unsere Bots analysieren den Markt in Echtzeit und führen Trades automatisch für Sie durch.</p>
-        </div>
-        <div className="faq-item">
-          <h3>Wie funktionieren die Trading-Bots?</h3>
-          <p>Unsere Bots analysieren den Markt in Echtzeit und führen Trades automatisch für Sie durch.</p>
         </div>
         <div className="faq-item">
           <h3>Wie funktionieren die Trading-Bots?</h3>

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
 import './Subscription.css';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
 
 const Subscription = () => {
     const [activeTab, setActiveTab] = useState('Yearly');
@@ -34,7 +32,7 @@ const Subscription = () => {
               <li>Access to 10 different Portfolios</li>
               <li>Premium Usage of $Comms <p>  </p>(includes creation of Chatrooms)</li>
             </ul>
-            <button>300$ / Year</button>
+            <button className="sbmt-button">300$ / Year</button>
           </div>
         </div>
       </div>
