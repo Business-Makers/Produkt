@@ -1,74 +1,59 @@
 import React, { useState } from 'react';
 import './App.css';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-function LogIn() {
-  const [formData, setFormData] = useState({
-    usernameOrEmail: '',
-    password: ''
-  });
-  const [passwordVisible, setPasswordVisible] = useState(false);
+async function loginUser(credentials) {
+  try {
+    // Send a POST request to the login endpoint
+    const response = await axios.post('http://localhost:8000/login', credentials);
+    return response.data;
 
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!passwordVisible);
-  };
+  } catch (error) {
+    console.error('Error during login:', error); // Log any errors that occurred during the login process
+    throw error; // Re-throw the error so it can be handled by the calling code
+  }
+}
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+export default function LogIn({ setToken }) {
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    // Hier kannst du die Formularvalidierung und das Absenden hinzufügen
-    console.log('Form data:', formData);
+    try {
+      const data = await loginUser({login_name: username, password: password});
+      setToken("logged_in"); // TODO: Das hier ist absolut unsicher, dafuer muessen wir noch richtige Tokens verwenden.
+      console.log('Login successful:', data);
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div className="logo">
-          <Link to="/">
-            <img src="/strade.png" alt="Logo" />
-          </Link>
-        </div>
-        <nav className="nav">
-          <Link to="/signup">Sign up</Link>
-          <Link to="#">Support</Link>
-        </nav>
-      </header>
       <div className="login-container">
-        <h2>Login</h2>
+        <h1>Login</h1>
         <form onSubmit={handleSubmit} className="input-container">
           <input
             type="text"
             name="usernameOrEmail"
             placeholder="Enter Username or Email"
             className="input-field"
-            value={formData.usernameOrEmail}
-            onChange={handleChange}
+            value={username}
+            onChange={(e) => setUserName(e.target.value)}
             required
           />
           <div className="password-container">
             <input
-              type={passwordVisible ? 'text' : 'password'}
+              type="password"
               name="password"
               placeholder="Enter Password"
               className="input-field"
-              value={formData.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <span
-              onClick={togglePasswordVisibility}
-              className="password-toggle-icon"
-            >
-              {passwordVisible ? <FaEyeSlash /> : <FaEye />}
-            </span>
           </div>
           <button type="submit" className="login-button">Login</button>
           <p>
@@ -76,13 +61,6 @@ function LogIn() {
           </p>
         </form>
       </div>
-      <footer className="App-footer">
-        <a href="#">Impressum</a>
-        <a href="#">About us</a>
-      </footer>
     </div>
   );
 }
-
-
-export default LogIn;
