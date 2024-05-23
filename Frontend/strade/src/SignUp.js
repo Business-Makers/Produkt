@@ -8,9 +8,7 @@ import { useNavigate } from 'react-router-dom';
 async function signupUser(credentials) {
   try {
     // Send a POST request to the signup endpoint
-    const response = await axios.post('http://localhost:8000/register', credentials);
-    return response.data;
-
+    await axios.post('http://localhost:8000/register', credentials);
   } catch (error) {
     console.error('Error during signup:', error); // Log any errors that occurred during the login process
     throw error; // Re-throw the error so it can be handled by the calling code
@@ -43,7 +41,7 @@ export default function SignUp () {
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const data = await signupUser({
+      await signupUser({
         firstname: formData.firstname,
         lastname: formData.lastname,
         birthday: formData.birthday,
