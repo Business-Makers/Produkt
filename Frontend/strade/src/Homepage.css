@@ -1,0 +1,86 @@
+.homepage {
+    padding: 120px;
+    background-color: #f8f9fa;
+    color: #287e36;
+  }
+  
+  .intro {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .intro h1 {
+    font-size: 4em;
+    color: #12372A;
+  }
+  
+  .intro p {
+    font-size: 1.2em;
+    color: #5a6268;
+  }
+  
+  .features, .reviews, .faq {
+    margin-bottom: 40px;
+  }
+  
+  .features h2, .reviews h2, .faq h2 {
+    font-size: 2em;
+    color: #12372A;
+    margin-bottom: 20px;
+  }
+  
+  .features ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .features li {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+  
+  .reviews .review {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reviews .review p {
+    margin: 0;
+  }
+  
+  .faq .faq-item {
+    margin-bottom: 20px;
+  }
+  
+  .faq .faq-item h3 {
+    font-size: 1.2em;
+    color: #12372A;
+  }
+  
+  .faq .faq-item p {
+    font-size: 1em;
+    color: #287e36;
+  }
+
+  .scrollbar {
+    overflow-y: auto;
+    max-height: calc(70vh - 100px); 
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
