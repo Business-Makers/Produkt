@@ -1,20 +1,33 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import './SignUp.css';
 import './App.css';
 import { countryOptions } from './countryOptions';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const SignUp = () => {
+async function signupUser(credentials) {
+  try {
+    // Send a POST request to the signup endpoint
+    await axios.post('http://localhost:8000/register', credentials);
+  } catch (error) {
+    console.error('Error during signup:', error); // Log any errors that occurred during the login process
+    throw error; // Re-throw the error so it can be handled by the calling code
+  }
+}
+
+export default function SignUp () {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    username: '',
-    firstName: '',
-    lastName: '',
-    birthDate: '',
+    firstname: '',
+    lastname: '',
+    birthday: '',
+    eMail: '',
+    phone_number: '',
+    address:'',
     country: '',
-    phoneNumber: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    login_name: '',
+    password: ''
   });
 
   const handleChange = (e) => {
@@ -25,31 +38,35 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    console.log('Form data:', formData);
+    try {
+      await signupUser({
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        birthday: formData.birthday,
+        eMail: formData.eMail,
+        phone_number: formData.phone_number,
+        address: formData.address,
+        country: formData.country,
+        login_name: formData.login_name,
+        password: formData.password});
+      window.alert("Registration successful");
+      navigate('/');
+    } catch (error) {
+      window.alert("Registration failed");
+    }
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div className="logo">
-          <Link to="/">
-            <img src="/strade.png" alt="Logo" />
-          </Link>
-        </div>
-        <nav className="nav">
-          <Link to="/login">Log In</Link>
-          <Link to="#">Support</Link>
-        </nav>
-      </header>
     <form className="signup-form" onSubmit={handleSubmit}>
       <h1>Sign up</h1>
       <input
         type="text"
         name="username"
         placeholder="Enter Username"
-        value={formData.username}
+        value={formData.login_name}
         onChange={handleChange}
         required
       />
@@ -57,7 +74,7 @@ const SignUp = () => {
         type="text"
         name="firstName"
         placeholder="Enter first name"
-        value={formData.firstName}
+        value={formData.firstname}
         onChange={handleChange}
         required
       />
@@ -65,7 +82,7 @@ const SignUp = () => {
         type="text"
         name="lastName"
         placeholder="Enter last name"
-        value={formData.lastName}
+        value={formData.lastname}
         onChange={handleChange}
         required
       />
@@ -73,7 +90,7 @@ const SignUp = () => {
         type="date"
         name="birthDate"
         placeholder="DD/MM/YYYY"
-        value={formData.birthDate}
+        value={formData.birthday}
         onChange={handleChange}
         required
       />
@@ -81,7 +98,6 @@ const SignUp = () => {
         name="country"
         value={formData.country}
         onChange={handleChange}
-        required
       >
         <option value="">Select Country</option>
           {countryOptions.map((country) => (
@@ -91,18 +107,25 @@ const SignUp = () => {
           ))}
         
       </select>
+      <input 
+        type="text"
+        name="address"
+        placeholder="Enter Adress"
+        value={formData.address}
+        onChange={handleChange}
+        />
       <input
         type="text"
         name="phoneNumber"
         placeholder="Enter Phone Number (optional)"
-        value={formData.phoneNumber}
+        value={formData.phone_number}
         onChange={handleChange}
       />
       <input
         type="email"
         name="email"
         placeholder="Enter Email"
-        value={formData.email}
+        value={formData.eMail}
         onChange={handleChange}
         required
       />
@@ -118,18 +141,11 @@ const SignUp = () => {
         type="password"
         name="confirmPassword"
         placeholder="Confirm Password"
-        value={formData.confirmPassword}
         onChange={handleChange}
         required
       />
       <button type="submit">Sign up</button>
     </form>
-    <footer className="App-footer">
-        <a href="#">Impressum</a>
-        <a href="#">About us</a>
-      </footer>
     </div>
   );
 };
-
-export default SignUp;
