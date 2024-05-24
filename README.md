@@ -10,8 +10,6 @@ This frontend is built using React, including the following modules:
 
 ## Installation
 * npm install react-router-dom
-* npm install react-icons
-* npm install --save prop-types
 * npm install axios
 
 ## Contact
