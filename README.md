@@ -4,8 +4,6 @@
 This frontend is built using React, including the following modules:
 
 * react-router-dom: A package for implementing dynamic routing in a React application.
-* react-icons: A library for including popular icons in your React projects using ES6 imports.
-* prop-types: A runtime type-checking library for React props to ensure components receive valid props.
 * axios: A promise-based HTTP client for making HTTP requests in JavaScript.
 
 ## Installation
