@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 async function signupUser(credentials) {
   try {
     // Send a POST request to the signup endpoint
-    await axios.post('http://localhost:8000/register', credentials);
+    await axios.post('http://localhost:8001/register/', credentials);
   } catch (error) {
     console.error('Error during signup:', error); // Log any errors that occurred during the login process
     throw error; // Re-throw the error so it can be handled by the calling code
@@ -64,7 +64,7 @@ export default function SignUp () {
       <h1>Sign up</h1>
       <input
         type="text"
-        name="username"
+        name="login_name"
         placeholder="Enter Username"
         value={formData.login_name}
         onChange={handleChange}
@@ -72,7 +72,7 @@ export default function SignUp () {
       />
       <input
         type="text"
-        name="firstName"
+        name="firstname"
         placeholder="Enter first name"
         value={formData.firstname}
         onChange={handleChange}
@@ -80,7 +80,7 @@ export default function SignUp () {
       />
       <input
         type="text"
-        name="lastName"
+        name="lastname"
         placeholder="Enter last name"
         value={formData.lastname}
         onChange={handleChange}
@@ -88,7 +88,7 @@ export default function SignUp () {
       />
       <input
         type="date"
-        name="birthDate"
+        name="birthday"
         placeholder="DD/MM/YYYY"
         value={formData.birthday}
         onChange={handleChange}
@@ -116,14 +116,14 @@ export default function SignUp () {
         />
       <input
         type="text"
-        name="phoneNumber"
+        name="phone_number"
         placeholder="Enter Phone Number (optional)"
         value={formData.phone_number}
         onChange={handleChange}
       />
       <input
         type="email"
-        name="email"
+        name="eMail"
         placeholder="Enter Email"
         value={formData.eMail}
         onChange={handleChange}

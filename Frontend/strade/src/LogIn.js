@@ -6,7 +6,7 @@ import { default as axios } from 'axios';
 async function loginUser(credentials) {
   try {
     // Send a POST request to the login endpoint
-    const response = await axios.post('http://localhost:8000/login', credentials);
+    const response = await axios.post('http://localhost:8001/login/', credentials);
     return response.data;
 
   } catch (error) {
