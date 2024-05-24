@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './SignUp.css';
 import './App.css';
 import { countryOptions } from './countryOptions';
-import axios from 'axios';
+import { default as axios } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 async function signupUser(credentials) {
