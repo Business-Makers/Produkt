@@ -37,7 +37,7 @@
     background: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 40px;
-    padding: 20px;
+    padding: 40px;
     width: 45%;
     text-align: left;
     position: relative;
@@ -45,8 +45,8 @@
   
   .silver {
     background-color: #4b6b4b;
-  
     width: 55%;
+    padding: 50px; /* Fügt 20px Padding hinzu */
   }
   
   .gold {
@@ -58,6 +58,7 @@
   .basic {
     background-color: #8cd48c;
     width: 55%;
+    padding: 50px; /* Fügt 20px Padding hinzu */
   }
   
   .subscription h2 {
@@ -78,9 +79,15 @@
   }
 
   .subscription ul {
-    list-style-type: none;
     padding: 0;
     color: #fff;
+    margin: 5px;
+  }
+
+  .subscription li {
+    padding: 0;
+    color: #fff;
+    margin: 5px 0; /* 5px oben und unten */
   }
   
   .subscription .active-status {
