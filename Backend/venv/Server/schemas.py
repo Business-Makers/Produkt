@@ -78,3 +78,15 @@ class UserRegistration(BaseModel):
     country: Optional[str] = None
     login_name: str
     password: str
+
+
+class PasswordResetRequest(BaseModel):
+    """
+        Represents a request to reset a password.
+
+        Attributes:
+            token (Token): The reset token.
+            new_password (str): The new password to set.
+        """
+    token: Token
+    new_password: str

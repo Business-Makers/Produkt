@@ -8,6 +8,7 @@ from datetime import timedelta, datetime
 from jose import jwt
 from typing import Optional
 from fastapi.security import OAuth2PasswordBearer
+from fastapi import HTTPException
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -22,6 +23,8 @@ OAuth2 password flow dependency.
 This is used to retrieve the token from the request and validate it. 
 The 'tokenUrl' specifies the endpoint where the client can obtain the token.
 """
+
+RESET_TOKEN_EXPIRE_MINUTES = 15
 
 
 def get_hashed_password(password: str) -> str:
@@ -72,3 +75,37 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def generate_reset_token(username: str) -> str:
+    """
+    Generates a reset token for the given username.
+    """
+    payload = {
+        "sub": username,
+        "exp": datetime.now() + timedelta(minutes=RESET_TOKEN_EXPIRE_MINUTES)
+    }
+    return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+
+def send_password_reset_email(email: str, token: str):
+    """
+    Sends a password reset email to the specified email address.
+    Here you would implement your email sending logic to send the email.
+    """
+    # TODO Implementiere hier deine E-Mail-Versand-Logik
+    pass
+
+
+def verify_reset_token(token: str) -> Optional[str]:
+    """
+    Verifies the reset token and returns the username if the token is valid.
+    """
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        return username
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(status_code=400, detail="Expired token")
+    except jwt.JWTError:
+        raise HTTPException(status_code=400, detail="Invalid token")

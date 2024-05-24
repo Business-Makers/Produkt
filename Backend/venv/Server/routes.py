@@ -10,8 +10,9 @@ from datetime import timedelta
 
 from database import get_db, init_db
 from models import Account, Member
-from schemas import LoginCredentials, UserRegistration, Token
-from utils import get_hashed_password, verify_password, create_access_token
+from schemas import LoginCredentials, UserRegistration, PasswordResetRequest
+from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
+    send_password_reset_email, verify_reset_token
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -110,3 +111,53 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/request-password-reset/")
+def forgot_password(email: str, db: Session = Depends(get_db)):
+    """
+        Handles the request to reset a password.
+
+        This endpoint sends a password reset email to the provided email address.
+        It retrieves the user associated with the given email, generates a reset token,
+        and sends an email with the token to the user's email address.
+
+        Parameters:
+            - email (str): The email address of the user requesting the password reset.
+            - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+
+        Returns:
+            dict: A dictionary containing a success message if the email was sent successfully.
+        """
+    user = db.query(Account).filter(Account.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found.")
+    reset_token = generate_reset_token(user.login_name)
+    send_password_reset_email(user.email, reset_token)
+    return {"message": "Passwort-Reset was send to your email address."}
+
+
+@app.post("/reset-password/")
+def reset_password(reset_request: PasswordResetRequest, db: Session = Depends(get_db)):
+    """
+        Handles resetting a user's password.
+
+        This endpoint allows users to reset their password using a valid reset token.
+        It verifies the provided token, updates the user's password with the new one,
+        and commits the changes to the database.
+
+        Parameters:
+            - reset_request (PasswordResetRequest): The request containing the reset token and new password.
+            - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+
+        Returns:
+            dict: A dictionary containing a success message if the password was reset successfully.
+        """
+    user = verify_reset_token(reset_request.token)
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid token.")
+    hashed_password = get_hashed_password(reset_request.new_password)
+    user.hashed_password = hashed_password
+    db.commit()
+
+    return {"message": "Password reset successfully."}
