@@ -1,8 +1,6 @@
 from datetime import timedelta, datetime
-
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
-from passlib.context import CryptContext
+from jose import jwt
 
 """
 This module configures and initializes a database using SQLAlchemy ORM. It sets up an SQLite database, creates tables based on defined models, and configures a session factory for database operations.
@@ -12,13 +10,13 @@ Details:
 - Echoes SQL commands to the standard output to help with debugging.
 - Disables both autocommit and autoflush to give more control over transactions.
 """
-from fastapi import HTTPException, status
+from fastapi import HTTPException
 import uvicorn
-from fastapi import FastAPI, Form, Depends
+from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from typing import Optional, Union
-from passlib.context import CryptContext
+from typing import Optional
+
 """
 This module defines the database schema for a system that manages members, accounts, and various transactions.
 It uses SQLAlchemy's ORM capabilities to map Python classes to database tables. The following entities are
@@ -42,10 +40,15 @@ from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from sqlalchemy import ForeignKey, Column, String, Integer, DATE, Float, Boolean
 import bcrypt
 
+# basic class used for table definition
 Base = declarative_base()
 
 
 class Member(Base):
+    """
+    This class defines the database schema for a system that manages members.
+    It stores the personal details and contact information for each member.
+    """
     __tablename__ = 'member'
     member_id = Column("member_id", Integer, unique=True, primary_key=True, autoincrement=True)
     firstname = Column("firstname", String(50), nullable=False)
@@ -68,6 +71,9 @@ class Member(Base):
 
 
 class Account(Base):
+    """
+    stores the Login and authentication information for each member.
+    """
     __tablename__ = 'account'
     account_id = Column("account_id", Integer, primary_key=True, unique=True, autoincrement=True)
     login_name = Column("login_name", String(50), nullable=False, unique=True)
@@ -83,6 +89,9 @@ class Account(Base):
 
 
 class Login(Base):
+    """
+    tracks login activities by date, time, and location for accounts.
+    """
     __tablename__ = 'login'
     login_date = Column("login_date", DATE, primary_key=True)
     login_time = Column("login_time", String(50), nullable=False)
@@ -97,6 +106,7 @@ class Login(Base):
 
 
 class Balance(Base):
+    """stores the daily balance for each account."""
     __tablename__ = 'balance'
     balance_date = Column("balance_date", DATE, nullable=False, primary_key=True)
     balance_volume = Column("balance_volume", Float, nullable=False)
@@ -109,6 +119,9 @@ class Balance(Base):
 
 
 class AccountPages(Base):
+    """
+    stores API access configurations for third-party services, including credentials.
+    """
     __tablename__ = 'account_pages'
     ap_id = Column("ap_id", Integer, primary_key=True, unique=True, autoincrement=True)
     api_name = Column("api_name", String(50), nullable=False)
@@ -132,6 +145,9 @@ class AccountPages(Base):
 
 
 class Trade(Base):
+    """
+    stores all Trades, including details like currency, volume, status, rates
+    """
     __tablename__ = 'trade'
     trade_id = Column("trade_id", Integer, primary_key=True, unique=True, autoincrement=True)
     currency_name = Column("currency_name", String(50), nullable=False)
@@ -160,6 +176,9 @@ class Trade(Base):
 
 
 class Membership(Base):
+    """
+    Defines different types of memberships, detailing features and differences.
+    """
     __tablename__ = 'membership'
     membership_name = Column("membership_name", String, primary_key=True, unique=True)
     duration = Column('duration', Integer, nullable=False)
@@ -183,6 +202,9 @@ class Membership(Base):
 
 
 class Abo(Base):
+    """
+        Manages subscription details for accounts including start and end dates and the status of the subscription.
+        """
     __tablename__ = 'abo'
     abo_start = Column('abo_start', DATE, primary_key=True)
     abo_end = Column('abo_end', DATE)
@@ -196,17 +218,21 @@ class Abo(Base):
         self.accountID = accountID
 
 
+# create SQLite database and tables
 engine = create_engine("sqlite:///Database.db", echo=True)
 Base.metadata.create_all(bind=engine)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 session = SessionLocal()
 
-session.close()
+session.close()  # close the initial session
 
-app = FastAPI()
+app = FastAPI()  # creates instance of FastAPI class
 
 
 def get_db():
+    """
+    Dependency that provides a database session to endpoints.
+    """
     db = SessionLocal()
     try:
         yield db
@@ -215,42 +241,61 @@ def get_db():
 
 
 class LoginCredentials(BaseModel):
+    """
+    model for login credentials.
+    """
     login_name: str
     password: str
-
-
 
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 SECRET_KEY = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+"""
+The secret key used for signing the JWT.
+This key should be kept confidential and not hard-coded in production environments.
+"""
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+"""
+OAuth2 password flow dependency.
+This is used to retrieve the token from the request and validate it. 
+The 'tokenUrl' specifies the endpoint where the client can obtain the token.
+"""
 
 
 class Token(BaseModel):
+    """
+    Model for an access token.
+    """
     access_token: str
     token_type: str
 
 
 class TokenData(BaseModel):
+    """
+    Model for token data.
+    """
     username: Optional[str] = None
 
 
-
-
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    """
+    creates an JWT access token
+    """
     to_encode = data.copy()
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = datetime.now() + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
+        expire = datetime.now() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 
-
 class UserRegistration(BaseModel):
+    """
+    Model for user registration details.
+    """
     firstname: str
     lastname: str
     birthday: str
@@ -263,25 +308,34 @@ class UserRegistration(BaseModel):
 
 
 def get_hashed_password(password: str) -> str:
+    """
+    Hashes a password with bcrypt.
+    """
     password_bytes = password.encode('utf-8')
     hashed = bcrypt.hashpw(password_bytes, bcrypt.gensalt())
     return hashed.decode('utf-8')
 
 
 def verify_password(plain_password: str, hashed_password_from_db: str) -> bool:
+    """
+       Verify a plain password against a hashed password.
+       """
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password_from_db.encode('utf-8'))
 
 
-#word = "hashed_pwd123"
-#newPasswort = get_hashed_password(word)
-#print(newPasswort)
-#new_user = Account(login_name="test_user1122", hashed_password=newPasswort, memberID=6)
-#session.add(new_user)
-#session.commit()
+# word = "hashed_pwd123"
+# newPasswort = get_hashed_password(word)
+# print(newPasswort)
+# new_user = Account(login_name="test_user1122", hashed_password=newPasswort, memberID=6)
+# session.add(new_user)
+# session.commit()
 
 
 @app.post("/login/")
 def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
+    """
+    Handling user login and password.
+    """
     try:
         db_user = db.query(Account).filter(Account.login_name == credentials.login_name).first()
     except Exception as e:
@@ -301,6 +355,9 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
 
 @app.post("/register/")
 def register(user: UserRegistration, db: Session = Depends(get_db)):
+    """
+    Handling new user registration.
+    """
     existing_user = db.query(Account).filter(Account.login_name == user.login_name).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Login name already registered")
@@ -320,7 +377,6 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(new_member)
 
-
         hashed_password = get_hashed_password(user.password)
         new_account = Account(
             login_name=user.login_name,
@@ -339,4 +395,3 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8001)
-
