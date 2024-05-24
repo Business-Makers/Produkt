@@ -28,6 +28,9 @@ function App() {
             <nav className="nav-links">
               <Link to="/signup">Sign Up</Link>
               <Link to="/login">Login</Link>
+
+              <Link to="/subscription">Subscription</Link>
+
             </nav>
           </nav>
         </header>
@@ -37,6 +40,9 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/" element={<Homepage />} />
             <Route path="*" element={<Navigate to="/" />} />
+
+            <Route path="/subscription" element={<Subscription />} />
+
           </Routes>
         </main>
         <footer className="App-footer">

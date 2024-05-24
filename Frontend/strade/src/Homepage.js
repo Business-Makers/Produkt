@@ -14,6 +14,8 @@ function Homepage() {
           <li><strong>Analytik:</strong> Erhalten Sie detaillierte Analysen und Berichte.</li>
           <li><strong>Automatisierung:</strong> Nutzen Sie unsere Bots für automatisierten Handel.</li>
         </ul>
+
+    
       </section>
       <section className="reviews">
         <h2>Bewertungen</h2>
