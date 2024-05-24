@@ -5,6 +5,10 @@ import { countryOptions } from './countryOptions';
 import { default as axios } from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+/**Function to POST the signup data to the server.
+ * 
+ * @param credentials: All the potential data the server can accept, including username, password, name, mail, etc.
+*/
 async function signupUser(credentials) {
   try {
     // Send a POST request to the signup endpoint
@@ -15,6 +19,7 @@ async function signupUser(credentials) {
   }
 }
 
+/**The Signup website, including all the different inputs the user has to take and send to the server */
 export default function SignUp () {
   const navigate = useNavigate();
 
@@ -37,7 +42,10 @@ export default function SignUp () {
       [name]: value,
     });
   };
-
+  /**Formats the data in the correct order for the database to then send it to the server.
+   * 
+   * If the registration happens without errors, the user will be redirected to the homepage.
+  */
   const handleSubmit = async e => {
     e.preventDefault();
     try {

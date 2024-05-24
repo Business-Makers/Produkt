@@ -8,6 +8,11 @@ import Subscription from './Subscription';
 import Dashboard from './Dashboard';
 import useToken from './useToken';
 
+/**The Navigation of the whole Frontend: 
+ * 
+ * Depending on if the User is logged in (decided by the Token's status), different navigation paths are accessible
+ * 
+ * This is implemented via the use of the BrowserRouter from the package 'react-router-dom'.*/ 
 function App() {
 
   const { token, setToken } = useToken();
@@ -16,9 +21,7 @@ function App() {
     return (
     <Router>
       <div className="App">
-
         <header className="App-header">
-
           <nav className="nav">
             <div className="logo">
               <Link to="/">
@@ -43,8 +46,8 @@ function App() {
 
           <div className="footer-content">
             <p>&copy; 2024 $TRADE</p>
-            <Link to="/impressum">Impressum</Link>  {/* Link zum Impressum */}
-            <Link to="/datenschutz">Datenschutz</Link>  {/* Link für Datenschutz hinzufügen */}
+            <Link to="/impressum">Impressum</Link>  {/* Link to Impressum */}
+            <Link to="/datenschutz">Datenschutz</Link>  {/* Add Link to Datenschutz-stuff */}
           </div>
         </footer>
       </div>

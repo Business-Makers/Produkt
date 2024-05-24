@@ -1,4 +1,5 @@
-// src/countryOptions.js
+
+/**A Dictionary containing all 195 UN recognized countries */
 export const countryOptions = [
     { value: 'Afghanistan', label: 'Afghanistan' },
     { value: 'Albania', label: 'Albania' },
