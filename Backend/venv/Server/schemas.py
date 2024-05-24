@@ -4,7 +4,7 @@ Pydantic Schemas File
 This file contains Pydantic models representing data schemas used for validation and serialization.
 """
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 
@@ -62,7 +62,7 @@ class UserRegistration(BaseModel):
         - firstname (str): The first name of the user.
         - lastname (str): The last name of the user.
         - birthday (str): The birthday of the user.
-        - eMail (str): The email address of the user.
+        - eMail (Emailstr): The email address of the user.
         - phone_number (str, optional): The phone number of the user (optional).
         - address (str, optional): The address of the user (optional).
         - country (str, optional): The country of the user (optional).
@@ -72,7 +72,7 @@ class UserRegistration(BaseModel):
     firstname: str
     lastname: str
     birthday: str
-    eMail: str
+    eMail: EmailStr
     phone_number: Optional[str] = None
     address: Optional[str] = None
     country: Optional[str] = None
