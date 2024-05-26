@@ -7,8 +7,10 @@ This frontend is built using React, including the following modules:
 * axios: A promise-based HTTP client for making HTTP requests in JavaScript.
 
 ## Installation
-* npm install react-router-dom
-* npm install axios
+To set up this project, run the following commands:
+```bash
+pip install fastapi uvicorn sqlalchemy pydantic aiocache "python-jose[cryptography]" pytest aiocache
+```
 
 ## Contact
 
