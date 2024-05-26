@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom';
 import { default as axios } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-/**Function to POST the login data to the server.
- * 
- * @param credentials: Username and password entered by the user.
-*/
 async function loginUser(credentials) {
   try {
     // Send a POST request to the login endpoint
@@ -19,23 +16,19 @@ async function loginUser(credentials) {
   }
 }
 
-/**Login site which needs Username and Password to connect to Server.
- * 
- * On successfull connection it will activate the users token, allowing him to visit the other sides of the application.
- * 
- * @param setToken: Activates the token on successful Login
- */
 export default function LogIn({ setToken }) {
+  const navigate = useNavigate();
+
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      // Puts the data in a dictionary to then send it to the server.
       const data = await loginUser({login_name: username, password: password});
       setToken("logged_in"); // TODO: Das hier ist absolut unsicher, dafuer muessen wir noch richtige Tokens verwenden.
       console.log('Login successful:', data);
+      navigate('/');
     } catch (error) {
       console.error('Login failed:', error);
     }
