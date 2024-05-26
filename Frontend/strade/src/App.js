@@ -31,6 +31,9 @@ function App() {
             <nav className="nav-links">
               <Link to="/signup">Sign Up</Link>
               <Link to="/login">Login</Link>
+
+            
+
             </nav>
           </nav>
         </header>

@@ -37,7 +37,7 @@
     background: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 40px;
-    padding: 20px;
+    padding: 40px;
     width: 45%;
     text-align: left;
     position: relative;
@@ -45,10 +45,20 @@
   
   .silver {
     background-color: #4b6b4b;
+    width: 55%;
+    padding: 50px; /* Fügt 20px Padding hinzu */
   }
   
   .gold {
     background-color: #328532;
+    width: 55%;
+    padding: 50px; /* Fügt 20px Padding hinzu */
+  }
+
+  .basic {
+    background-color: #8cd48c;
+    width: 55%;
+    padding: 50px; /* Fügt 20px Padding hinzu */
   }
   
   .subscription h2 {
@@ -64,11 +74,20 @@
     color: #e2cd0a;
   }
 
+  .subscription.basic h2 {
+    color: #d65725;
+  }
 
   .subscription ul {
-    list-style-type: none;
     padding: 0;
     color: #fff;
+    margin: 5px;
+  }
+
+  .subscription li {
+    padding: 0;
+    color: #fff;
+    margin: 5px 0; /* 5px oben und unten */
   }
   
   .subscription .active-status {
@@ -76,20 +95,26 @@
     font-size: 0.9em;
     margin-bottom: 10px;
   }
-  
+
+  .button-container {
+    position: relative; /* Stellt sicher, dass der Container ein Bezugspunkt für absolute Positionierung ist */
+    height: 100%; /* Der Container nimmt die gesamte Höhe des Elternteils ein */
+    box-sizing: border-box; /* Stellt sicher, dass Padding und Border zur Gesamthöhe beitragen */
+  }
+
   .sbmt-button {
-    margin-top: 10px;
+    position: absolute; /* Absolute Positionierung des Buttons */
+    bottom: 20px; /* 20px vom unteren Rand des Containers */
+    left: 50%; /* 50% von der linken Seite des Containers */
+    transform: translateX(-50%); /* Verschiebt den Button um die Hälfte seiner eigenen Breite nach links, um ihn zu zentrieren */
     padding: 10px 20px;
     background-color: #000;
     color: #fff;
     border: none;
     border-radius: 15px;
     cursor: pointer;
-    transform: translateX(-50%);
-    position: relative;
-    display: block;
   }
-  
+
   .sbmt-button:hover {
     background-color: #555;
   }
