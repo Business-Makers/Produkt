@@ -20,7 +20,7 @@ operations across the system.
 from sqlalchemy import Column, String, Integer, DATE, Float, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, declarative_base
 
-Base = declarative_base()  # basic class used for table definition
+Base = declarative_base()  
 
 
 class Member(Base):
@@ -58,7 +58,6 @@ class Account(Base):
     login_name = Column("login_name", String(50), nullable=False, unique=True)
     hashed_password = Column("hashed_password", String(50), nullable=False)
     memberID = Column("memberID", Integer, ForeignKey("member.member_id"), nullable=False)
-    # TODO:
     member = relationship("Member", back_populates="accounts")
 
     def __init__(self, login_name, hashed_password, memberID):

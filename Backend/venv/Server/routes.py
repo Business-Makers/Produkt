@@ -10,7 +10,7 @@ from datetime import timedelta
 
 from database import get_db, init_db
 from models import Account, Member
-from schemas import LoginCredentials, UserRegistration, PasswordResetRequest
+from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, validate_user_registration
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token
 
@@ -76,11 +76,23 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
 
     Returns:
-        dict: A dictionary containing the success message if registration is successful.
+        dict: A dictionary containing the success message if registration is successful.pass
     """
+    if user.phone_number:
+        existing_phone_number = db.query(Member).filter(Member.phone_number == user.phone_number).first()
+        if existing_phone_number:
+            raise HTTPException(status_code=400, detail="Phone number already registered")
+
+    existing_email = db.query(Member).filter(Member.email == user.eMail).first()
+    if existing_email:
+           raise HTTPException(status_code=400, detail="Email already registered")
+    
+
     existing_user = db.query(Account).filter(Account.login_name == user.login_name).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Login name already registered")
+    
+
     try:
 
         new_member = Member(
@@ -101,13 +113,12 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         new_account = Account(
             login_name=user.login_name,
             hashed_password=hashed_password,
-            memberID=new_member.member_id  # Link the account to the member via foreign key
+            memberID=new_member.member_id 
         )
         db.add(new_account)
         db.commit()
 
-
-
+        return {"message": "Registration successful! We're excited to have you with us."}
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))

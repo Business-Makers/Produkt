@@ -36,10 +36,3 @@ def get_db():
         yield db
     finally:
         db.close()
-
-# word = "hashed_pwd123"
-# newPasswort = get_hashed_password(word)
-# print(newPasswort)
-# new_user = Account(login_name="test_user1122", hashed_password=newPasswort, memberID=6)
-# session.add(new_user)
-# session.commit()
