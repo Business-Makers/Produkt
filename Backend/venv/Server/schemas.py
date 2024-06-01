@@ -130,4 +130,4 @@ class ApiKeyCreation(BaseModel):
     exchange_id: str
     key: str
     secret_key: str
-    passphrase: str
+    passphrase: Optional[str] = None
