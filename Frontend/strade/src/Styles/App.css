@@ -29,8 +29,6 @@ main {
 }
 
 .logo {
-  width: 256px; /* Breite des Bildes */
-  height: 112px; /* Höhe des Bildes */
   padding: 5px;
   transition: box-shadow 0.3s;
 }

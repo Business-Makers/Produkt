@@ -12,6 +12,7 @@ import SideNav from './SideNav';
 import Trading from './Trading';
 import Portfolio from './Portfolio';
 import Market from './Market';
+import Comms from './Comms';
 
 /**The Navigation of the whole Frontend: 
  * 
@@ -72,6 +73,7 @@ function App() {
             <Route path="/trading" element={<Trading />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/market" element={<Market />} />
+            <Route path="/comms" element={<Comms />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
