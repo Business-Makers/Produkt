@@ -59,7 +59,7 @@ class Account(Base):
     hashed_password = Column("hashed_password", String(50), nullable=False)
     memberID = Column("memberID", Integer, ForeignKey("member.member_id"), nullable=False)
     member = relationship("Member", back_populates="accounts")
-
+    account_pages = relationship("AccountPages", back_populates="account")
     def __init__(self, login_name, hashed_password, memberID):
         self.login_name = login_name
         self.hashed_password = hashed_password
@@ -110,8 +110,9 @@ class AccountPages(Base):
     user_name = Column("user_name", String(50), nullable=False)
     ap_value = Column("ap_value", String(50))
     memberID = Column("memberID", Integer, ForeignKey("member.member_id"), nullable=False)
-
-    def __init__(self, api_name, key, secret_Key, passphrase, stock, user_name, ap_value, memberID):
+    accountID = Column("accountID", Integer, ForeignKey("account.account_id"))
+    account = relationship("Account", back_populates="account_pages")
+    def __init__(self, api_name, key, secret_Key, passphrase, stock, user_name, ap_value, memberID, accountID):
         self.api_name = api_name
         self.key = key
         self.secret_Key = secret_Key
@@ -120,6 +121,7 @@ class AccountPages(Base):
         self.user_name = user_name
         self.ap_value = ap_value
         self.memberID = memberID
+        self.accountID = accountID
 
 
 class Trade(Base):
