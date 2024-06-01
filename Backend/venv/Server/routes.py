@@ -10,10 +10,9 @@ from datetime import timedelta
 
 from database import get_db, init_db
 from models import Account, Member
-from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, validate_user_registration
+from schemas import LoginCredentials, UserRegistration, PasswordResetRequest
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token
-
 app = FastAPI()  # creates instance of FastAPI class
 
 
