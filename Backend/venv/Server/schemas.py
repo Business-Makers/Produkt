@@ -116,6 +116,16 @@ def validate_user_registration(data):
 
 
 class ApiKeyCreation(BaseModel):
+    """
+        Represents the necessary API key information for connecting to a cryptocurrency exchange.
+
+        Attributes:
+            api_name (str): A descriptive name for the API key.
+            exchange_id (str): The identifier of the exchange (e.g., 'binance', 'kraken').
+            key (str): The API key for the exchange.
+            secret_key (str): The API secret key for the exchange.
+            passphrase (str): The API passphrase for the exchange, if required.
+        """
     api_name: str
     exchange_id: str
     key: str

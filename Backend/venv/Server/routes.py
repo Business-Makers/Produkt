@@ -13,7 +13,7 @@ from models import Account, Member
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token
-from ExchangeConnetion import connect_to_exchange
+from ExchangeConnection import connect_to_exchange
 app = FastAPI()  # creates instance of FastAPI class
 
 
