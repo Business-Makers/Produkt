@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css';
+import './LoggedIn.css';
 import './Subscription.css';
 
 const Subscription = () => {

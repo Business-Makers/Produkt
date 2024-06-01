@@ -9,6 +9,7 @@ import Subscription from './Subscription';
 import Dashboard from './Dashboard';
 import useToken from './useToken';
 import SideNav from './SideNav';
+import Trading from './Trading';
 
 /**The Navigation of the whole Frontend: 
  * 
@@ -69,8 +70,7 @@ function App() {
         <div className="main-content">
           <Routes>
             <Route path="/subscription" element={<Subscription />} />
-            <Route path="/login" element={<LogIn />} />
-            <Route path="/signup" element={<SignUp />} />
+            <Route path="/trading" element={<Trading />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

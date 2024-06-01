@@ -23,7 +23,7 @@ function SideNav() {
           </Link>
         </li>
         <li>
-          <Link to="/terminal">
+          <Link to="/trading">
             <FaToolbox /> Terminal
           </Link>
         </li>

@@ -23,6 +23,7 @@
     border: 1px solid #aaa;
     border-radius: 20px;
     margin: 0 5px;
+    color: black;
   }
   
   .tab.active {
