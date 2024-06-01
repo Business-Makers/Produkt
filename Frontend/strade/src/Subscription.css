@@ -1,9 +1,12 @@
 .subscription-wrapper {
     width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0 auto;
   }
   
   .tabs {
