@@ -1,6 +1,5 @@
 .side-nav {
     background-color: #092609;
-    color: white;
     padding: 20px;
     width: 200px;
     flex-shrink: 0;
@@ -28,6 +27,8 @@
     text-decoration: none;
     display: flex;
     align-items: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
   
   .side-nav ul li a:hover {
