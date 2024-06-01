@@ -5,10 +5,10 @@ This file contains utility functions and variables used throughout the applicati
 """
 import bcrypt
 from datetime import timedelta, datetime
-from jose import jwt
+from jose import jwt, JWTError
 from typing import Optional
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -75,6 +75,21 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+def verify_access_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None
+
+def get_current_user(token: str):
+    payload = verify_access_token(token)
+    if payload is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Invalid credentials",
+                            headers={"WWW-Authenticate": "Bearer"},)
+    return payload
 
 
 def generate_reset_token(username: str) -> str:

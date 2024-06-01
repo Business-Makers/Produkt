@@ -4,7 +4,8 @@ FastAPI Application File
 This file contains the main FastAPI application setup, including endpoint definitions and event handlers.
 """
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Header
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from datetime import timedelta
 import time
@@ -12,10 +13,17 @@ from database import get_db, init_db
 from models import Account, Member
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
-    send_password_reset_email, verify_reset_token
+    send_password_reset_email, verify_reset_token,verify_access_token
 from ExchangeConnection import connect_to_exchange
 app = FastAPI()  # creates instance of FastAPI class
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Erlaubte Ursprünge
+    allow_credentials=True,
+    allow_methods=["*"],  # Erlaubte HTTP-Methoden
+    allow_headers=["*"],  # Erlaubte HTTP-Header
+)
 
 @app.on_event("startup")
 def on_startup():
@@ -47,19 +55,22 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
     """
     try:
         db_user = db.query(Account).filter(Account.login_name == credentials.login_name).first()
+
+        if db_user and verify_password(credentials.password, db_user.hashed_password):
+            # Generate token
+            ACCESS_TOKEN_EXPIRE_MINUTES = 15
+            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            access_token = create_access_token(
+                data={"sub": db_user.login_name}, expires_delta=access_token_expires
+            )
+            return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
+        else:
+            raise HTTPException(status_code=401, detail="Incorrect username or password")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-        # Generate token
-        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = create_access_token(
-            data={"sub": db_user.login_name}, expires_delta=access_token_expires
-        )
-        return {"access_token": access_token, "token_type": "bearer"}
 
-    if db_user and verify_password(credentials.password, db_user.hashed_password):
-        return {"message": "Logged in successfully"}
-    else:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+
+
 
 
 @app.post("/register/")
@@ -86,12 +97,12 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
     existing_email = db.query(Member).filter(Member.email == user.eMail).first()
     if existing_email:
            raise HTTPException(status_code=400, detail="Email already registered")
-    
+
 
     existing_user = db.query(Account).filter(Account.login_name == user.login_name).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Login name already registered")
-    
+
 
     try:
 
@@ -113,7 +124,7 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         new_account = Account(
             login_name=user.login_name,
             hashed_password=hashed_password,
-            memberID=new_member.member_id 
+            memberID=new_member.member_id
         )
         db.add(new_account)
         db.commit()
@@ -122,6 +133,55 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/connect-exchange/")
+def connect_exchange(exchange_info: ApiKeyCreation, authorization: str =Header(None)):
+    """
+    Handles the connection to an exchange.
+
+    This endpoint is responsible for establishing a connection to an exchange for trading purposes.
+    It expects an `ApiKeyCreation` object containing the necessary information to connect to the exchange,
+    as well as an optional authorization token passed via the `Authorization` header.
+    If an authorization token is provided, it verifies its validity by checking if it starts with "Bearer ".
+    If the token is valid, it proceeds to connect to the exchange using the provided API key information.
+    Once connected, it retrieves the current time from the exchange and prints it.
+    Finally, it returns a JSON response confirming the successful connection to the exchange,
+    along with the exchange ID.
+
+    Parameters:
+        - exchange_info (ApiKeyCreation): An object containing the API key and related information required to connect to the exchange.
+        - authorization (str, optional): An optional authorization token passed via the `Authorization` header. Defaults to None.
+
+    Returns:
+        dict: A dictionary containing a success message indicating the successful connection to the exchange,
+        along with the exchange ID.
+
+    Raises:
+        HTTPException: If the `Authorization` header is missing or invalid, or if the provided token is invalid or expired.
+    """
+    if authorization is None or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid")
+
+    token = authorization.split(" ")[1]
+    payload = verify_access_token(token)
+    if payload is None:
+        raise HTTPException(
+            status_code= 401,
+            detail="Invalid or expired token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    exchange = connect_to_exchange(exchange_info)
+    current_time = exchange.milliseconds()
+    print(f"Aktuelle Zeit auf {exchange_info.exchange_id}: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(current_time / 1000))}")
+    return {"message": "Successfully connected to the exchange", "exchange_id": exchange_info.exchange_id}
+
+
+
+
+
+
+
 
 
 @app.post("/request-password-reset/")
@@ -172,11 +232,3 @@ def reset_password(reset_request: PasswordResetRequest, db: Session = Depends(ge
     db.commit()
 
     return {"message": "Password reset successfully."}
-
-
-@app.post("/connect-exchange/")
-def connect_exchange(exchange_info: ApiKeyCreation):
-    exchange = connect_to_exchange(exchange_info)
-    current_time = exchange.milliseconds()
-    print(f"Aktuelle Zeit auf {exchange_info.exchange_id}: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(current_time / 1000))}")
-    return {"message": "Successfully connected to the exchange", "exchange_id": exchange_info.exchange_id}
