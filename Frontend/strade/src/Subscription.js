@@ -6,9 +6,9 @@ const Subscription = () => {
   const [activeTab, setActiveTab] = useState('Yearly');
   const [buttonText, setButtonText] = useState({
     Yearly: {
-      basic: '100$ / Year',
-      silver: '200$ / Year',
-      gold: '300$ / Year'
+      basic: '99$ / Year',
+      silver: '199$ / Year',
+      gold: '299$ / Year'
     },
     Monthly: {
       basic: '8$ / Month',

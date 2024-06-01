@@ -26,5 +26,6 @@ body, html, #root {
     flex: 1;
     padding: 20px;
     margin-right: 30%;
+     /* TODO: margin-right ist nicht so toll :( */
   }
 
