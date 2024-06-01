@@ -6,8 +6,6 @@ This file contains Pydantic models representing data schemas used for validation
 from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr, ValidationError, field_validator, Field
 from typing import Optional
-from datetime import datetime, date
-from models import Member
 
 class LoginCredentials(BaseModel):
     """
@@ -115,4 +113,11 @@ def validate_user_registration(data):
         user = UserRegistration(**data)
     except ValidationError as e:
         raise HTTPException(status_code=422, detail={"message": "Validation failed", "errors": e.errors()})
-    
+
+
+class ApiKeyCreation(BaseModel):
+    api_name: str
+    exchange_id: str
+    key: str
+    secret_key: str
+    passphrase: str

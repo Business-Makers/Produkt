@@ -7,13 +7,13 @@ This file contains the main FastAPI application setup, including endpoint defini
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from datetime import timedelta
-
+import time
 from database import get_db, init_db
 from models import Account, Member
-from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, validate_user_registration
+from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token
-
+from ExchangeConnetion import connect_to_exchange
 app = FastAPI()  # creates instance of FastAPI class
 
 
@@ -172,3 +172,11 @@ def reset_password(reset_request: PasswordResetRequest, db: Session = Depends(ge
     db.commit()
 
     return {"message": "Password reset successfully."}
+
+
+@app.post("/connect-exchange/")
+def connect_exchange(exchange_info: ApiKeyCreation):
+    exchange = connect_to_exchange(exchange_info)
+    current_time = exchange.milliseconds()
+    print(f"Aktuelle Zeit auf {exchange_info.exchange_id}: {time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(current_time / 1000))}")
+    return {"message": "Successfully connected to the exchange", "exchange_id": exchange_info.exchange_id}
