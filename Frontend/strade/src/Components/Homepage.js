@@ -1,5 +1,5 @@
 import React from 'react';
-import './Homepage.css'; // Separate CSS file for homepage styles
+import '../Styles/Homepage.css'; // Separate CSS file for homepage styles
 
 /**The homepage of the software, containing multiple bits of information regarding $Trade. */
 function Homepage() {

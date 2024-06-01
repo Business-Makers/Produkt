@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './SignUp.css';
-import './App.css';
+import '../Styles/SignUp.css';
+import '../Styles/App.css';
 import { countryOptions } from './countryOptions';
 import { default as axios } from 'axios';
 import { useNavigate } from 'react-router-dom';

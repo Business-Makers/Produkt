@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './LoggedIn.css';
-import './Trading.css';
+import '../Styles/LoggedIn.css';
+import '../Styles/Trading.css';
 
 export default function Trading() {
 

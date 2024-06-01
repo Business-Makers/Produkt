@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import './LoggedIn.css';
-import './Subscription.css';
+import '../Styles/LoggedIn.css';
+import '../Styles/Subscription.css';
 
 const Subscription = () => {
   const [activeTab, setActiveTab] = useState('Yearly');

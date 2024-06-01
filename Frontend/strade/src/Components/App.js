@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
-import './App.css';
-import './LoggedIn.css';
+import '../Styles/App.css';
+import '../Styles/LoggedIn.css';
 import Homepage from './Homepage';
 import LogIn from './LogIn';
 import SignUp from './SignUp';
@@ -10,6 +10,8 @@ import Dashboard from './Dashboard';
 import useToken from './useToken';
 import SideNav from './SideNav';
 import Trading from './Trading';
+import Portfolio from './Portfolio';
+import Market from './Market';
 
 /**The Navigation of the whole Frontend: 
  * 
@@ -34,9 +36,6 @@ function App() {
             <nav className="nav-links">
               <Link to="/signup">Sign Up</Link>
               <Link to="/login">Login</Link>
-
-            
-
             </nav>
           </nav>
         </header>
@@ -71,6 +70,8 @@ function App() {
           <Routes>
             <Route path="/subscription" element={<Subscription />} />
             <Route path="/trading" element={<Trading />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+            <Route path="/market" element={<Market />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

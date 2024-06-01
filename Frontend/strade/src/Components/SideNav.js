@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaChartLine, FaWallet, FaRobot, FaToolbox, FaDollarSign, FaComments } from 'react-icons/fa';
-import './SideNav.css';
+import '../Styles/SideNav.css';
 
 function SideNav() {
   return (
@@ -33,7 +33,7 @@ function SideNav() {
           </Link>
         </li>
         <li>
-          <Link to="/marketplace">
+          <Link to="/market">
             <FaRobot /> Marketplace
           </Link>
         </li>

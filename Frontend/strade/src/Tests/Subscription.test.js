@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import Subscription from './Subscription';
+import Subscription from '../Components/Subscription';
 
 describe('Subscription Component', () => {
   test('renders correctly with default yearly tab active', () => {
