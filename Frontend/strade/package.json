@@ -2,7 +2,7 @@
   "name": "strade",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "proxy": "http://localhost:8001",
   "dependencies": {
     "@babel/core": "^7.24.5",
     "@babel/preset-env": "^7.24.5",
