@@ -1,6 +1,6 @@
 backend/venv/pyvenv.cfg
-start_Frontend.bat
-start_Backend.bat
+.start_Frontend.bat
+.start_Backend.bat
 backend/venv/Server/smtp_infos.py
 .idea/dataSources.xml
 

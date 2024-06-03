@@ -4,7 +4,7 @@ Utils File
 This file contains utility functions and variables used throughout the application.
 """
 import bcrypt
-from datetime import timedelta, datetime
+from datetime import timedelta,datetime
 from jose import jwt, JWTError
 from typing import Optional
 from fastapi.security import OAuth2PasswordBearer
@@ -12,10 +12,8 @@ from fastapi import HTTPException, status
 from enum import Enum, auto
 from sqlalchemy.orm import Session
 from models import Account, Member
-from smtp import send_email
-
-
-
+import mailText
+import smtp_infos
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -140,16 +138,42 @@ class mailTheme(Enum):
     registration = auto()
 
 
-def find_mail(db_user, subject, db: Session):
+def find_mail(db_user, db: Session):
     try:
         account = db.query(Account).filter(Account.login_name == db_user.login_name).first()
         accMemberID = account.memberID
         member = db.query(Member).filter(Member.member_id == accMemberID).first()
-        memberMail=member.email
+        memberMail = member.email
         if memberMail:
-            send_email(memberMail, subject)
+            return memberMail
         else:
             raise HTTPException(status_code=404, detail="Mail not found.")
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="DB connection failed.")
+
+
+def get_name_from_mail(email, db: Session):
+    try:
+        member = db.query(Member).filter(Member.email == email).first()
+        if member:
+            return member.firstname
+    except Exception as e:
+        raise HTTPException(status_code=404, detail="User name not found")
+
+
+def getMailText(receiverMail, subject, db: Session):
+    if subject == mailTheme.login.name:
+        text = mailText.loginText
+        dateMail = datetime.today()
+        timeMail = datetime.now()
+        text = text.replace("[date]", str(dateMail))
+        text = text.replace("[time]", str(timeMail))
+    elif subject == mailTheme.registration.name:
+        text = mailText.registrationText
+    else:
+        text = "No correct subject found."
+    name = get_name_from_mail(receiverMail, db)
+    text = text.replace("[name]", name)
+    text = text.replace("[support]", smtp_infos.username)
+    return text

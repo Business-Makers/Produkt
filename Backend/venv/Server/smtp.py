@@ -4,13 +4,15 @@ import smtp_infos
 from fastapi import HTTPException
 import smtplib
 import logging
+from utils import getMailText
+from sqlalchemy.orm import Session
 
-username = smtp_infos.username
+username = smtp_infos.username_support
 password = smtp_infos.password
 
 logging.basicConfig(filename='email_debug.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
-def send_email(receiver, subject):
+def send_email(receiver, subject,db: Session):
     try:
         server = smtplib.SMTP('smtp-mail.outlook.com', 587)
         server.starttls()
@@ -23,8 +25,9 @@ def send_email(receiver, subject):
 
     sender_mail = username
     receiver_mail = receiver
-    subject_mail = "Login"
-    body = "Tester Inhalt"
+    subject_mail = subject
+    body = getMailText(receiver,subject,db)
+    logging.debug(f"Body: {body}")
 
     try:
         msg = MIMEMultipart()

@@ -15,6 +15,7 @@ from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, Ap
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token,verify_access_token, find_mail, mailTheme
 from ExchangeConnection import connect_to_exchange
+from smtp import send_email
 
 
 
@@ -66,7 +67,9 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
                 data={"sub": db_user.login_name}, expires_delta=access_token_expires
             )
 
-            find_mail(db_user,mailTheme.login,db)
+            mailAdress=find_mail(db_user,db)
+            if mailAdress:
+                send_email(mailAdress,mailTheme.login.name,db)
 
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
