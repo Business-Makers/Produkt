@@ -9,6 +9,13 @@ from jose import jwt, JWTError
 from typing import Optional
 from fastapi.security import OAuth2PasswordBearer
 from fastapi import HTTPException, status
+from enum import Enum, auto
+from sqlalchemy.orm import Session
+from models import Account, Member
+from smtp import send_email
+
+
+
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -76,6 +83,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
+
 def verify_access_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -83,12 +91,13 @@ def verify_access_token(token: str):
     except JWTError:
         return None
 
+
 def get_current_user(token: str):
     payload = verify_access_token(token)
     if payload is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Invalid credentials",
-                            headers={"WWW-Authenticate": "Bearer"},)
+                            headers={"WWW-Authenticate": "Bearer"}, )
     return payload
 
 
@@ -124,3 +133,23 @@ def verify_reset_token(token: str) -> Optional[str]:
         raise HTTPException(status_code=400, detail="Expired token")
     except jwt.JWTError:
         raise HTTPException(status_code=400, detail="Invalid token")
+
+
+class mailTheme(Enum):
+    login = auto()
+    registration = auto()
+
+
+def find_mail(db_user, subject, db: Session):
+    try:
+        account = db.query(Account).filter(Account.login_name == db_user.login_name).first()
+        accMemberID = account.memberID
+        member = db.query(Member).filter(Member.member_id == accMemberID).first()
+        memberMail=member.email
+        if memberMail:
+            send_email(memberMail, subject)
+        else:
+            raise HTTPException(status_code=404, detail="Mail not found.")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="DB connection failed.")

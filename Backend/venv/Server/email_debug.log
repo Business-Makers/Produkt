@@ -1,0 +1,308 @@
+2024-06-03 18:06:35,858 DEBUG:Using proactor: IocpProactor
+2024-06-03 18:06:35,885 INFO:BEGIN (implicit)
+2024-06-03 18:06:35,885 INFO:PRAGMA main.table_info("member")
+2024-06-03 18:06:35,885 INFO:[raw sql] ()
+2024-06-03 18:06:35,886 INFO:PRAGMA main.table_info("account")
+2024-06-03 18:06:35,886 INFO:[raw sql] ()
+2024-06-03 18:06:35,887 INFO:PRAGMA main.table_info("login")
+2024-06-03 18:06:35,887 INFO:[raw sql] ()
+2024-06-03 18:06:35,887 INFO:PRAGMA main.table_info("balance")
+2024-06-03 18:06:35,888 INFO:[raw sql] ()
+2024-06-03 18:06:35,888 INFO:PRAGMA main.table_info("account_pages")
+2024-06-03 18:06:35,888 INFO:[raw sql] ()
+2024-06-03 18:06:35,889 INFO:PRAGMA main.table_info("trade")
+2024-06-03 18:06:35,889 INFO:[raw sql] ()
+2024-06-03 18:06:35,889 INFO:PRAGMA main.table_info("membership")
+2024-06-03 18:06:35,889 INFO:[raw sql] ()
+2024-06-03 18:06:35,890 INFO:PRAGMA main.table_info("abo")
+2024-06-03 18:06:35,890 INFO:[raw sql] ()
+2024-06-03 18:06:35,890 INFO:COMMIT
+2024-06-03 18:06:56,408 INFO:BEGIN (implicit)
+2024-06-03 18:06:56,410 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:06:56,411 INFO:[generated in 0.00033s] ('Ringtraeger', 1, 0)
+2024-06-03 18:06:56,618 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:06:56,618 INFO:[cached since 0.2077s ago] ('Ringtraeger', 1, 0)
+2024-06-03 18:06:56,620 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:06:56,620 INFO:[generated in 0.00030s] (7, 1, 0)
+2024-06-03 18:06:57,019 DEBUG:Message Content:
+2024-06-03 18:06:57,020 DEBUG:From: strade-cont@outlook.de
+2024-06-03 18:06:57,020 DEBUG:To: strasse@mail.com
+2024-06-03 18:06:57,020 DEBUG:Subject: Login
+2024-06-03 18:06:57,020 DEBUG:Body: Tester Inhalt
+2024-06-03 18:06:57,021 DEBUG:Converted Message:
+2024-06-03 18:06:57,021 DEBUG:Content-Type: multipart/mixed; boundary="===============0547234731977346251=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: strasse@mail.com
+Subject: Login
+
+--===============0547234731977346251==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Tester Inhalt
+--===============0547234731977346251==--
+
+2024-06-03 18:06:57,047 INFO:ROLLBACK
+2024-06-03 18:09:35,721 DEBUG:Using proactor: IocpProactor
+2024-06-03 18:09:35,747 INFO:BEGIN (implicit)
+2024-06-03 18:09:35,747 INFO:PRAGMA main.table_info("member")
+2024-06-03 18:09:35,747 INFO:[raw sql] ()
+2024-06-03 18:09:35,748 INFO:PRAGMA main.table_info("account")
+2024-06-03 18:09:35,748 INFO:[raw sql] ()
+2024-06-03 18:09:35,748 INFO:PRAGMA main.table_info("login")
+2024-06-03 18:09:35,749 INFO:[raw sql] ()
+2024-06-03 18:09:35,749 INFO:PRAGMA main.table_info("balance")
+2024-06-03 18:09:35,749 INFO:[raw sql] ()
+2024-06-03 18:09:35,750 INFO:PRAGMA main.table_info("account_pages")
+2024-06-03 18:09:35,750 INFO:[raw sql] ()
+2024-06-03 18:09:35,750 INFO:PRAGMA main.table_info("trade")
+2024-06-03 18:09:35,750 INFO:[raw sql] ()
+2024-06-03 18:09:35,751 INFO:PRAGMA main.table_info("membership")
+2024-06-03 18:09:35,751 INFO:[raw sql] ()
+2024-06-03 18:09:35,751 INFO:PRAGMA main.table_info("abo")
+2024-06-03 18:09:35,751 INFO:[raw sql] ()
+2024-06-03 18:09:35,752 INFO:COMMIT
+2024-06-03 18:09:43,608 INFO:BEGIN (implicit)
+2024-06-03 18:09:43,610 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:09:43,611 INFO:[generated in 0.00038s] ('string', 1, 0)
+2024-06-03 18:09:43,612 INFO:ROLLBACK
+2024-06-03 18:09:58,802 INFO:BEGIN (implicit)
+2024-06-03 18:09:58,803 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:09:58,803 INFO:[cached since 15.19s ago] ('Ringtraeger', 1, 0)
+2024-06-03 18:09:59,012 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:09:59,013 INFO:[cached since 15.4s ago] ('Ringtraeger', 1, 0)
+2024-06-03 18:09:59,014 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:09:59,014 INFO:[generated in 0.00027s] (7, 1, 0)
+2024-06-03 18:09:59,484 DEBUG:Message Content:
+2024-06-03 18:09:59,484 DEBUG:From: strade-cont@outlook.de
+2024-06-03 18:09:59,484 DEBUG:To: strasse@mail.com
+2024-06-03 18:09:59,484 DEBUG:Subject: Login
+2024-06-03 18:09:59,484 DEBUG:Body: Tester Inhalt
+2024-06-03 18:09:59,892 DEBUG:Converted Message:
+2024-06-03 18:09:59,892 DEBUG:Content-Type: multipart/mixed; boundary="===============0320696261125389550=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: strasse@mail.com
+Subject: Login
+
+--===============0320696261125389550==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Tester Inhalt
+--===============0320696261125389550==--
+
+2024-06-03 18:09:59,918 INFO:ROLLBACK
+2024-06-03 18:12:51,521 INFO:BEGIN (implicit)
+2024-06-03 18:12:51,522 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:12:51,523 INFO:[generated in 0.00056s] ('foad.bam@gmx.de', 1, 0)
+2024-06-03 18:12:51,524 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:12:51,524 INFO:[cached since 187.9s ago] ('WeedLover', 1, 0)
+2024-06-03 18:12:51,525 INFO:INSERT INTO member (firstname, lastname, birthday, address, country, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)
+2024-06-03 18:12:51,525 INFO:[generated in 0.00026s] ('Weed', 'Lover', '2000-01-01', 'Grasweg 420', 'Germany', 'foad.bam@gmx.de', '')
+2024-06-03 18:12:51,526 INFO:ROLLBACK
+2024-06-03 18:13:21,259 INFO:BEGIN (implicit)
+2024-06-03 18:13:21,259 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:13:21,260 INFO:[cached since 29.74s ago] ('foad.bam@gmx.de', 1, 0)
+2024-06-03 18:13:21,261 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:13:21,261 INFO:[cached since 217.7s ago] ('WeedLover', 1, 0)
+2024-06-03 18:13:21,262 INFO:INSERT INTO member (firstname, lastname, birthday, address, country, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)
+2024-06-03 18:13:21,262 INFO:[cached since 29.74s ago] ('Weed', 'Lover', '2000-01-01', 'Grasweg 420', 'Germany', 'foad.bam@gmx.de', '')
+2024-06-03 18:13:21,263 INFO:ROLLBACK
+2024-06-03 18:13:49,003 INFO:BEGIN (implicit)
+2024-06-03 18:13:49,004 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:13:49,005 INFO:[cached since 57.48s ago] ('magicalherb420@gmail.com', 1, 0)
+2024-06-03 18:13:49,007 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:13:49,008 INFO:[cached since 245.4s ago] ('WeedLover', 1, 0)
+2024-06-03 18:13:49,011 INFO:INSERT INTO member (firstname, lastname, birthday, address, country, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)
+2024-06-03 18:13:49,011 INFO:[cached since 57.49s ago] ('Weed', 'Lover', '2000-01-01', 'Grasweg 420', 'Germany', 'magicalherb420@gmail.com', '')
+2024-06-03 18:13:49,013 INFO:ROLLBACK
+2024-06-03 18:13:58,384 INFO:BEGIN (implicit)
+2024-06-03 18:13:58,386 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.phone_number = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:13:58,386 INFO:[generated in 0.00047s] ('0123456', 1, 0)
+2024-06-03 18:13:58,387 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:13:58,387 INFO:[cached since 66.86s ago] ('magicalherb420@gmail.com', 1, 0)
+2024-06-03 18:13:58,388 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:13:58,388 INFO:[cached since 254.8s ago] ('WeedLover', 1, 0)
+2024-06-03 18:13:58,389 INFO:INSERT INTO member (firstname, lastname, birthday, address, country, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)
+2024-06-03 18:13:58,389 INFO:[cached since 66.86s ago] ('Weed', 'Lover', '2000-01-01', 'Grasweg 420', 'Germany', 'magicalherb420@gmail.com', '0123456')
+2024-06-03 18:13:58,405 INFO:COMMIT
+2024-06-03 18:13:58,413 INFO:BEGIN (implicit)
+2024-06-03 18:13:58,414 INFO:SELECT member.member_id, member.firstname, member.lastname, member.birthday, member.address, member.country, member.email, member.phone_number 
+FROM member 
+WHERE member.member_id = ?
+2024-06-03 18:13:58,415 INFO:[generated in 0.00036s] (9,)
+2024-06-03 18:13:58,623 INFO:INSERT INTO account (login_name, hashed_password, "memberID") VALUES (?, ?, ?)
+2024-06-03 18:13:58,623 INFO:[generated in 0.00042s] ('WeedLover', '$2b$12$rMpRWQiNiyvdIEHMpi9HZ.7CerI4KBZE44LpReY.gS.uE06sF1sYC', 9)
+2024-06-03 18:13:58,626 INFO:COMMIT
+2024-06-03 18:14:12,191 INFO:BEGIN (implicit)
+2024-06-03 18:14:12,192 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:14:12,192 INFO:[cached since 268.6s ago] ('WeedLover', 1, 0)
+2024-06-03 18:14:12,398 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:14:12,399 INFO:[cached since 268.8s ago] ('WeedLover', 1, 0)
+2024-06-03 18:14:12,399 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:14:12,399 INFO:[cached since 253.4s ago] (9, 1, 0)
+2024-06-03 18:14:12,910 DEBUG:Message Content:
+2024-06-03 18:14:12,911 DEBUG:From: strade-cont@outlook.de
+2024-06-03 18:14:12,911 DEBUG:To: magicalherb420@gmail.com
+2024-06-03 18:14:12,911 DEBUG:Subject: Login
+2024-06-03 18:14:12,911 DEBUG:Body: Tester Inhalt
+2024-06-03 18:14:14,679 DEBUG:Converted Message:
+2024-06-03 18:14:14,679 DEBUG:Content-Type: multipart/mixed; boundary="===============4861034603503960181=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: magicalherb420@gmail.com
+Subject: Login
+
+--===============4861034603503960181==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Tester Inhalt
+--===============4861034603503960181==--
+
+2024-06-03 18:14:14,736 INFO:ROLLBACK
+2024-06-03 18:20:14,792 INFO:BEGIN (implicit)
+2024-06-03 18:20:14,794 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.phone_number = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:20:14,795 INFO:[cached since 376.4s ago] ('777777', 1, 0)
+2024-06-03 18:20:14,798 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:20:14,799 INFO:[cached since 443.3s ago] ('f4ckyou2biatch@gmail.com', 1, 0)
+2024-06-03 18:20:14,801 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:20:14,802 INFO:[cached since 631.2s ago] ('Bitch', 1, 0)
+2024-06-03 18:20:14,805 INFO:INSERT INTO member (firstname, lastname, birthday, address, country, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)
+2024-06-03 18:20:14,806 INFO:[cached since 443.3s ago] ('I am ', 'hungry', '2000-01-01', 'Kekstown', 'Cuba', 'f4ckyou2biatch@gmail.com', '777777')
+2024-06-03 18:20:14,811 INFO:COMMIT
+2024-06-03 18:20:14,815 INFO:BEGIN (implicit)
+2024-06-03 18:20:14,815 INFO:SELECT member.member_id, member.firstname, member.lastname, member.birthday, member.address, member.country, member.email, member.phone_number 
+FROM member 
+WHERE member.member_id = ?
+2024-06-03 18:20:14,815 INFO:[cached since 376.4s ago] (10,)
+2024-06-03 18:20:15,024 INFO:INSERT INTO account (login_name, hashed_password, "memberID") VALUES (?, ?, ?)
+2024-06-03 18:20:15,024 INFO:[cached since 376.4s ago] ('Bitch', '$2b$12$qjTwWTOC5pjheKDiDYSSAeBxCRL220m0ZUuwUYRKeTzzU/0BQTWZ.', 10)
+2024-06-03 18:20:15,025 INFO:COMMIT
+2024-06-03 18:21:08,847 DEBUG:Using proactor: IocpProactor
+2024-06-03 18:21:08,873 INFO:BEGIN (implicit)
+2024-06-03 18:21:08,874 INFO:PRAGMA main.table_info("member")
+2024-06-03 18:21:08,874 INFO:[raw sql] ()
+2024-06-03 18:21:08,875 INFO:PRAGMA main.table_info("account")
+2024-06-03 18:21:08,875 INFO:[raw sql] ()
+2024-06-03 18:21:08,875 INFO:PRAGMA main.table_info("login")
+2024-06-03 18:21:08,875 INFO:[raw sql] ()
+2024-06-03 18:21:08,876 INFO:PRAGMA main.table_info("balance")
+2024-06-03 18:21:08,876 INFO:[raw sql] ()
+2024-06-03 18:21:08,876 INFO:PRAGMA main.table_info("account_pages")
+2024-06-03 18:21:08,877 INFO:[raw sql] ()
+2024-06-03 18:21:08,877 INFO:PRAGMA main.table_info("trade")
+2024-06-03 18:21:08,877 INFO:[raw sql] ()
+2024-06-03 18:21:08,877 INFO:PRAGMA main.table_info("membership")
+2024-06-03 18:21:08,878 INFO:[raw sql] ()
+2024-06-03 18:21:08,878 INFO:PRAGMA main.table_info("abo")
+2024-06-03 18:21:08,878 INFO:[raw sql] ()
+2024-06-03 18:21:08,879 INFO:COMMIT
+2024-06-03 18:21:40,060 INFO:BEGIN (implicit)
+2024-06-03 18:21:40,061 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:21:40,061 INFO:[generated in 0.00032s] ('Bitch', 1, 0)
+2024-06-03 18:21:40,266 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:21:40,267 INFO:[cached since 0.2058s ago] ('Bitch', 1, 0)
+2024-06-03 18:21:40,268 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-03 18:21:40,268 INFO:[generated in 0.00027s] (10, 1, 0)
+2024-06-03 18:21:40,632 DEBUG:Message Content:
+2024-06-03 18:21:40,633 DEBUG:From: strade-cont@outlook.de
+2024-06-03 18:21:40,633 DEBUG:To: f4ckyou2biatch@gmail.com
+2024-06-03 18:21:40,633 DEBUG:Subject: Login
+2024-06-03 18:21:40,633 DEBUG:Body: Tester Inhalt
+2024-06-03 18:21:40,975 DEBUG:Converted Message:
+2024-06-03 18:21:40,975 DEBUG:Content-Type: multipart/mixed; boundary="===============7543316476407614517=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: f4ckyou2biatch@gmail.com
+Subject: Login
+
+--===============7543316476407614517==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Tester Inhalt
+--===============7543316476407614517==--
+
+2024-06-03 18:21:41,003 INFO:ROLLBACK

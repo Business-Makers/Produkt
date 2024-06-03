@@ -13,8 +13,11 @@ from database import get_db, init_db
 from models import Account, Member
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
-    send_password_reset_email, verify_reset_token,verify_access_token
+    send_password_reset_email, verify_reset_token,verify_access_token, find_mail, mailTheme
 from ExchangeConnection import connect_to_exchange
+
+
+
 app = FastAPI()  # creates instance of FastAPI class
 
 app.add_middleware(
@@ -55,7 +58,6 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
     """
     try:
         db_user = db.query(Account).filter(Account.login_name == credentials.login_name).first()
-
         if db_user and verify_password(credentials.password, db_user.hashed_password):
             # Generate token
             ACCESS_TOKEN_EXPIRE_MINUTES = 15
@@ -63,6 +65,9 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
             access_token = create_access_token(
                 data={"sub": db_user.login_name}, expires_delta=access_token_expires
             )
+
+            find_mail(db_user,mailTheme.login,db)
+
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
             raise HTTPException(status_code=401, detail="Incorrect username or password")
