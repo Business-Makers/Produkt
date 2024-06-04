@@ -1457,3 +1457,196 @@ Best regards,
 The Strade Team
 2024-06-03 22:11:24,488 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is RefuseQuota, ShowTierUpgrade. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is RefuseQuota, ShowTierUpgrade.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
 2024-06-03 22:11:24,575 INFO:ROLLBACK
+2024-06-03 22:26:51,253 DEBUG:Using proactor: IocpProactor
+2024-06-03 22:26:51,278 INFO:BEGIN (implicit)
+2024-06-03 22:26:51,279 INFO:PRAGMA main.table_info("member")
+2024-06-03 22:26:51,279 INFO:[raw sql] ()
+2024-06-03 22:26:51,280 INFO:PRAGMA main.table_info("account")
+2024-06-03 22:26:51,280 INFO:[raw sql] ()
+2024-06-03 22:26:51,280 INFO:PRAGMA main.table_info("login")
+2024-06-03 22:26:51,280 INFO:[raw sql] ()
+2024-06-03 22:26:51,281 INFO:PRAGMA main.table_info("balance")
+2024-06-03 22:26:51,281 INFO:[raw sql] ()
+2024-06-03 22:26:51,281 INFO:PRAGMA main.table_info("account_pages")
+2024-06-03 22:26:51,282 INFO:[raw sql] ()
+2024-06-03 22:26:51,282 INFO:PRAGMA main.table_info("trade")
+2024-06-03 22:26:51,282 INFO:[raw sql] ()
+2024-06-03 22:26:51,283 INFO:PRAGMA main.table_info("membership")
+2024-06-03 22:26:51,283 INFO:[raw sql] ()
+2024-06-03 22:26:51,284 INFO:PRAGMA main.table_info("abo")
+2024-06-03 22:26:51,284 INFO:[raw sql] ()
+2024-06-03 22:26:51,284 INFO:COMMIT
+2024-06-03 22:27:14,618 INFO:BEGIN (implicit)
+2024-06-03 22:27:14,619 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 22:27:14,620 INFO:[generated in 0.00033s] ('Bitch', 1, 0)
+2024-06-03 22:27:14,827 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 22:27:14,828 INFO:[cached since 0.2082s ago] ('Bitch', 1, 0)
+2024-06-03 22:27:14,829 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-03 22:27:14,830 INFO:[generated in 0.00028s] (10, 1, 0)
+2024-06-03 22:27:20,914 INFO:ROLLBACK
+2024-06-03 22:28:14,269 INFO:BEGIN (implicit)
+2024-06-03 22:28:14,269 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 22:28:14,269 INFO:[cached since 59.65s ago] ('Bitch', 1, 0)
+2024-06-03 22:28:14,476 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-03 22:28:14,477 INFO:[cached since 59.86s ago] ('Bitch', 1, 0)
+2024-06-03 22:28:14,477 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-03 22:28:14,477 INFO:[cached since 59.65s ago] (10, 1, 0)
+2024-06-03 22:28:20,177 INFO:ROLLBACK
+2024-06-04 10:33:04,771 DEBUG:Using proactor: IocpProactor
+2024-06-04 10:33:04,816 INFO:BEGIN (implicit)
+2024-06-04 10:33:04,816 INFO:PRAGMA main.table_info("member")
+2024-06-04 10:33:04,816 INFO:[raw sql] ()
+2024-06-04 10:33:04,819 INFO:PRAGMA main.table_info("account")
+2024-06-04 10:33:04,819 INFO:[raw sql] ()
+2024-06-04 10:33:04,820 INFO:PRAGMA main.table_info("login")
+2024-06-04 10:33:04,820 INFO:[raw sql] ()
+2024-06-04 10:33:04,820 INFO:PRAGMA main.table_info("balance")
+2024-06-04 10:33:04,820 INFO:[raw sql] ()
+2024-06-04 10:33:04,821 INFO:PRAGMA main.table_info("account_pages")
+2024-06-04 10:33:04,821 INFO:[raw sql] ()
+2024-06-04 10:33:04,821 INFO:PRAGMA main.table_info("trade")
+2024-06-04 10:33:04,821 INFO:[raw sql] ()
+2024-06-04 10:33:04,822 INFO:PRAGMA main.table_info("membership")
+2024-06-04 10:33:04,822 INFO:[raw sql] ()
+2024-06-04 10:33:04,822 INFO:PRAGMA main.table_info("abo")
+2024-06-04 10:33:04,823 INFO:[raw sql] ()
+2024-06-04 10:33:04,823 INFO:COMMIT
+2024-06-04 10:33:35,719 INFO:BEGIN (implicit)
+2024-06-04 10:33:35,721 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:33:35,721 INFO:[generated in 0.00035s] ('Bitch', 1, 0)
+2024-06-04 10:33:35,936 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:33:35,936 INFO:[cached since 0.2148s ago] ('Bitch', 1, 0)
+2024-06-04 10:33:35,938 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:33:35,938 INFO:[generated in 0.00035s] (10, 1, 0)
+2024-06-04 10:33:42,453 INFO:ROLLBACK
+2024-06-04 10:34:05,217 INFO:BEGIN (implicit)
+2024-06-04 10:34:05,218 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:05,218 INFO:[cached since 29.5s ago] ('Bitch', 1, 0)
+2024-06-04 10:34:05,425 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:05,426 INFO:[cached since 29.7s ago] ('Bitch', 1, 0)
+2024-06-04 10:34:05,426 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:05,427 INFO:[cached since 29.49s ago] (10, 1, 0)
+2024-06-04 10:34:08,344 INFO:BEGIN (implicit)
+2024-06-04 10:34:08,346 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:08,347 INFO:[cached since 32.62s ago] ('Bitch', 1, 0)
+2024-06-04 10:34:08,557 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:08,557 INFO:[cached since 32.84s ago] ('Bitch', 1, 0)
+2024-06-04 10:34:08,558 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:08,558 INFO:[cached since 32.62s ago] (10, 1, 0)
+2024-06-04 10:34:08,904 INFO:BEGIN (implicit)
+2024-06-04 10:34:08,906 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:08,907 INFO:[cached since 33.19s ago] ('Bitch', 1, 0)
+2024-06-04 10:34:09,117 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:09,117 INFO:[cached since 33.4s ago] ('Bitch', 1, 0)
+2024-06-04 10:34:09,118 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:09,118 INFO:[cached since 33.18s ago] (10, 1, 0)
+2024-06-04 10:34:10,831 INFO:ROLLBACK
+2024-06-04 10:34:13,916 INFO:ROLLBACK
+2024-06-04 10:34:14,468 INFO:ROLLBACK
+2024-06-04 10:34:28,411 INFO:BEGIN (implicit)
+2024-06-04 10:34:28,411 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:28,412 INFO:[cached since 52.69s ago] ('Bitch', 1, 0)
+2024-06-04 10:34:28,619 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:28,620 INFO:[cached since 52.9s ago] ('Bitch', 1, 0)
+2024-06-04 10:34:28,620 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:34:28,621 INFO:[cached since 52.68s ago] (10, 1, 0)
+2024-06-04 10:34:34,038 INFO:ROLLBACK
+2024-06-04 10:42:38,286 DEBUG:Using proactor: IocpProactor
+2024-06-04 10:42:38,312 INFO:BEGIN (implicit)
+2024-06-04 10:42:38,313 INFO:PRAGMA main.table_info("member")
+2024-06-04 10:42:38,313 INFO:[raw sql] ()
+2024-06-04 10:42:38,314 INFO:PRAGMA main.table_info("account")
+2024-06-04 10:42:38,314 INFO:[raw sql] ()
+2024-06-04 10:42:38,314 INFO:PRAGMA main.table_info("login")
+2024-06-04 10:42:38,315 INFO:[raw sql] ()
+2024-06-04 10:42:38,315 INFO:PRAGMA main.table_info("balance")
+2024-06-04 10:42:38,315 INFO:[raw sql] ()
+2024-06-04 10:42:38,315 INFO:PRAGMA main.table_info("account_pages")
+2024-06-04 10:42:38,316 INFO:[raw sql] ()
+2024-06-04 10:42:38,316 INFO:PRAGMA main.table_info("trade")
+2024-06-04 10:42:38,316 INFO:[raw sql] ()
+2024-06-04 10:42:38,317 INFO:PRAGMA main.table_info("membership")
+2024-06-04 10:42:38,317 INFO:[raw sql] ()
+2024-06-04 10:42:38,317 INFO:PRAGMA main.table_info("abo")
+2024-06-04 10:42:38,317 INFO:[raw sql] ()
+2024-06-04 10:42:38,318 INFO:COMMIT
+2024-06-04 10:43:06,400 INFO:BEGIN (implicit)
+2024-06-04 10:43:06,402 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:43:06,403 INFO:[generated in 0.00032s] ('Bitch', 1, 0)
+2024-06-04 10:43:06,610 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:43:06,610 INFO:[cached since 0.208s ago] ('Bitch', 1, 0)
+2024-06-04 10:43:06,612 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-04 10:43:06,613 INFO:[generated in 0.00042s] (10, 1, 0)
+2024-06-04 10:43:11,977 INFO:ROLLBACK
