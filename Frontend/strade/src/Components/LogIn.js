@@ -3,6 +3,7 @@ import '../Styles/App.css';
 import { Link } from 'react-router-dom';
 import { default as axios } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import useToken from './useToken';
 
 async function loginUser(credentials) {
   try {
@@ -16,8 +17,9 @@ async function loginUser(credentials) {
   }
 }
 
-export default function LogIn({ setToken }) {
+export default function LogIn() {
   const navigate = useNavigate();
+  const { setToken } = useToken();
 
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -26,8 +28,9 @@ export default function LogIn({ setToken }) {
     e.preventDefault();
     try {
       const data = await loginUser({login_name: username, password: password});
-      setToken("logged_in"); // TODO: Das hier ist absolut unsicher, dafuer muessen wir noch richtige Tokens verwenden.
+      setToken(data.access_token);
       console.log('Login successful:', data);
+      window.alert('Login successful!');
       navigate('/');
     } catch (error) {
       console.error('Login failed:', error);

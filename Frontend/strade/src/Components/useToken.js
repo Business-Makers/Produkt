@@ -3,14 +3,13 @@ import { useState } from 'react';
 /**Activates the token and puts it into a session storage, meaning that it will remain active until closing of the tab. */
 export default function useToken() {
   const getToken = () => {
-    const tokenString = sessionStorage.getItem('login_status');
-    return tokenString;
+    return sessionStorage.getItem('access_token');
   };
 
   const [token, setToken] = useState(getToken());
 
   const saveToken = userToken => {
-    sessionStorage.setItem('login_status', userToken); // TODO: Das hier hängt auch mit der schlechten Tokenerstellung aus LogIn zusammen
+    sessionStorage.setItem('access_token', userToken); // TODO: Das hier hängt auch mit der schlechten Tokenerstellung aus LogIn zusammen
     setToken(userToken);
   };
 
