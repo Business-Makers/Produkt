@@ -83,6 +83,21 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 
 def verify_access_token(token: str):
+    """
+        Verify and decode the given JWT access token.
+
+        This function takes a JWT access token, verifies its signature, and decodes it using a secret key and the specified algorithm.
+        If the token is valid, it returns the decoded payload. If the token is invalid, it returns None.
+
+        Args:
+            token (str): The JWT access token to be verified and decoded.
+
+        Returns:
+            dict or None: The decoded payload if the token is valid, otherwise None.
+
+        Raises:
+            JWTError: If there is an error in decoding or verifying the token.
+        """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
@@ -175,5 +190,5 @@ def getMailText(receiverMail, subject, db: Session):
         text = "No correct subject found."
     name = get_name_from_mail(receiverMail, db)
     text = text.replace("[name]", name)
-    text = text.replace("[support]", smtp_infos.username)
+    text = text.replace("[support]", smtp_infos.username_support)
     return text

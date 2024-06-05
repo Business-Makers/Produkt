@@ -1,3 +1,4 @@
+
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtp_infos
@@ -7,26 +8,29 @@ import logging
 from utils import getMailText
 from sqlalchemy.orm import Session
 
-username = smtp_infos.username_support
-password = smtp_infos.password
+usernameSMTP = smtp_infos.username_cont
+passwordSMTP = smtp_infos.password_cont
 
 logging.basicConfig(filename='email_debug.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
-def send_email(receiver, subject,db: Session):
+
+def send_email(receiver, subject, db: Session):
     try:
         server = smtplib.SMTP('smtp-mail.outlook.com', 587)
+        server.set_debuglevel(1)
         server.starttls()
         try:
-            server.login(username, password)
+            server.login(usernameSMTP,passwordSMTP)
         except Exception as e:
             raise HTTPException(status_code=401, detail="Incorrect username or password for Outlook connection.")
+
     except Exception as e:
         raise HTTPException(status_code=500, detail="Mailserver unavailable.")
 
-    sender_mail = username
+    sender_mail = usernameSMTP
     receiver_mail = receiver
     subject_mail = subject
-    body = getMailText(receiver,subject,db)
+    body = getMailText(receiver, subject, db)
     logging.debug(f"Body: {body}")
 
     try:
@@ -52,7 +56,7 @@ def send_email(receiver, subject,db: Session):
             logging.error(f"Could not create msg: {e}")
 
     except Exception as e:
-        raise HTTPException(status_code=1, detail="Could not create msg")
+        raise HTTPException(status_code=500, detail="Could not create msg")
 
 
     finally:
