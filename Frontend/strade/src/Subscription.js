@@ -4,18 +4,6 @@ import './Subscription.css';
 
 const Subscription = () => {
   const [activeTab, setActiveTab] = useState('Yearly');
-  const [buttonText, setButtonText] = useState({
-    Yearly: {
-      basic: '100$ / Year',
-      silver: '200$ / Year',
-      gold: '300$ / Year'
-    },
-    Monthly: {
-      basic: '8$ / Month',
-      silver: '15$ / Month',
-      gold: '20$ / Month'
-    }
-  });
 
   function handleTabClick(tab) {
     setActiveTab(tab); // Aktiviere den entsprechenden Tab
@@ -32,7 +20,6 @@ const Subscription = () => {
         </div>
       </div>
       <div className="subscriptions-container">
-
         <div className="subscription basic">
           <h2>Basic Membership</h2>
           <p className="active-status">(Currently active)</p>
