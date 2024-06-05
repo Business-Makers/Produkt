@@ -16,11 +16,11 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'  # Use the appropriate Node.js version
+        node-version: '20'  # appropriate Node.js version
 
     - name: Install dependencies
       run: npm install --legacy-peer-deps
-      working-directory: Frontend/strade  # Specify the directory containing package.json
+      working-directory: Frontend/strade  # directory containing package.json
 
     - name: Run build
       run: npm run build
