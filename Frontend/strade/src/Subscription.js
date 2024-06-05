@@ -21,6 +21,21 @@ const Subscription = () => {
     setActiveTab(tab); // Aktiviere den entsprechenden Tab
   }
 
+    // Use the setButtonText or remove this line if not needed
+  // eslint-disable-next-line no-unused-vars
+  setButtonText({
+    Yearly: {
+      basic: '100$ / Year',
+      silver: '200$ / Year',
+      gold: '300$ / Year'
+    },
+    Monthly: {
+      basic: '8$ / Month',
+      silver: '15$ / Month',
+      gold: '20$ / Month'
+    }
+  });
+
   return (
     <div className="subscription-wrapper">
       <div className="tabs">
