@@ -106,6 +106,21 @@ def verify_access_token(token: str):
 
 
 def get_current_user(token: str):
+    """
+        Retrieve the current user from the given JWT access token.
+
+        This function verifies the provided JWT access token and retrieves the user information from the decoded payload.
+        If the token is invalid, it raises an HTTP 401 Unauthorized exception.
+
+        Args:
+            token (str): The JWT access token to be verified and decoded.
+
+        Returns:
+            dict: The decoded payload containing user information if the token is valid.
+
+        Raises:
+            HTTPException: If the token is invalid, an HTTP 401 Unauthorized exception is raised with appropriate headers.
+        """
     payload = verify_access_token(token)
     if payload is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
@@ -149,11 +164,34 @@ def verify_reset_token(token: str) -> Optional[str]:
 
 
 class mailTheme(Enum):
+    """
+        Enum representing the different themes for mail subjects.
+
+        Attributes:
+            login: Represents the login mail theme.
+            registration: Represents the registration mail theme.
+        """
     login = auto()
     registration = auto()
 
 
 def find_mail(db_user, db: Session):
+    """
+        Find the email address associated with a given user in the database.
+
+        This function queries the database to find the email address of a user based on their login name.
+        If the email address is found, it is returned. If not, an HTTP 404 exception is raised.
+
+        Args:
+            db_user: The user object containing login information.
+            db (Session): The database session to use for querying.
+
+        Returns:
+            str: The email address of the user if found.
+
+        Raises:
+            HTTPException: If the email address is not found (404) or if there is a database connection error (500).
+        """
     try:
         account = db.query(Account).filter(Account.login_name == db_user.login_name).first()
         accMemberID = account.memberID
@@ -169,6 +207,22 @@ def find_mail(db_user, db: Session):
 
 
 def get_name_from_mail(email, db: Session):
+    """
+        Retrieve the first name of a user based on their email address.
+
+        This function queries the database to find a user's first name using their email address.
+        If the user is found, their first name is returned. If not, an HTTP 404 exception is raised.
+
+        Args:
+            email (str): The email address to search for.
+            db (Session): The database session to use for querying.
+
+        Returns:
+            str: The first name of the user if found.
+
+        Raises:
+            HTTPException: If the user is not found (404).
+        """
     try:
         member = db.query(Member).filter(Member.email == email).first()
         if member:
@@ -178,6 +232,23 @@ def get_name_from_mail(email, db: Session):
 
 
 def getMailText(receiverMail, subject, db: Session):
+    """
+        Generate the text content for an email based on the subject and receiver's email.
+
+        This function generates the email text content by replacing placeholders with actual values such as date, time,
+        receiver's name, and support contact information. The content varies based on the subject provided.
+
+        Args:
+            receiverMail (str): The email address of the receiver.
+            subject (str): The subject of the email, which determines the template to use.
+            db (Session): The database session to use for querying user information.
+
+        Returns:
+            str: The generated email text content.
+
+        Raises:
+            HTTPException: If the user's name is not found.
+        """
     if subject == mailTheme.login.name:
         text = mailText.loginText
         dateMail = datetime.today()
