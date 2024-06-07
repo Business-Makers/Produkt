@@ -137,6 +137,7 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         db.add(new_account)
         db.commit()
 
+        send_email(user.eMail,mailTheme.registration.name,db)
         return {"message": "Registration successful! We're excited to have you with us."}
     except Exception as e:
         db.rollback()
