@@ -5,5 +5,5 @@ backend/venv/Server/smtp_infos.py
 .idea/dataSources.xml
 backend/venv/Server/email_debug.log
 sk.env
-
+node_modules/
 __pycache__/

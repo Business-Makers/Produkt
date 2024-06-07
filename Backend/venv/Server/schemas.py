@@ -4,7 +4,7 @@ Pydantic Schemas File
 This file contains Pydantic models representing data schemas used for validation and serialization.
 """
 from fastapi import HTTPException
-from pydantic import BaseModel, EmailStr, ValidationError, field_validator, Field
+from pydantic import BaseModel, EmailStr, ValidationError,Field, field_validator
 from typing import Optional
 from sqlalchemy import DateTime
 

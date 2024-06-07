@@ -14,7 +14,6 @@ from models import Account, Member,Api,AccountPages_Info
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token,verify_access_token, find_mail, mailTheme
-from ExchangeConnection import connect_to_exchange
 from smtp import send_email
 from ExchangeConnection import getBalance_numberofCurrencies
 import ccxt
@@ -177,7 +176,7 @@ def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db)
             usdt_balance, number_of_currencies = getBalance_numberofCurrencies(exchange)
             new_ApiKey = Api(
                 api_name= exchange_info.api_name,
-                key= exchange_info.api_key,
+                key= exchange_info.key,
                 secret_Key=exchange_info.secret_key,
                 passphrase=exchange_info.passphrase,
                 accountID=payload.get("account_id")
@@ -186,17 +185,17 @@ def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db)
             db.commit()
             db.refresh(new_ApiKey)
 
-            balanceofAccount,number_of_currencies = getBalance_numberofCurrencies(exchange)
+            balanceofaccount,number_of_currencies = getBalance_numberofCurrencies(exchange)
 
-            new_AccountPages_info = AccountPages_Info(
-                balance= balanceofAccount,
+            new_accountpages_info = AccountPages_Info(
+                balance= balanceofaccount,
                 currency_count=number_of_currencies,
                 api_id= new_ApiKey.api_id,
             )
-            db.add(new_AccountPages_info)
+            db.add(new_accountpages_info)
             db.commit()
             db.close()
-            return new_AccountPages_info
+            return new_accountpages_info
         except Exception as e:
             db.rollback()
             raise HTTPException(status_code=500, detail=str(e))
