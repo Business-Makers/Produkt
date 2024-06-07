@@ -173,7 +173,6 @@ def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db)
                 'secret': exchange_info.api_secret,
             })
         try:
-            usdt_balance, number_of_currencies = getBalance_numberofCurrencies(exchange)
             new_ApiKey = Api(
                 api_name= exchange_info.api_name,
                 key= exchange_info.key,
