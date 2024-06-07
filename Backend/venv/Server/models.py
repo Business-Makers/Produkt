@@ -17,9 +17,9 @@ to ensure data integrity. Relationships between tables are established through f
 operations across the system.
 """
 
-from sqlalchemy import Column, String, Integer, DATE, Float, Boolean, ForeignKey
+from sqlalchemy import Column, String, Integer, DATE, Float, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship, declarative_base
-
+from datetime import datetime
 Base = declarative_base()  
 
 
@@ -51,7 +51,7 @@ class Member(Base):
 
 class Account(Base):
     """
-    stores the Login and authentication information for each member.
+    Stores the Login and authentication information for each member.
     """
     __tablename__ = 'account'
     account_id = Column("account_id", Integer, primary_key=True, unique=True, autoincrement=True)
@@ -59,7 +59,8 @@ class Account(Base):
     hashed_password = Column("hashed_password", String(50), nullable=False)
     memberID = Column("memberID", Integer, ForeignKey("member.member_id"), nullable=False)
     member = relationship("Member", back_populates="accounts")
-    account_pages = relationship("AccountPages", back_populates="account")
+    apis = relationship("Api", back_populates="account")
+
     def __init__(self, login_name, hashed_password, memberID):
         self.login_name = login_name
         self.hashed_password = hashed_password
@@ -96,34 +97,44 @@ class Balance(Base):
         self.memberID = memberID
 
 
-class AccountPages(Base):
+class Api(Base):
     """
-    stores API access configurations for third-party services, including credentials.
+    Stores API access configurations for third-party services, including credentials.
     """
     __tablename__ = 'account_pages'
-    ap_id = Column("ap_id", Integer, primary_key=True, unique=True, autoincrement=True)
+    api_id = Column("ap_id", Integer, primary_key=True, unique=True, autoincrement=True)
     api_name = Column("api_name", String(50), nullable=False)
     key = Column("key", String(50), nullable=False)
     secret_Key = Column("secret_key", String(50), nullable=False, unique=True)
-    passphrase = Column("passphrase", String(50), nullable=False)
-    stock = Column("stock", String(50), nullable=False)
-    user_name = Column("user_name", String(50), nullable=False)
-    ap_value = Column("ap_value", String(50))
-    memberID = Column("memberID", Integer, ForeignKey("member.member_id"), nullable=False)
-    accountID = Column("accountID", Integer, ForeignKey("account.account_id"))
-    account = relationship("Account", back_populates="account_pages")
-    def __init__(self, api_name, key, secret_Key, passphrase, stock, user_name, ap_value, memberID, accountID):
+    passphrase = Column("passphrase", String(50), nullable=True)
+    accountID = Column("accountID", Integer, ForeignKey("account.account_id"), nullable=False)
+    account = relationship("Account", back_populates="apis")
+    account_pages_info = relationship("AccountPages_Info", back_populates="api", uselist=False)
+
+    def __init__(self, api_name, key, secret_Key, passphrase, accountID):
         self.api_name = api_name
         self.key = key
         self.secret_Key = secret_Key
         self.passphrase = passphrase
-        self.stock = stock
-        self.user_name = user_name
-        self.ap_value = ap_value
-        self.memberID = memberID
         self.accountID = accountID
 
 
+class AccountPages_Info(Base):
+    """
+    Stores information about the account's balance and the number of currencies.
+    """
+    __tablename__ = 'account_pages_info'
+    info_id = Column("info_id", Integer, primary_key=True, unique=True, autoincrement=True)
+    balance = Column("balance", Float, nullable=False)
+    currency_count = Column("currency_count", Integer, nullable=False)
+    last_updated = Column(DateTime, default=datetime.utcnow, nullable=False)
+    api_id = Column("api_id", Integer, ForeignKey("account_pages.ap_id"), nullable=False)
+    api = relationship("Api", back_populates="account_pages_info")
+
+    def __init__(self, balance, currency_count, api_id):
+        self.balance = balance
+        self.currency_count = currency_count
+        self.api_id = api_id
 class Trade(Base):
     """
     stores all Trades, including details like currency, volume, status, rates

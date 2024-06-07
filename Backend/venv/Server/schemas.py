@@ -6,6 +6,10 @@ This file contains Pydantic models representing data schemas used for validation
 from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr, ValidationError, field_validator, Field
 from typing import Optional
+from sqlalchemy import DateTime
+
+from Backend.venv.Server.models import AccountPages_Info
+
 
 class LoginCredentials(BaseModel):
     """
@@ -21,6 +25,7 @@ class LoginCredentials(BaseModel):
     login_name: str
     password: str
 
+
 class Token(BaseModel):
     """
     Model for an access token.
@@ -32,7 +37,8 @@ class Token(BaseModel):
         - access_token (str): The access token string.
         - token_type (str): The type of the token.
     """
-    access_token: str = Field(..., min_length=10, description="The access token string, must be at least 10 characters long.")
+    access_token: str = Field(..., min_length=10,
+                              description="The access token string, must be at least 10 characters long.")
     token_type: str
 
 
@@ -46,7 +52,8 @@ class TokenData(BaseModel):
     Attributes:
         - username (str, optional): The username extracted from the token data.
     """
-    username: Optional[str] = Field(None, min_length=3, description="The username extracted from the token data, must be at least 3 characters long if provided.")
+    username: Optional[str] = Field(None, min_length=3,
+                                    description="The username extracted from the token data, must be at least 3 characters long if provided.")
 
 
 class UserRegistration(BaseModel):
@@ -77,7 +84,6 @@ class UserRegistration(BaseModel):
     login_name: str
     password: str
 
-
     @field_validator('login_name')
     def validate_login_name(cls, v):
         if len(v) < 3:
@@ -95,6 +101,7 @@ class UserRegistration(BaseModel):
         if not any(char.isalpha() for char in v):
             raise ValueError('Password must contain at least one letter.')
         return v
+
 
 class PasswordResetRequest(BaseModel):
     """
@@ -131,3 +138,37 @@ class ApiKeyCreation(BaseModel):
     key: str
     secret_key: str
     passphrase: Optional[str] = None
+
+
+class AcoountPages_Info_Validate(BaseModel):
+    """
+    AccountPagesInfo is a Pydantic base class that stores information about the account,
+    including the balance, the number of currencies, the last updated date, and the ID of the associated AccountPages.
+
+    Attributes:
+        balance (float): The account balance. Must be non-negative.
+        currency_count (int): The number of different currencies in the account. Must be non-negative.
+        last_updated (datetime): The date and time of the last update. Defaults to the current time.
+        account_page_id (int): The ID of the associated AccountPages. Must not be None.
+    """
+    balance: float
+    currency_count: int
+    last_updated: DateTime
+    account_page_id: int
+
+    @field_validator('balance')
+    def validate_balance(cls, value):
+        if value < 0:
+            raise ValueError("Balance must be non-negative")
+        return value
+
+    def validate_currency_count(cls, value):
+        if value < 0:
+            raise ValueError("Currency count must be non-negative")
+        return value
+
+    @field_validator('account_page_id')
+    def validate_account_page_id(cls, value):
+        if value is None:
+            raise ValueError("Account page ID must not be None")
+        return value

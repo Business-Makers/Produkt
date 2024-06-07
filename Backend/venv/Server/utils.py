@@ -3,8 +3,10 @@ Utils File
 
 This file contains utility functions and variables used throughout the application.
 """
+import os
+
 import bcrypt
-from datetime import timedelta,datetime
+from datetime import timedelta, datetime
 from jose import jwt, JWTError
 from typing import Optional
 from fastapi.security import OAuth2PasswordBearer
@@ -14,10 +16,15 @@ from sqlalchemy.orm import Session
 from models import Account, Member
 import mailText
 import smtp_infos
+from dotenv import load_dotenv
 
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-SECRET_KEY = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+ACCESS_TOKEN_EXPIRE_MINUTES = 20
+RESET_TOKEN_EXPIRE_MINUTES = 10
+TRADE_TOKEN_EXPIRE_MINUTES = 15
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
 """
 The secret key used for signing the JWT.
 This key should be kept confidential and not hard-coded in production environments.
@@ -28,8 +35,6 @@ OAuth2 password flow dependency.
 This is used to retrieve the token from the request and validate it. 
 The 'tokenUrl' specifies the endpoint where the client can obtain the token.
 """
-
-RESET_TOKEN_EXPIRE_MINUTES = 15
 
 
 def get_hashed_password(password: str) -> str:
@@ -61,7 +66,7 @@ def verify_password(plain_password: str, hashed_password_from_db: str) -> bool:
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password_from_db.encode('utf-8'))
 
 
-def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+def create_access_token(data: dict):
     """
     Creates a JWT access token.
 
@@ -72,6 +77,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     Returns:
         str: The encoded JWT access token.
     """
+    expires_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now() + expires_delta
@@ -104,6 +110,47 @@ def verify_access_token(token: str):
     except JWTError:
         return None
 
+def create_trade_token(account_id):
+    """
+    Creates a JWT trade token.
+
+    Parameters:
+        - account_id the id from the yccount the trade will start with
+
+    Returns:
+        str: The encoded JWT tarde token.
+    """
+    expires_delta = timedelta(minutes=TRADE_TOKEN_EXPIRE_MINUTES)
+    to_encode = account_id.copy()
+    if expires_delta:
+        expire = datetime.now() + expires_delta
+    else:
+        expire = datetime.now() + timedelta(minutes=15)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def verify_trade_token(token: str):
+    """
+        Verify and decode the given JWT trade token.
+
+        This function takes a JWT trade token, verifies its signature, and decodes it using a secret key and the specified algorithm.
+        If the token is valid, it returns the decoded payload. If the token is invalid, it returns None.
+
+        Args:
+            token (str): The JWT trade token to be verified and decoded.
+
+        Returns:
+            dict or None: The decoded payload if the token is valid, otherwise None.
+
+        Raises:
+            JWTError: If there is an error in decoding or verifying the token.
+        """
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None
 
 def get_current_user(token: str):
     """
@@ -140,15 +187,6 @@ def generate_reset_token(username: str) -> str:
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def send_password_reset_email(email: str, token: str):
-    """
-    Sends a password reset email to the specified email address.
-    Here you would implement your email sending logic to send the email.
-    """
-    # TODO Implementiere hier deine E-Mail-Versand-Logik
-    pass
-
-
 def verify_reset_token(token: str) -> Optional[str]:
     """
     Verifies the reset token and returns the username if the token is valid.
@@ -161,6 +199,15 @@ def verify_reset_token(token: str) -> Optional[str]:
         raise HTTPException(status_code=400, detail="Expired token")
     except jwt.JWTError:
         raise HTTPException(status_code=400, detail="Invalid token")
+
+
+def send_password_reset_email(email: str, token: str):
+    """
+    Sends a password reset email to the specified email address.
+    Here you would implement your email sending logic to send the email.
+    """
+    # TODO Implementiere hier deine E-Mail-Versand-Logik
+    pass
 
 
 class mailTheme(Enum):
