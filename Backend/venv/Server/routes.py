@@ -15,7 +15,7 @@ from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, Ap
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token,verify_access_token, find_mail, mailTheme
 from smtp import send_email
-from ExchangeConnection import getBalance_numberofCurrencies
+from ExchangeConnection import get_balance_and_currency_count
 import ccxt
 
 
@@ -184,7 +184,7 @@ def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db)
             db.commit()
             db.refresh(new_ApiKey)
 
-            balanceofaccount,number_of_currencies = getBalance_numberofCurrencies(exchange)
+            balanceofaccount,number_of_currencies = get_balance_and_currency_count(exchange)
 
             new_accountpages_info = AccountPages_Info(
                 balance= balanceofaccount,

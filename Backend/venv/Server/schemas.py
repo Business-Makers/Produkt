@@ -172,3 +172,5 @@ class AcoountPages_Info_Validate(BaseModel):
         if value is None:
             raise ValueError("Account page ID must not be None")
         return value
+
+
