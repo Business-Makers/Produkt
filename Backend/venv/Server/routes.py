@@ -152,12 +152,46 @@ def connect_exchange(exchange_info: ApiKeyCreation, db: Session = Depends(get_db
             detail="Invalid or expired token",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    if exchange_info.passphrase:
+        exchange_class = getattr(ccxt, exchange_info.exchange_id)
+        exchange = exchange_class({
+            'apiKey': exchange_info.api_key,
+            'secret': exchange_info.api_secret,
+            'password': exchange_info.api_passphrase,
+        })
+    else:
+        exchange_class = getattr(ccxt, exchange_info.exchange_id)
+        exchange = exchange_class({
+            'apiKey': exchange_info.api_key,
+            'secret': exchange_info.api_secret,
+        })
+    try:
+        new_ApiKey = Api(
+            api_name=exchange_info.api_name,
+            key=exchange_info.key,
+            secret_Key=exchange_info.secret_key,
+            passphrase=exchange_info.passphrase,
+            accountID=payload.get("account_id")
+        )
+        db.add(new_ApiKey)
+        db.commit()
+        db.refresh(new_ApiKey)
 
-    exchange = exchange_connection.create_exchange_instance(exchange_info)
-    new_apiKey = exchange_connection.create_api_key(exchange_info, payload)
-    account_info = exchange_connection.fetch_and_store_account_info(exchange, new_apiKey)
+        balanceofaccount, number_of_currencies = connect_exchange.get_balance_and_currency_count(exchange)
 
-    return {"message": "Exchange connected successfully", "account_info": account_info}
+        new_accountpages_info = AccountPages_Info(
+            balance=balanceofaccount,
+            currency_count=number_of_currencies,
+            api_id=new_ApiKey.api_id,
+        )
+        db.add(new_accountpages_info)
+        db.commit()
+        db.close()
+        return new_accountpages_info
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+        return {"message": "Exchange connected successfully", "account_info": new_accountpages_info}
 
 
 
