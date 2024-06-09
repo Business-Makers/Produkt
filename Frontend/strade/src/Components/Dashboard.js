@@ -3,13 +3,13 @@ import '../Styles/LoggedIn.css';
 import '../Styles/Dashboard.css';
 import axios from 'axios';
 import KucoinImage from '../Images/Kucoin.png';
+import BinanceImage from '../Images/Binance.png';
+import BinanceTRImage from '../Images/BinanceTR.png';
 import { useNavigate } from 'react-router-dom';
-
-
 
 async function connectAccount(formData) {
   try {
-    await axios.post('http://localhost:8001/connect-exchange/' , formData);
+    await axios.post('http://localhost:8001/connect-exchange/', formData);
   } catch (error) {
     console.error('Error connecting Exchange:', error);
     throw error;
@@ -30,10 +30,19 @@ export default function Dashboard() {
   });
 
   const exchanges = [
-    { id: 1, name: 'Kucoin', imgSrc: KucoinImage, otherData: 'Additional info 1' },
-    { id: 2, name: 'Exchange 2', imgSrc: 'path/to/exchange2.jpg', otherData: 'Additional info 2' },
-    { id: 3, name: 'Exchange 3', imgSrc: 'path/to/exchange3.jpg', otherData: 'Additional info 3' },
-    { id: 4, name: 'Exchange 4', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 1, name: 'kucoin', imgSrc: KucoinImage, otherData: 'Additional info 1' },
+    { id: 2, name: 'binance', imgSrc: BinanceImage, otherData: 'Additional info 2' },
+    { id: 3, name: 'binanceTR', imgSrc: BinanceTRImage, otherData: 'Additional info 3' },
+    { id: 4, name: 'bitfinex', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 5, name: 'bidget', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 6, name: 'bitstamp', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 7, name: 'bybit', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 8, name: 'coinBase', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 9, name: 'gate.io', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 10, name: 'gemini', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 11, name: 'hTX', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 12, name: 'kraken', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
+    { id: 13, name: 'oKX', imgSrc: 'path/to/exchange4.jpg', otherData: 'Additional info 4' },
   ];
 
   const toggleContainer = () => {
@@ -47,7 +56,12 @@ export default function Dashboard() {
   };
 
   const handleImageClick = (imageId) => {
+    const selectedExchange = exchanges.find(exchange => exchange.id === imageId);
     setSelectedImage(imageId);
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      name: selectedExchange.name
+    }));
   };
 
   const handleInputChange = (e) => {
@@ -64,7 +78,9 @@ export default function Dashboard() {
       await connectAccount(formData);
       console.log('Account connected successfully');
       navigate('/dashboard');
+      window.alert("Exchange Connect successful");
     } catch (error) {
+      window.alert("Exchange Connect failed");
       console.error('Error connecting account:', error);
     }
   };
