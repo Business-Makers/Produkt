@@ -1,0 +1,1361 @@
+2024-06-09 21:24:53,088 DEBUG:Using proactor: IocpProactor
+2024-06-09 21:24:53,117 INFO:BEGIN (implicit)
+2024-06-09 21:24:53,117 INFO:PRAGMA main.table_info("member")
+2024-06-09 21:24:53,117 INFO:[raw sql] ()
+2024-06-09 21:24:53,118 INFO:PRAGMA main.table_info("account")
+2024-06-09 21:24:53,118 INFO:[raw sql] ()
+2024-06-09 21:24:53,119 INFO:PRAGMA main.table_info("login")
+2024-06-09 21:24:53,119 INFO:[raw sql] ()
+2024-06-09 21:24:53,119 INFO:PRAGMA main.table_info("balance")
+2024-06-09 21:24:53,119 INFO:[raw sql] ()
+2024-06-09 21:24:53,120 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 21:24:53,120 INFO:[raw sql] ()
+2024-06-09 21:24:53,120 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 21:24:53,120 INFO:[raw sql] ()
+2024-06-09 21:24:53,121 INFO:PRAGMA main.table_info("trade")
+2024-06-09 21:24:53,121 INFO:[raw sql] ()
+2024-06-09 21:24:53,121 INFO:PRAGMA main.table_info("membership")
+2024-06-09 21:24:53,122 INFO:[raw sql] ()
+2024-06-09 21:24:53,122 INFO:PRAGMA main.table_info("abo")
+2024-06-09 21:24:53,122 INFO:[raw sql] ()
+2024-06-09 21:24:53,123 INFO:COMMIT
+2024-06-09 21:25:17,422 INFO:BEGIN (implicit)
+2024-06-09 21:25:17,424 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:25:17,425 INFO:[generated in 0.00032s] ('Princess', 1, 0)
+2024-06-09 21:25:17,633 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:25:17,633 INFO:[cached since 0.2087s ago] ('Princess', 1, 0)
+2024-06-09 21:25:17,635 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:25:17,635 INFO:[generated in 0.00034s] (9, 1, 0)
+2024-06-09 21:25:18,505 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:25:18,505 INFO:[generated in 0.00040s] ('f4ckyou2biatch@gmail.com', 1, 0)
+2024-06-09 21:25:18,506 DEBUG:Body: Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 21:25:18.504417, 2024-06-09 21:25:18.504417
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 21:25:18,506 DEBUG:Message Content:
+2024-06-09 21:25:18,506 DEBUG:From: strade-cont@outlook.de
+2024-06-09 21:25:18,506 DEBUG:To: f4ckyou2biatch@gmail.com
+2024-06-09 21:25:18,506 DEBUG:Subject: login
+2024-06-09 21:25:18,506 DEBUG:Body: Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 21:25:18.504417, 2024-06-09 21:25:18.504417
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 21:25:18,879 DEBUG:Converted Message:
+2024-06-09 21:25:18,879 DEBUG:Content-Type: multipart/mixed; boundary="===============2806709355486625530=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: f4ckyou2biatch@gmail.com
+Subject: login
+
+--===============2806709355486625530==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 21:25:18.504417, 2024-06-09 21:25:18.504417
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+--===============2806709355486625530==--
+
+2024-06-09 21:25:18,913 INFO:ROLLBACK
+2024-06-09 21:55:54,118 DEBUG:Using proactor: IocpProactor
+2024-06-09 21:55:54,145 INFO:BEGIN (implicit)
+2024-06-09 21:55:54,146 INFO:PRAGMA main.table_info("member")
+2024-06-09 21:55:54,146 INFO:[raw sql] ()
+2024-06-09 21:55:54,147 INFO:PRAGMA main.table_info("account")
+2024-06-09 21:55:54,147 INFO:[raw sql] ()
+2024-06-09 21:55:54,147 INFO:PRAGMA main.table_info("login")
+2024-06-09 21:55:54,147 INFO:[raw sql] ()
+2024-06-09 21:55:54,148 INFO:PRAGMA main.table_info("balance")
+2024-06-09 21:55:54,148 INFO:[raw sql] ()
+2024-06-09 21:55:54,148 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 21:55:54,148 INFO:[raw sql] ()
+2024-06-09 21:55:54,149 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 21:55:54,149 INFO:[raw sql] ()
+2024-06-09 21:55:54,149 INFO:PRAGMA main.table_info("trade")
+2024-06-09 21:55:54,150 INFO:[raw sql] ()
+2024-06-09 21:55:54,150 INFO:PRAGMA main.table_info("membership")
+2024-06-09 21:55:54,150 INFO:[raw sql] ()
+2024-06-09 21:55:54,150 INFO:PRAGMA main.table_info("abo")
+2024-06-09 21:55:54,151 INFO:[raw sql] ()
+2024-06-09 21:55:54,151 INFO:COMMIT
+2024-06-09 21:59:18,668 INFO:BEGIN (implicit)
+2024-06-09 21:59:18,670 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.phone_number = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:59:18,671 INFO:[generated in 0.00033s] ('012345678123', 1, 0)
+2024-06-09 21:59:18,672 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:59:18,672 INFO:[generated in 0.00025s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-09 21:59:18,673 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:59:18,673 INFO:[generated in 0.00025s] ('Mustermann12', 1, 0)
+2024-06-09 21:59:18,676 INFO:INSERT INTO member (firstname, lastname, birthday, address, country, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)
+2024-06-09 21:59:18,676 INFO:[generated in 0.00028s] ('John', 'Mustermann', '2000-01-01', 'Strasse 13', 'Albania', 'mustermann.john@gmx.de', '012345678123')
+2024-06-09 21:59:18,691 INFO:COMMIT
+2024-06-09 21:59:18,696 INFO:BEGIN (implicit)
+2024-06-09 21:59:18,696 INFO:SELECT member.member_id, member.firstname, member.lastname, member.birthday, member.address, member.country, member.email, member.phone_number 
+FROM member 
+WHERE member.member_id = ?
+2024-06-09 21:59:18,697 INFO:[generated in 0.00025s] (10,)
+2024-06-09 21:59:18,905 INFO:INSERT INTO account (login_name, hashed_password, "memberID") VALUES (?, ?, ?)
+2024-06-09 21:59:18,905 INFO:[generated in 0.00035s] ('Mustermann12', '$2b$12$ZYXVDlQDfyTh8kepXtcHTeFR0F9hEVwGLwgIvDm1K0fCyH/lPG2GK', 10)
+2024-06-09 21:59:18,907 INFO:COMMIT
+2024-06-09 21:59:19,459 INFO:BEGIN (implicit)
+2024-06-09 21:59:19,461 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:59:19,462 INFO:[cached since 0.7906s ago] ('mustermann.john@gmx.de', 1, 0)
+2024-06-09 21:59:19,464 DEBUG:Body: Dear John,
+Thank you for registering with Strade! We are thrilled to have you on board.
+If you did not create an account with Strade, please disregard this email.
+Should you have any questions or need assistance, feel free to contact our support team at strade-supp@outlook.de.
+Welcome to the Strade community!
+Best regards,
+The Strade Team
+2024-06-09 21:59:19,465 DEBUG:Message Content:
+2024-06-09 21:59:19,466 DEBUG:From: strade-cont@outlook.de
+2024-06-09 21:59:19,466 DEBUG:To: mustermann.john@gmx.de
+2024-06-09 21:59:19,466 DEBUG:Subject: registration
+2024-06-09 21:59:19,466 DEBUG:Body: Dear John,
+Thank you for registering with Strade! We are thrilled to have you on board.
+If you did not create an account with Strade, please disregard this email.
+Should you have any questions or need assistance, feel free to contact our support team at strade-supp@outlook.de.
+Welcome to the Strade community!
+Best regards,
+The Strade Team
+2024-06-09 21:59:19,801 DEBUG:Converted Message:
+2024-06-09 21:59:19,802 DEBUG:Content-Type: multipart/mixed; boundary="===============6232646121978371547=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: mustermann.john@gmx.de
+Subject: registration
+
+--===============6232646121978371547==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Dear John,
+Thank you for registering with Strade! We are thrilled to have you on board.
+If you did not create an account with Strade, please disregard this email.
+Should you have any questions or need assistance, feel free to contact our support team at strade-supp@outlook.de.
+Welcome to the Strade community!
+Best regards,
+The Strade Team
+--===============6232646121978371547==--
+
+2024-06-09 21:59:19,829 INFO:ROLLBACK
+2024-06-09 21:59:29,261 INFO:BEGIN (implicit)
+2024-06-09 21:59:29,261 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:59:29,261 INFO:[cached since 10.59s ago] ('Mustermann12', 1, 0)
+2024-06-09 21:59:29,469 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:59:29,470 INFO:[cached since 10.8s ago] ('Mustermann12', 1, 0)
+2024-06-09 21:59:29,471 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:59:29,471 INFO:[generated in 0.00029s] (10, 1, 0)
+2024-06-09 21:59:30,305 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 21:59:30,306 INFO:[cached since 11.63s ago] ('mustermann.john@gmx.de', 1, 0)
+2024-06-09 21:59:30,306 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 21:59:30.305955, 2024-06-09 21:59:30.305954
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 21:59:30,306 DEBUG:Message Content:
+2024-06-09 21:59:30,306 DEBUG:From: strade-cont@outlook.de
+2024-06-09 21:59:30,306 DEBUG:To: mustermann.john@gmx.de
+2024-06-09 21:59:30,307 DEBUG:Subject: login
+2024-06-09 21:59:30,307 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 21:59:30.305955, 2024-06-09 21:59:30.305954
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 21:59:32,692 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend, ShowTierUpgrade. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend, ShowTierUpgrade.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-09 21:59:32,746 INFO:ROLLBACK
+2024-06-09 22:22:17,093 DEBUG:Using proactor: IocpProactor
+2024-06-09 22:22:17,120 INFO:BEGIN (implicit)
+2024-06-09 22:22:17,120 INFO:PRAGMA main.table_info("member")
+2024-06-09 22:22:17,121 INFO:[raw sql] ()
+2024-06-09 22:22:17,121 INFO:PRAGMA main.table_info("account")
+2024-06-09 22:22:17,122 INFO:[raw sql] ()
+2024-06-09 22:22:17,122 INFO:PRAGMA main.table_info("login")
+2024-06-09 22:22:17,122 INFO:[raw sql] ()
+2024-06-09 22:22:17,122 INFO:PRAGMA main.table_info("balance")
+2024-06-09 22:22:17,123 INFO:[raw sql] ()
+2024-06-09 22:22:17,123 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 22:22:17,123 INFO:[raw sql] ()
+2024-06-09 22:22:17,124 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 22:22:17,124 INFO:[raw sql] ()
+2024-06-09 22:22:17,124 INFO:PRAGMA main.table_info("trade")
+2024-06-09 22:22:17,124 INFO:[raw sql] ()
+2024-06-09 22:22:17,125 INFO:PRAGMA main.table_info("membership")
+2024-06-09 22:22:17,125 INFO:[raw sql] ()
+2024-06-09 22:22:17,125 INFO:PRAGMA main.table_info("abo")
+2024-06-09 22:22:17,125 INFO:[raw sql] ()
+2024-06-09 22:22:17,126 INFO:COMMIT
+2024-06-09 22:31:49,623 DEBUG:Using proactor: IocpProactor
+2024-06-09 22:31:49,662 INFO:BEGIN (implicit)
+2024-06-09 22:31:49,663 INFO:PRAGMA main.table_info("member")
+2024-06-09 22:31:49,663 INFO:[raw sql] ()
+2024-06-09 22:31:49,664 INFO:PRAGMA main.table_info("account")
+2024-06-09 22:31:49,664 INFO:[raw sql] ()
+2024-06-09 22:31:49,665 INFO:PRAGMA main.table_info("login")
+2024-06-09 22:31:49,665 INFO:[raw sql] ()
+2024-06-09 22:31:49,666 INFO:PRAGMA main.table_info("balance")
+2024-06-09 22:31:49,666 INFO:[raw sql] ()
+2024-06-09 22:31:49,667 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 22:31:49,667 INFO:[raw sql] ()
+2024-06-09 22:31:49,668 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 22:31:49,668 INFO:[raw sql] ()
+2024-06-09 22:31:49,669 INFO:PRAGMA main.table_info("trade")
+2024-06-09 22:31:49,669 INFO:[raw sql] ()
+2024-06-09 22:31:49,670 INFO:PRAGMA main.table_info("membership")
+2024-06-09 22:31:49,670 INFO:[raw sql] ()
+2024-06-09 22:31:49,670 INFO:PRAGMA main.table_info("abo")
+2024-06-09 22:31:49,671 INFO:[raw sql] ()
+2024-06-09 22:31:49,671 INFO:COMMIT
+2024-06-09 22:32:36,319 INFO:BEGIN (implicit)
+2024-06-09 22:32:36,322 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 22:32:36,322 INFO:[generated in 0.00041s] ('Mustermann12', 1, 0)
+2024-06-09 22:32:36,529 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 22:32:36,530 INFO:[cached since 0.2084s ago] ('Mustermann12', 1, 0)
+2024-06-09 22:32:36,531 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-09 22:32:36,532 INFO:[generated in 0.00033s] (10, 1, 0)
+2024-06-09 22:32:36,998 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 22:32:36,998 INFO:[generated in 0.00037s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-09 22:32:36,999 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 22:32:36.997905, 2024-06-09 22:32:36.997905
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 22:32:36,999 DEBUG:Message Content:
+2024-06-09 22:32:36,999 DEBUG:From: strade-cont@outlook.de
+2024-06-09 22:32:36,999 DEBUG:To: mustermann.john@gmx.de
+2024-06-09 22:32:36,999 DEBUG:Subject: login
+2024-06-09 22:32:36,999 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 22:32:36.997905, 2024-06-09 22:32:36.997905
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 22:32:37,282 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-09 22:32:37,310 INFO:ROLLBACK
+2024-06-09 23:12:30,639 DEBUG:Using proactor: IocpProactor
+2024-06-09 23:12:30,666 INFO:BEGIN (implicit)
+2024-06-09 23:12:30,667 INFO:PRAGMA main.table_info("member")
+2024-06-09 23:12:30,667 INFO:[raw sql] ()
+2024-06-09 23:12:30,668 INFO:PRAGMA main.table_info("account")
+2024-06-09 23:12:30,668 INFO:[raw sql] ()
+2024-06-09 23:12:30,668 INFO:PRAGMA main.table_info("login")
+2024-06-09 23:12:30,668 INFO:[raw sql] ()
+2024-06-09 23:12:30,669 INFO:PRAGMA main.table_info("balance")
+2024-06-09 23:12:30,669 INFO:[raw sql] ()
+2024-06-09 23:12:30,669 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 23:12:30,669 INFO:[raw sql] ()
+2024-06-09 23:12:30,670 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 23:12:30,670 INFO:[raw sql] ()
+2024-06-09 23:12:30,670 INFO:PRAGMA main.table_info("trade")
+2024-06-09 23:12:30,671 INFO:[raw sql] ()
+2024-06-09 23:12:30,671 INFO:PRAGMA main.table_info("membership")
+2024-06-09 23:12:30,671 INFO:[raw sql] ()
+2024-06-09 23:12:30,672 INFO:PRAGMA main.table_info("abo")
+2024-06-09 23:12:30,672 INFO:[raw sql] ()
+2024-06-09 23:12:30,672 INFO:COMMIT
+2024-06-09 23:12:55,497 INFO:BEGIN (implicit)
+2024-06-09 23:12:55,499 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 23:12:55,499 INFO:[generated in 0.00037s] ('Mustermann12', 1, 0)
+2024-06-09 23:12:55,706 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 23:12:55,706 INFO:[cached since 0.2076s ago] ('Mustermann12', 1, 0)
+2024-06-09 23:12:55,708 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-09 23:12:55,708 INFO:[generated in 0.00033s] (10, 1, 0)
+2024-06-09 23:12:56,339 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 23:12:56,339 INFO:[generated in 0.00056s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-09 23:12:56,340 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 23:12:56.338632, 2024-06-09 23:12:56.338632
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 23:12:56,340 DEBUG:Message Content:
+2024-06-09 23:12:56,340 DEBUG:From: strade-cont@outlook.de
+2024-06-09 23:12:56,341 DEBUG:To: mustermann.john@gmx.de
+2024-06-09 23:12:56,341 DEBUG:Subject: login
+2024-06-09 23:12:56,341 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 23:12:56.338632, 2024-06-09 23:12:56.338632
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 23:12:56,663 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-09 23:12:56,709 INFO:ROLLBACK
+2024-06-10 00:16:37,483 DEBUG:Using proactor: IocpProactor
+2024-06-10 00:16:37,515 INFO:BEGIN (implicit)
+2024-06-10 00:16:37,515 INFO:PRAGMA main.table_info("member")
+2024-06-10 00:16:37,516 INFO:[raw sql] ()
+2024-06-10 00:16:37,516 INFO:PRAGMA main.table_info("account")
+2024-06-10 00:16:37,517 INFO:[raw sql] ()
+2024-06-10 00:16:37,517 INFO:PRAGMA main.table_info("login")
+2024-06-10 00:16:37,517 INFO:[raw sql] ()
+2024-06-10 00:16:37,517 INFO:PRAGMA main.table_info("balance")
+2024-06-10 00:16:37,518 INFO:[raw sql] ()
+2024-06-10 00:16:37,518 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 00:16:37,518 INFO:[raw sql] ()
+2024-06-10 00:16:37,518 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 00:16:37,519 INFO:[raw sql] ()
+2024-06-10 00:16:37,519 INFO:PRAGMA main.table_info("trade")
+2024-06-10 00:16:37,519 INFO:[raw sql] ()
+2024-06-10 00:16:37,519 INFO:PRAGMA main.table_info("membership")
+2024-06-10 00:16:37,520 INFO:[raw sql] ()
+2024-06-10 00:16:37,520 INFO:PRAGMA main.table_info("abo")
+2024-06-10 00:16:37,520 INFO:[raw sql] ()
+2024-06-10 00:16:37,521 INFO:COMMIT
+2024-06-10 00:17:04,228 INFO:BEGIN (implicit)
+2024-06-10 00:17:04,231 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:17:04,231 INFO:[generated in 0.00034s] ('Mustermann12', 1, 0)
+2024-06-10 00:17:04,438 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:17:04,438 INFO:[cached since 0.2079s ago] ('Mustermann12', 1, 0)
+2024-06-10 00:17:04,441 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:17:04,441 INFO:[generated in 0.00041s] (10, 1, 0)
+2024-06-10 00:17:05,101 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:17:05,101 INFO:[generated in 0.00036s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 00:17:05,102 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 00:17:05.100736, 2024-06-10 00:17:05.100735
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 00:17:05,102 DEBUG:Message Content:
+2024-06-10 00:17:05,102 DEBUG:From: strade-cont@outlook.de
+2024-06-10 00:17:05,102 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 00:17:05,102 DEBUG:Subject: login
+2024-06-10 00:17:05,102 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 00:17:05.100736, 2024-06-10 00:17:05.100735
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 00:17:05,607 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 00:17:05,649 INFO:ROLLBACK
+2024-06-10 00:18:58,125 DEBUG:Using proactor: IocpProactor
+2024-06-10 00:18:58,151 INFO:BEGIN (implicit)
+2024-06-10 00:18:58,151 INFO:PRAGMA main.table_info("member")
+2024-06-10 00:18:58,152 INFO:[raw sql] ()
+2024-06-10 00:18:58,152 INFO:PRAGMA main.table_info("account")
+2024-06-10 00:18:58,152 INFO:[raw sql] ()
+2024-06-10 00:18:58,153 INFO:PRAGMA main.table_info("login")
+2024-06-10 00:18:58,153 INFO:[raw sql] ()
+2024-06-10 00:18:58,153 INFO:PRAGMA main.table_info("balance")
+2024-06-10 00:18:58,153 INFO:[raw sql] ()
+2024-06-10 00:18:58,154 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 00:18:58,154 INFO:[raw sql] ()
+2024-06-10 00:18:58,154 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 00:18:58,154 INFO:[raw sql] ()
+2024-06-10 00:18:58,155 INFO:PRAGMA main.table_info("trade")
+2024-06-10 00:18:58,155 INFO:[raw sql] ()
+2024-06-10 00:18:58,155 INFO:PRAGMA main.table_info("membership")
+2024-06-10 00:18:58,155 INFO:[raw sql] ()
+2024-06-10 00:18:58,156 INFO:PRAGMA main.table_info("abo")
+2024-06-10 00:18:58,156 INFO:[raw sql] ()
+2024-06-10 00:18:58,156 INFO:COMMIT
+2024-06-10 00:20:06,257 INFO:BEGIN (implicit)
+2024-06-10 00:20:06,260 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:20:06,261 INFO:[generated in 0.00048s] ('Mustermann12', 1, 0)
+2024-06-10 00:20:06,470 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:20:06,470 INFO:[cached since 0.2103s ago] ('Mustermann12', 1, 0)
+2024-06-10 00:20:06,472 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:20:06,472 INFO:[generated in 0.00030s] (10, 1, 0)
+2024-06-10 00:20:06,871 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:20:06,872 INFO:[generated in 0.00117s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 00:20:06,874 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 00:20:06.868199, 2024-06-10 00:20:06.868198
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 00:20:06,875 DEBUG:Message Content:
+2024-06-10 00:20:06,875 DEBUG:From: strade-cont@outlook.de
+2024-06-10 00:20:06,875 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 00:20:06,875 DEBUG:Subject: login
+2024-06-10 00:20:06,875 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 00:20:06.868199, 2024-06-10 00:20:06.868198
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 00:20:07,147 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 00:20:07,169 INFO:ROLLBACK
+2024-06-10 00:44:14,078 DEBUG:Using proactor: IocpProactor
+2024-06-10 00:44:14,106 INFO:BEGIN (implicit)
+2024-06-10 00:44:14,106 INFO:PRAGMA main.table_info("member")
+2024-06-10 00:44:14,106 INFO:[raw sql] ()
+2024-06-10 00:44:14,107 INFO:PRAGMA main.table_info("account")
+2024-06-10 00:44:14,107 INFO:[raw sql] ()
+2024-06-10 00:44:14,108 INFO:PRAGMA main.table_info("login")
+2024-06-10 00:44:14,108 INFO:[raw sql] ()
+2024-06-10 00:44:14,108 INFO:PRAGMA main.table_info("balance")
+2024-06-10 00:44:14,108 INFO:[raw sql] ()
+2024-06-10 00:44:14,109 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 00:44:14,109 INFO:[raw sql] ()
+2024-06-10 00:44:14,109 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 00:44:14,109 INFO:[raw sql] ()
+2024-06-10 00:44:14,110 INFO:PRAGMA main.table_info("trade")
+2024-06-10 00:44:14,110 INFO:[raw sql] ()
+2024-06-10 00:44:14,110 INFO:PRAGMA main.table_info("membership")
+2024-06-10 00:44:14,110 INFO:[raw sql] ()
+2024-06-10 00:44:14,111 INFO:PRAGMA main.table_info("abo")
+2024-06-10 00:44:14,112 INFO:[raw sql] ()
+2024-06-10 00:44:14,112 INFO:COMMIT
+2024-06-10 00:44:42,966 INFO:BEGIN (implicit)
+2024-06-10 00:44:42,968 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:44:42,968 INFO:[generated in 0.00038s] ('Mustermann12', 1, 0)
+2024-06-10 00:44:43,176 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:44:43,176 INFO:[cached since 0.208s ago] ('Mustermann12', 1, 0)
+2024-06-10 00:44:43,178 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:44:43,178 INFO:[generated in 0.00028s] (10, 1, 0)
+2024-06-10 00:44:43,617 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:44:43,618 INFO:[generated in 0.00154s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 00:44:43,620 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 00:44:43.613783, 2024-06-10 00:44:43.613782
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 00:44:43,622 DEBUG:Message Content:
+2024-06-10 00:44:43,622 DEBUG:From: strade-cont@outlook.de
+2024-06-10 00:44:43,622 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 00:44:43,622 DEBUG:Subject: login
+2024-06-10 00:44:43,623 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 00:44:43.613783, 2024-06-10 00:44:43.613782
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 00:44:43,899 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 00:44:43,928 INFO:ROLLBACK
+2024-06-10 00:54:11,025 DEBUG:Using proactor: IocpProactor
+2024-06-10 00:54:11,051 INFO:BEGIN (implicit)
+2024-06-10 00:54:11,052 INFO:PRAGMA main.table_info("member")
+2024-06-10 00:54:11,052 INFO:[raw sql] ()
+2024-06-10 00:54:11,053 INFO:PRAGMA main.table_info("account")
+2024-06-10 00:54:11,053 INFO:[raw sql] ()
+2024-06-10 00:54:11,053 INFO:PRAGMA main.table_info("login")
+2024-06-10 00:54:11,053 INFO:[raw sql] ()
+2024-06-10 00:54:11,054 INFO:PRAGMA main.table_info("balance")
+2024-06-10 00:54:11,054 INFO:[raw sql] ()
+2024-06-10 00:54:11,054 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 00:54:11,054 INFO:[raw sql] ()
+2024-06-10 00:54:11,055 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 00:54:11,055 INFO:[raw sql] ()
+2024-06-10 00:54:11,055 INFO:PRAGMA main.table_info("trade")
+2024-06-10 00:54:11,055 INFO:[raw sql] ()
+2024-06-10 00:54:11,056 INFO:PRAGMA main.table_info("membership")
+2024-06-10 00:54:11,056 INFO:[raw sql] ()
+2024-06-10 00:54:11,056 INFO:PRAGMA main.table_info("abo")
+2024-06-10 00:54:11,056 INFO:[raw sql] ()
+2024-06-10 00:54:11,057 INFO:COMMIT
+2024-06-10 00:55:10,230 INFO:BEGIN (implicit)
+2024-06-10 00:55:10,234 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:55:10,234 INFO:[generated in 0.00043s] ('Mustermann12', 1, 0)
+2024-06-10 00:55:10,443 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:55:10,443 INFO:[cached since 0.2099s ago] ('Mustermann12', 1, 0)
+2024-06-10 00:55:10,445 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:55:10,445 INFO:[generated in 0.00044s] (10, 1, 0)
+2024-06-10 00:55:10,889 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 00:55:10,889 INFO:[generated in 0.00033s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 00:55:10,890 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 00:55:10.888154, 2024-06-10 00:55:10.888154
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 00:55:10,890 DEBUG:Message Content:
+2024-06-10 00:55:10,890 DEBUG:From: strade-cont@outlook.de
+2024-06-10 00:55:10,890 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 00:55:10,890 DEBUG:Subject: login
+2024-06-10 00:55:10,890 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 00:55:10.888154, 2024-06-10 00:55:10.888154
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 00:55:11,171 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 00:55:11,197 INFO:ROLLBACK
+2024-06-10 01:08:32,695 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:08:32,722 INFO:BEGIN (implicit)
+2024-06-10 01:08:32,723 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:08:32,723 INFO:[raw sql] ()
+2024-06-10 01:08:32,724 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:08:32,724 INFO:[raw sql] ()
+2024-06-10 01:08:32,724 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:08:32,725 INFO:[raw sql] ()
+2024-06-10 01:08:32,725 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:08:32,725 INFO:[raw sql] ()
+2024-06-10 01:08:32,725 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:08:32,726 INFO:[raw sql] ()
+2024-06-10 01:08:32,726 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:08:32,726 INFO:[raw sql] ()
+2024-06-10 01:08:32,727 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:08:32,727 INFO:[raw sql] ()
+2024-06-10 01:08:32,727 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:08:32,727 INFO:[raw sql] ()
+2024-06-10 01:08:32,728 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:08:32,728 INFO:[raw sql] ()
+2024-06-10 01:08:32,728 INFO:COMMIT
+2024-06-10 01:09:06,999 INFO:BEGIN (implicit)
+2024-06-10 01:09:07,001 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:09:07,002 INFO:[generated in 0.00044s] ('Mustermann12', 1, 0)
+2024-06-10 01:09:07,211 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:09:07,212 INFO:[cached since 0.2105s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:09:07,213 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:09:07,214 INFO:[generated in 0.00034s] (10, 1, 0)
+2024-06-10 01:09:07,618 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:09:07,619 INFO:[generated in 0.00038s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:09:07,619 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:09:07.618406, 2024-06-10 01:09:07.618406
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:09:07,619 DEBUG:Message Content:
+2024-06-10 01:09:07,620 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:09:07,620 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:09:07,620 DEBUG:Subject: login
+2024-06-10 01:09:07,620 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:09:07.618406, 2024-06-10 01:09:07.618406
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:09:07,868 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:09:07,887 INFO:ROLLBACK
+2024-06-10 01:17:02,983 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:17:03,011 INFO:BEGIN (implicit)
+2024-06-10 01:17:03,011 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:17:03,011 INFO:[raw sql] ()
+2024-06-10 01:17:03,012 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:17:03,012 INFO:[raw sql] ()
+2024-06-10 01:17:03,013 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:17:03,013 INFO:[raw sql] ()
+2024-06-10 01:17:03,013 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:17:03,013 INFO:[raw sql] ()
+2024-06-10 01:17:03,014 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:17:03,014 INFO:[raw sql] ()
+2024-06-10 01:17:03,014 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:17:03,014 INFO:[raw sql] ()
+2024-06-10 01:17:03,014 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:17:03,015 INFO:[raw sql] ()
+2024-06-10 01:17:03,015 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:17:03,015 INFO:[raw sql] ()
+2024-06-10 01:17:03,015 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:17:03,015 INFO:[raw sql] ()
+2024-06-10 01:17:03,016 INFO:COMMIT
+2024-06-10 01:17:31,225 INFO:BEGIN (implicit)
+2024-06-10 01:17:31,228 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:17:31,229 INFO:[generated in 0.00048s] ('Mustermann12', 1, 0)
+2024-06-10 01:17:31,440 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:17:31,441 INFO:[cached since 0.2125s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:17:31,443 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:17:31,443 INFO:[generated in 0.00035s] (10, 1, 0)
+2024-06-10 01:17:31,943 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:17:31,944 INFO:[generated in 0.00143s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:17:31,946 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:17:31.939709, 2024-06-10 01:17:31.939709
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:17:31,947 DEBUG:Message Content:
+2024-06-10 01:17:31,948 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:17:31,948 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:17:31,948 DEBUG:Subject: login
+2024-06-10 01:17:31,948 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:17:31.939709, 2024-06-10 01:17:31.939709
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:17:32,186 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:17:32,206 INFO:ROLLBACK
+2024-06-10 01:21:48,168 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:21:48,195 INFO:BEGIN (implicit)
+2024-06-10 01:21:48,195 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:21:48,195 INFO:[raw sql] ()
+2024-06-10 01:21:48,196 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:21:48,196 INFO:[raw sql] ()
+2024-06-10 01:21:48,196 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:21:48,196 INFO:[raw sql] ()
+2024-06-10 01:21:48,197 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:21:48,197 INFO:[raw sql] ()
+2024-06-10 01:21:48,197 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:21:48,197 INFO:[raw sql] ()
+2024-06-10 01:21:48,198 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:21:48,198 INFO:[raw sql] ()
+2024-06-10 01:21:48,198 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:21:48,198 INFO:[raw sql] ()
+2024-06-10 01:21:48,198 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:21:48,198 INFO:[raw sql] ()
+2024-06-10 01:21:48,199 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:21:48,199 INFO:[raw sql] ()
+2024-06-10 01:21:48,199 INFO:COMMIT
+2024-06-10 01:22:09,803 INFO:BEGIN (implicit)
+2024-06-10 01:22:09,805 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:22:09,805 INFO:[generated in 0.00033s] ('Mustermann12', 1, 0)
+2024-06-10 01:22:10,013 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:22:10,014 INFO:[cached since 0.2087s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:22:10,015 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:22:10,016 INFO:[generated in 0.00038s] (10, 1, 0)
+2024-06-10 01:22:10,439 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:22:10,439 INFO:[generated in 0.00060s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:22:10,440 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:22:10.437340, 2024-06-10 01:22:10.437340
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:22:10,440 DEBUG:Message Content:
+2024-06-10 01:22:10,441 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:22:10,441 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:22:10,441 DEBUG:Subject: login
+2024-06-10 01:22:10,441 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:22:10.437340, 2024-06-10 01:22:10.437340
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:22:10,672 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:22:10,699 INFO:ROLLBACK
+2024-06-10 01:24:16,891 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:24:16,916 INFO:BEGIN (implicit)
+2024-06-10 01:24:16,917 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:24:16,917 INFO:[raw sql] ()
+2024-06-10 01:24:16,918 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:24:16,918 INFO:[raw sql] ()
+2024-06-10 01:24:16,918 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:24:16,918 INFO:[raw sql] ()
+2024-06-10 01:24:16,919 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:24:16,919 INFO:[raw sql] ()
+2024-06-10 01:24:16,919 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:24:16,920 INFO:[raw sql] ()
+2024-06-10 01:24:16,920 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:24:16,920 INFO:[raw sql] ()
+2024-06-10 01:24:16,920 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:24:16,921 INFO:[raw sql] ()
+2024-06-10 01:24:16,921 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:24:16,921 INFO:[raw sql] ()
+2024-06-10 01:24:16,922 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:24:16,922 INFO:[raw sql] ()
+2024-06-10 01:24:16,922 INFO:COMMIT
+2024-06-10 01:24:40,916 INFO:BEGIN (implicit)
+2024-06-10 01:24:40,919 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:24:40,919 INFO:[generated in 0.00032s] ('Mustermann12', 1, 0)
+2024-06-10 01:24:41,126 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:24:41,127 INFO:[cached since 0.2079s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:24:41,128 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:24:41,128 INFO:[generated in 0.00033s] (10, 1, 0)
+2024-06-10 01:24:41,551 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:24:41,552 INFO:[generated in 0.00152s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:24:41,555 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:24:41.548596, 2024-06-10 01:24:41.548595
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:24:41,555 DEBUG:Message Content:
+2024-06-10 01:24:41,556 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:24:41,556 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:24:41,556 DEBUG:Subject: login
+2024-06-10 01:24:41,557 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:24:41.548596, 2024-06-10 01:24:41.548595
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:24:41,826 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:24:41,853 INFO:ROLLBACK
+2024-06-10 01:39:24,792 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:39:24,818 INFO:BEGIN (implicit)
+2024-06-10 01:39:24,819 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:39:24,819 INFO:[raw sql] ()
+2024-06-10 01:39:24,820 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:39:24,820 INFO:[raw sql] ()
+2024-06-10 01:39:24,820 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:39:24,821 INFO:[raw sql] ()
+2024-06-10 01:39:24,821 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:39:24,821 INFO:[raw sql] ()
+2024-06-10 01:39:24,822 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:39:24,822 INFO:[raw sql] ()
+2024-06-10 01:39:24,822 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:39:24,822 INFO:[raw sql] ()
+2024-06-10 01:39:24,823 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:39:24,823 INFO:[raw sql] ()
+2024-06-10 01:39:24,823 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:39:24,823 INFO:[raw sql] ()
+2024-06-10 01:39:24,824 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:39:24,824 INFO:[raw sql] ()
+2024-06-10 01:39:24,824 INFO:COMMIT
+2024-06-10 01:39:44,647 INFO:BEGIN (implicit)
+2024-06-10 01:39:44,649 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:39:44,649 INFO:[generated in 0.00033s] ('Mustermann12', 1, 0)
+2024-06-10 01:39:44,856 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:39:44,856 INFO:[cached since 0.208s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:39:44,858 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:39:44,858 INFO:[generated in 0.00033s] (10, 1, 0)
+2024-06-10 01:39:45,282 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:39:45,283 INFO:[generated in 0.00095s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:39:45,285 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:39:45.280878, 2024-06-10 01:39:45.280877
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:39:45,285 DEBUG:Message Content:
+2024-06-10 01:39:45,285 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:39:45,286 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:39:45,286 DEBUG:Subject: login
+2024-06-10 01:39:45,286 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:39:45.280878, 2024-06-10 01:39:45.280877
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:39:45,530 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:39:45,555 INFO:ROLLBACK
+2024-06-10 01:40:25,534 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:40:25,562 INFO:BEGIN (implicit)
+2024-06-10 01:40:25,562 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:40:25,562 INFO:[raw sql] ()
+2024-06-10 01:40:25,563 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:40:25,563 INFO:[raw sql] ()
+2024-06-10 01:40:25,563 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:40:25,564 INFO:[raw sql] ()
+2024-06-10 01:40:25,564 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:40:25,564 INFO:[raw sql] ()
+2024-06-10 01:40:25,565 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:40:25,565 INFO:[raw sql] ()
+2024-06-10 01:40:25,565 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:40:25,565 INFO:[raw sql] ()
+2024-06-10 01:40:25,566 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:40:25,566 INFO:[raw sql] ()
+2024-06-10 01:40:25,566 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:40:25,566 INFO:[raw sql] ()
+2024-06-10 01:40:25,567 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:40:25,567 INFO:[raw sql] ()
+2024-06-10 01:40:25,567 INFO:COMMIT
+2024-06-10 01:40:49,572 INFO:BEGIN (implicit)
+2024-06-10 01:40:49,574 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:40:49,575 INFO:[generated in 0.00033s] ('Mustermann12', 1, 0)
+2024-06-10 01:40:49,782 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:40:49,782 INFO:[cached since 0.2076s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:40:49,784 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:40:49,784 INFO:[generated in 0.00028s] (10, 1, 0)
+2024-06-10 01:40:50,165 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:40:50,166 INFO:[generated in 0.00141s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:40:50,169 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:40:50.162921, 2024-06-10 01:40:50.162921
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:40:50,170 DEBUG:Message Content:
+2024-06-10 01:40:50,170 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:40:50,170 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:40:50,171 DEBUG:Subject: login
+2024-06-10 01:40:50,171 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:40:50.162921, 2024-06-10 01:40:50.162921
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:40:50,391 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:40:50,419 INFO:ROLLBACK
+2024-06-10 01:43:04,684 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:43:04,711 INFO:BEGIN (implicit)
+2024-06-10 01:43:04,711 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:43:04,711 INFO:[raw sql] ()
+2024-06-10 01:43:04,712 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:43:04,713 INFO:[raw sql] ()
+2024-06-10 01:43:04,713 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:43:04,713 INFO:[raw sql] ()
+2024-06-10 01:43:04,713 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:43:04,713 INFO:[raw sql] ()
+2024-06-10 01:43:04,714 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:43:04,714 INFO:[raw sql] ()
+2024-06-10 01:43:04,714 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:43:04,715 INFO:[raw sql] ()
+2024-06-10 01:43:04,715 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:43:04,715 INFO:[raw sql] ()
+2024-06-10 01:43:04,716 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:43:04,716 INFO:[raw sql] ()
+2024-06-10 01:43:04,716 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:43:04,716 INFO:[raw sql] ()
+2024-06-10 01:43:04,717 INFO:COMMIT
+2024-06-10 01:43:26,081 INFO:BEGIN (implicit)
+2024-06-10 01:43:26,083 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:43:26,083 INFO:[generated in 0.00034s] ('Mustermann12', 1, 0)
+2024-06-10 01:43:26,291 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:43:26,291 INFO:[cached since 0.2077s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:43:26,293 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:43:26,293 INFO:[generated in 0.00031s] (10, 1, 0)
+2024-06-10 01:43:26,310 INFO:BEGIN (implicit)
+2024-06-10 01:43:26,311 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:43:26,311 INFO:[cached since 0.2283s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:43:26,518 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:43:26,519 INFO:[cached since 0.4351s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:43:26,519 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:43:26,519 INFO:[cached since 0.2267s ago] (10, 1, 0)
+2024-06-10 01:43:26,680 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:43:26,681 INFO:[generated in 0.00097s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:43:26,683 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:43:26.678585, 2024-06-10 01:43:26.678584
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:43:26,684 DEBUG:Message Content:
+2024-06-10 01:43:26,684 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:43:26,684 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:43:26,684 DEBUG:Subject: login
+2024-06-10 01:43:26,684 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:43:26.678585, 2024-06-10 01:43:26.678584
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:43:26,885 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:43:26,885 INFO:[cached since 0.2053s ago] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:43:26,886 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:43:26.884877, 2024-06-10 01:43:26.884877
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:43:26,886 DEBUG:Message Content:
+2024-06-10 01:43:26,886 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:43:26,886 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:43:26,886 DEBUG:Subject: login
+2024-06-10 01:43:26,886 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:43:26.884877, 2024-06-10 01:43:26.884877
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:43:26,920 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:43:26,947 INFO:ROLLBACK
+2024-06-10 01:43:27,129 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:43:27,157 INFO:ROLLBACK
+2024-06-10 01:45:05,885 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:45:05,911 INFO:BEGIN (implicit)
+2024-06-10 01:45:05,912 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:45:05,912 INFO:[raw sql] ()
+2024-06-10 01:45:05,913 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:45:05,913 INFO:[raw sql] ()
+2024-06-10 01:45:05,913 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:45:05,913 INFO:[raw sql] ()
+2024-06-10 01:45:05,914 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:45:05,914 INFO:[raw sql] ()
+2024-06-10 01:45:05,914 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:45:05,914 INFO:[raw sql] ()
+2024-06-10 01:45:05,915 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:45:05,915 INFO:[raw sql] ()
+2024-06-10 01:45:05,915 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:45:05,916 INFO:[raw sql] ()
+2024-06-10 01:45:05,916 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:45:05,916 INFO:[raw sql] ()
+2024-06-10 01:45:05,916 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:45:05,917 INFO:[raw sql] ()
+2024-06-10 01:45:05,917 INFO:COMMIT
+2024-06-10 01:45:30,701 INFO:BEGIN (implicit)
+2024-06-10 01:45:30,702 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:45:30,703 INFO:[generated in 0.00034s] ('Mustermann12', 1, 0)
+2024-06-10 01:45:30,910 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:45:30,911 INFO:[cached since 0.2085s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:45:30,912 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:45:30,913 INFO:[generated in 0.00029s] (10, 1, 0)
+2024-06-10 01:45:31,323 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:45:31,324 INFO:[generated in 0.00145s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:45:31,326 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:45:31.320818, 2024-06-10 01:45:31.320818
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:45:31,327 DEBUG:Message Content:
+2024-06-10 01:45:31,328 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:45:31,328 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:45:31,328 DEBUG:Subject: login
+2024-06-10 01:45:31,328 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:45:31.320818, 2024-06-10 01:45:31.320818
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:45:31,615 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:45:31,651 INFO:ROLLBACK
+2024-06-10 01:47:27,883 DEBUG:Using proactor: IocpProactor
+2024-06-10 01:47:27,908 INFO:BEGIN (implicit)
+2024-06-10 01:47:27,908 INFO:PRAGMA main.table_info("member")
+2024-06-10 01:47:27,909 INFO:[raw sql] ()
+2024-06-10 01:47:27,909 INFO:PRAGMA main.table_info("account")
+2024-06-10 01:47:27,910 INFO:[raw sql] ()
+2024-06-10 01:47:27,910 INFO:PRAGMA main.table_info("login")
+2024-06-10 01:47:27,910 INFO:[raw sql] ()
+2024-06-10 01:47:27,911 INFO:PRAGMA main.table_info("balance")
+2024-06-10 01:47:27,911 INFO:[raw sql] ()
+2024-06-10 01:47:27,911 INFO:PRAGMA main.table_info("account_pages")
+2024-06-10 01:47:27,911 INFO:[raw sql] ()
+2024-06-10 01:47:27,911 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-10 01:47:27,912 INFO:[raw sql] ()
+2024-06-10 01:47:27,912 INFO:PRAGMA main.table_info("trade")
+2024-06-10 01:47:27,912 INFO:[raw sql] ()
+2024-06-10 01:47:27,912 INFO:PRAGMA main.table_info("membership")
+2024-06-10 01:47:27,912 INFO:[raw sql] ()
+2024-06-10 01:47:27,913 INFO:PRAGMA main.table_info("abo")
+2024-06-10 01:47:27,913 INFO:[raw sql] ()
+2024-06-10 01:47:27,913 INFO:COMMIT
+2024-06-10 01:47:52,921 INFO:BEGIN (implicit)
+2024-06-10 01:47:52,925 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:47:52,925 INFO:[generated in 0.00057s] ('Mustermann12', 1, 0)
+2024-06-10 01:47:53,135 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:47:53,135 INFO:[cached since 0.21s ago] ('Mustermann12', 1, 0)
+2024-06-10 01:47:53,136 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:47:53,137 INFO:[generated in 0.00031s] (10, 1, 0)
+2024-06-10 01:47:53,569 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-10 01:47:53,570 INFO:[generated in 0.00150s] ('mustermann.john@gmx.de', 1, 0)
+2024-06-10 01:47:53,571 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:47:53.566075, 2024-06-10 01:47:53.566075
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:47:53,571 DEBUG:Message Content:
+2024-06-10 01:47:53,571 DEBUG:From: strade-cont@outlook.de
+2024-06-10 01:47:53,571 DEBUG:To: mustermann.john@gmx.de
+2024-06-10 01:47:53,571 DEBUG:Subject: login
+2024-06-10 01:47:53,571 DEBUG:Body: Dear John,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-10 01:47:53.566075, 2024-06-10 01:47:53.566075
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-10 01:47:53,809 ERROR:Could not create msg: (554, b'5.2.0 STOREDRV.Submission.Exception:OutboundSpamException; Failed to process message due to a permanent exception with message [BeginDiagnosticData]WASCL UserAction verdict is not None. Actual verdict is Suspend. OutboundSpamException: WASCL UserAction verdict is not None. Actual verdict is Suspend.[EndDiagnosticData] [Hostname=AM6P193MB0424.EURP193.PROD.OUTLOOK.COM]')
+2024-06-10 01:47:53,839 INFO:ROLLBACK
+2024-06-10 01:48:07,457 INFO:BEGIN (implicit)
+2024-06-10 01:48:07,460 INFO:INSERT INTO account_pages (api_name, "key", secret_key, passphrase, "accountID") VALUES (?, ?, ?, ?, ?)
+2024-06-10 01:48:07,460 INFO:[generated in 0.00054s] ('kucoin', '66632d6e15ca3700015e27f2', 'eea79c31-0a07-4e54-91b4-421e4281e853', 'test1710', 14)
+2024-06-10 01:48:07,461 INFO:ROLLBACK

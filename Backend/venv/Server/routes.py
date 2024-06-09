@@ -15,9 +15,13 @@ from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, Ap
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
-from ExchangeConnection import ExchangeConnection
+
 
 import ccxt
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -62,9 +66,9 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
         db_user = db.query(Account).filter(Account.login_name == credentials.login_name).first()
         if db_user and verify_password(credentials.password, db_user.hashed_password):
             # Generate token
-
+            account_id = db_user.account_id
             access_token = create_access_token(
-                data={"sub": db_user.login_name},
+                data={"sub": db_user.login_name, "account_id": account_id}
             )
 
             mailAdress = find_mail(db_user, db)
@@ -139,12 +143,32 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+def get_balance_and_currency_count(exchange):
+    try:
+        balance = exchange.fetchBalance()
+        usdt_balance = balance['total'].get('USDT', -1)
+        total_balances = balance['total']
+        non_zero_currencies = {currency: amount for currency, amount in total_balances.items() if amount > 0}
+        number_of_currencies = len(non_zero_currencies)
+        return usdt_balance, number_of_currencies
+    except Exception as e:
+        print(f"Error fetching balance: {e}")
+        return None, 0
+
+
 @app.post("/connect-exchange/")
-def connect_exchange(exchange_info: ApiKeyCreation, db: Session = Depends(get_db), authorization: str = Header(None), ):
+def connect_exchange(exchange_info: ApiKeyCreation, db: Session = Depends(get_db), authorization: str = Header(None)):
+    # Check authorization header
     if authorization is None or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
-    exchange_connection = ExchangeConnection(db)
+        if authorization is None:
+            raise HTTPException(status_code=401, detail="Authorization header missing or invalid. NONE")
+        else:
+            raise HTTPException(status_code=401, detail="Authorization header missing or invalid. BEARER")
+
+    # Extract token from authorization header
     token = authorization.split(" ")[1]
+
+    # Verify token
     payload = verify_trade_token(token)
     if payload is None:
         raise HTTPException(
@@ -152,46 +176,63 @@ def connect_exchange(exchange_info: ApiKeyCreation, db: Session = Depends(get_db
             detail="Invalid or expired token",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    if exchange_info.passphrase:
-        exchange_class = getattr(ccxt, exchange_info.exchange_id)
-        exchange = exchange_class({
-            'apiKey': exchange_info.api_key,
-            'secret': exchange_info.api_secret,
-            'password': exchange_info.api_passphrase,
+
+    if exchange_info.exchange_id == "kucoin":
+
+        exchange = ccxt.kucoin({
+            'apiKey': exchange_info.key,
+            'secret': exchange_info.secret_key,
+            'password': exchange_info.passphrase
         })
     else:
-        exchange_class = getattr(ccxt, exchange_info.exchange_id)
-        exchange = exchange_class({
-            'apiKey': exchange_info.api_key,
-            'secret': exchange_info.api_secret,
+        exchange = ccxt.bitget({
+            'apiKey': exchange_info.key,
+            'secret': exchange_info.secret_key
         })
+
+        # Create new API key object
+
+
     try:
         new_ApiKey = Api(
-            api_name=exchange_info.api_name,
-            key=exchange_info.key,
-            secret_Key=exchange_info.secret_key,
-            passphrase=exchange_info.passphrase,
-            accountID=payload.get("account_id")
+        api_name=exchange_info.api_name,
+        key=exchange_info.key,
+        secret_Key=exchange_info.secret_key,
+        passphrase=exchange_info.passphrase,
+        accountID=payload.get("account_id")
         )
         db.add(new_ApiKey)
         db.commit()
         db.refresh(new_ApiKey)
 
-        balanceofaccount, number_of_currencies = connect_exchange.get_balance_and_currency_count(exchange)
+        try:
+            balance = exchange.fetchBalance()
+            usdt_balance = balance['total'].get('USDT', -1)
+            total_balances = balance['total']
+            non_zero_currencies = {currency: amount for currency, amount in total_balances.items() if amount > 0}
+            number_of_currencies = len(non_zero_currencies)
 
-        new_accountpages_info = AccountPages_Info(
-            balance=balanceofaccount,
-            currency_count=number_of_currencies,
-            api_id=new_ApiKey.api_id,
-        )
-        db.add(new_accountpages_info)
-        db.commit()
-        db.close()
-        return new_accountpages_info
+
+
+            new_accountpages_info = AccountPages_Info(
+                balance=usdt_balance,
+                currency_count=number_of_currencies,
+                api_id=new_ApiKey.api_id,
+            )
+            # Add account info to database
+            db.add(new_accountpages_info)
+            db.commit()
+            return {"message": "Connected successfully"}
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=504, detail=str(e))
+
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=str(e))
-        return {"message": "Exchange connected successfully", "account_info": new_accountpages_info}
+
+
+
 
 
 
