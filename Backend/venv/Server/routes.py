@@ -13,9 +13,10 @@ from database import get_db, init_db
 from models import Account, Member, Api, AccountPages_Info
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
-    send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme
+    send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
-from ExchangeConnection import get_balance_and_currency_count
+from ExchangeConnection import ExchangeConnection
+
 import ccxt
 
 app = FastAPI()  # creates instance of FastAPI class
@@ -142,9 +143,9 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
 def connect_exchange(exchange_info: ApiKeyCreation, db: Session = Depends(get_db), authorization: str = Header(None), ):
     if authorization is None or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
-
+    exchange_connection = ExchangeConnection(db)
     token = authorization.split(" ")[1]
-    payload = verify_access_token(token)
+    payload = verify_trade_token(token)
     if payload is None:
         raise HTTPException(
             status_code=401,
@@ -152,49 +153,12 @@ def connect_exchange(exchange_info: ApiKeyCreation, db: Session = Depends(get_db
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    try:
-        if exchange_info.passphrase:
-            exchange_class = getattr(ccxt, exchange_info.exchange_id)
-            exchange = exchange_class({
-                'apiKey': exchange_info.api_key,
-                'secret': exchange_info.api_secret,
-                'password': exchange_info.api_passphrase,
-            })
-        else:
-            exchange_class = getattr(ccxt, exchange_info.exchange_id)
-            exchange = exchange_class({
-                'apiKey': exchange_info.api_key,
-                'secret': exchange_info.api_secret,
-            })
-        try:
-            new_ApiKey = Api(
-                api_name=exchange_info.api_name,
-                key=exchange_info.key,
-                secret_Key=exchange_info.secret_key,
-                passphrase=exchange_info.passphrase,
-                accountID=payload.get("account_id")
-            )
-            db.add(new_ApiKey)
-            db.commit()
-            db.refresh(new_ApiKey)
+    exchange = exchange_connection.create_exchange_instance(exchange_info)
+    new_apiKey = exchange_connection.create_api_key(exchange_info, payload)
+    account_info = exchange_connection.fetch_and_store_account_info(exchange, new_apiKey)
 
-            balanceofaccount, number_of_currencies = get_balance_and_currency_count(exchange)
+    return {"message": "Exchange connected successfully", "account_info": account_info}
 
-            new_accountpages_info = AccountPages_Info(
-                balance=balanceofaccount,
-                currency_count=number_of_currencies,
-                api_id=new_ApiKey.api_id,
-            )
-            db.add(new_accountpages_info)
-            db.commit()
-            db.close()
-            return new_accountpages_info
-        except Exception as e:
-            db.rollback()
-            raise HTTPException(status_code=500, detail=str(e))
-
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.post("/request-password-reset/")
