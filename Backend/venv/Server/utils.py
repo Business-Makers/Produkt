@@ -22,7 +22,9 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 20
 RESET_TOKEN_EXPIRE_MINUTES = 10
 TRADE_TOKEN_EXPIRE_MINUTES = 15
-load_dotenv()
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'sk.env')
+load_dotenv(dotenv_path)
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 """
@@ -77,6 +79,8 @@ def create_access_token(data: dict):
     Returns:
         str: The encoded JWT access token.
     """
+    if not SECRET_KEY:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No SECRET_KEY provided")
     expires_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode = data.copy()
     if expires_delta:
@@ -110,6 +114,7 @@ def verify_access_token(token: str):
     except JWTError:
         return None
 
+
 def create_trade_token(account_id):
     """
     Creates a JWT trade token.
@@ -129,6 +134,7 @@ def create_trade_token(account_id):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
 
 def verify_trade_token(token: str):
     """
@@ -151,6 +157,7 @@ def verify_trade_token(token: str):
         return payload
     except JWTError:
         return None
+
 
 def get_current_user(token: str):
     """

@@ -1,0 +1,536 @@
+2024-06-09 12:12:10,829 DEBUG:Using proactor: IocpProactor
+2024-06-09 12:12:10,860 INFO:BEGIN (implicit)
+2024-06-09 12:12:10,860 INFO:PRAGMA main.table_info("member")
+2024-06-09 12:12:10,860 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA main.table_info("account")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA main.table_info("login")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA main.table_info("balance")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA temp.table_info("account_pages_info")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA main.table_info("trade")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA main.table_info("membership")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:PRAGMA main.table_info("abo")
+2024-06-09 12:12:10,875 INFO:[raw sql] ()
+2024-06-09 12:12:10,875 INFO:
+CREATE TABLE account_pages_info (
+	info_id INTEGER NOT NULL, 
+	balance FLOAT NOT NULL, 
+	currency_count INTEGER NOT NULL, 
+	last_updated DATETIME NOT NULL, 
+	api_id INTEGER NOT NULL, 
+	PRIMARY KEY (info_id), 
+	UNIQUE (info_id), 
+	FOREIGN KEY(api_id) REFERENCES account_pages (ap_id)
+)
+
+
+2024-06-09 12:12:10,875 INFO:[no key 0.00051s] ()
+2024-06-09 12:12:10,875 INFO:COMMIT
+2024-06-09 12:22:25,100 INFO:BEGIN (implicit)
+2024-06-09 12:22:25,102 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.phone_number = ?
+ LIMIT ? OFFSET ?
+2024-06-09 12:22:25,102 INFO:[generated in 0.00034s] ('987654321', 1, 0)
+2024-06-09 12:22:25,103 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 12:22:25,104 INFO:[generated in 0.00028s] ('f4ckyou2biatch@gmail.com', 1, 0)
+2024-06-09 12:22:25,105 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 12:22:25,105 INFO:[generated in 0.00029s] ('Princess', 1, 0)
+2024-06-09 12:22:25,106 INFO:INSERT INTO member (firstname, lastname, birthday, address, country, email, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?)
+2024-06-09 12:22:25,107 INFO:[generated in 0.00042s] ('Lilly', 'Fee', '2000-01-01', 'Feenstrasse 1', 'Haiti', 'f4ckyou2biatch@gmail.com', '987654321')
+2024-06-09 12:22:25,108 INFO:COMMIT
+2024-06-09 12:22:25,112 INFO:BEGIN (implicit)
+2024-06-09 12:22:25,113 INFO:SELECT member.member_id, member.firstname, member.lastname, member.birthday, member.address, member.country, member.email, member.phone_number 
+FROM member 
+WHERE member.member_id = ?
+2024-06-09 12:22:25,114 INFO:[generated in 0.00029s] (9,)
+2024-06-09 12:22:25,320 INFO:INSERT INTO account (login_name, hashed_password, "memberID") VALUES (?, ?, ?)
+2024-06-09 12:22:25,320 INFO:[generated in 0.00034s] ('Princess', '$2b$12$PEs4L86Em5j7s3Z19LiL.ehNGUKoZm5ufUj.MXDh/qxl4.6JryW62', 9)
+2024-06-09 12:22:25,321 INFO:COMMIT
+2024-06-09 12:22:26,294 INFO:BEGIN (implicit)
+2024-06-09 12:22:26,295 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 12:22:26,296 INFO:[cached since 1.194s ago] ('f4ckyou2biatch@gmail.com', 1, 0)
+2024-06-09 12:22:26,298 DEBUG:Body: Dear Lilly,
+Thank you for registering with Strade! We are thrilled to have you on board.
+If you did not create an account with Strade, please disregard this email.
+Should you have any questions or need assistance, feel free to contact our support team at strade-supp@outlook.de.
+Welcome to the Strade community!
+Best regards,
+The Strade Team
+2024-06-09 12:22:26,299 DEBUG:Message Content:
+2024-06-09 12:22:26,299 DEBUG:From: strade-cont@outlook.de
+2024-06-09 12:22:26,299 DEBUG:To: f4ckyou2biatch@gmail.com
+2024-06-09 12:22:26,299 DEBUG:Subject: registration
+2024-06-09 12:22:26,299 DEBUG:Body: Dear Lilly,
+Thank you for registering with Strade! We are thrilled to have you on board.
+If you did not create an account with Strade, please disregard this email.
+Should you have any questions or need assistance, feel free to contact our support team at strade-supp@outlook.de.
+Welcome to the Strade community!
+Best regards,
+The Strade Team
+2024-06-09 12:22:26,969 DEBUG:Converted Message:
+2024-06-09 12:22:26,969 DEBUG:Content-Type: multipart/mixed; boundary="===============3310372645489182748=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: f4ckyou2biatch@gmail.com
+Subject: registration
+
+--===============3310372645489182748==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Dear Lilly,
+Thank you for registering with Strade! We are thrilled to have you on board.
+If you did not create an account with Strade, please disregard this email.
+Should you have any questions or need assistance, feel free to contact our support team at strade-supp@outlook.de.
+Welcome to the Strade community!
+Best regards,
+The Strade Team
+--===============3310372645489182748==--
+
+2024-06-09 12:22:27,010 INFO:ROLLBACK
+2024-06-09 12:22:41,698 INFO:BEGIN (implicit)
+2024-06-09 12:22:41,698 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 12:22:41,698 INFO:[cached since 16.59s ago] ('Princess', 1, 0)
+2024-06-09 12:22:41,903 INFO:ROLLBACK
+2024-06-09 12:23:17,309 INFO:BEGIN (implicit)
+2024-06-09 12:23:17,310 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 12:23:17,311 INFO:[cached since 52.21s ago] ('Princess', 1, 0)
+2024-06-09 12:23:17,516 INFO:ROLLBACK
+2024-06-09 12:23:18,178 INFO:BEGIN (implicit)
+2024-06-09 12:23:18,179 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 12:23:18,179 INFO:[cached since 53.07s ago] ('Princess', 1, 0)
+2024-06-09 12:23:18,384 INFO:ROLLBACK
+2024-06-09 12:23:53,769 INFO:BEGIN (implicit)
+2024-06-09 12:23:53,770 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 12:23:53,770 INFO:[cached since 88.67s ago] ('Princess', 1, 0)
+2024-06-09 12:23:53,978 INFO:ROLLBACK
+2024-06-09 13:54:42,700 INFO:BEGIN (implicit)
+2024-06-09 13:54:42,701 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 13:54:42,701 INFO:[cached since 5538s ago] ('Princess', 1, 0)
+2024-06-09 13:54:42,906 INFO:ROLLBACK
+2024-06-09 13:57:33,814 INFO:BEGIN (implicit)
+2024-06-09 13:57:33,814 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 13:57:33,814 INFO:[cached since 5709s ago] ('Princess', 1, 0)
+2024-06-09 13:57:34,021 INFO:ROLLBACK
+2024-06-09 14:03:08,019 DEBUG:Using proactor: IocpProactor
+2024-06-09 14:03:08,049 INFO:BEGIN (implicit)
+2024-06-09 14:03:08,050 INFO:PRAGMA main.table_info("member")
+2024-06-09 14:03:08,050 INFO:[raw sql] ()
+2024-06-09 14:03:08,051 INFO:PRAGMA main.table_info("account")
+2024-06-09 14:03:08,051 INFO:[raw sql] ()
+2024-06-09 14:03:08,051 INFO:PRAGMA main.table_info("login")
+2024-06-09 14:03:08,051 INFO:[raw sql] ()
+2024-06-09 14:03:08,052 INFO:PRAGMA main.table_info("balance")
+2024-06-09 14:03:08,052 INFO:[raw sql] ()
+2024-06-09 14:03:08,052 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 14:03:08,052 INFO:[raw sql] ()
+2024-06-09 14:03:08,053 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 14:03:08,053 INFO:[raw sql] ()
+2024-06-09 14:03:08,053 INFO:PRAGMA main.table_info("trade")
+2024-06-09 14:03:08,053 INFO:[raw sql] ()
+2024-06-09 14:03:08,054 INFO:PRAGMA main.table_info("membership")
+2024-06-09 14:03:08,054 INFO:[raw sql] ()
+2024-06-09 14:03:08,054 INFO:PRAGMA main.table_info("abo")
+2024-06-09 14:03:08,054 INFO:[raw sql] ()
+2024-06-09 14:03:08,055 INFO:COMMIT
+2024-06-09 14:03:35,906 INFO:BEGIN (implicit)
+2024-06-09 14:03:35,908 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:03:35,909 INFO:[generated in 0.00033s] ('Princess', 1, 0)
+2024-06-09 14:03:36,124 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:03:36,124 INFO:[cached since 0.2163s ago] ('Princess', 1, 0)
+2024-06-09 14:03:36,126 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:03:36,126 INFO:[generated in 0.00043s] (9, 1, 0)
+2024-06-09 14:03:36,560 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:03:36,560 INFO:[generated in 0.00133s] ('f4ckyou2biatch@gmail.com', 1, 0)
+2024-06-09 14:03:36,562 DEBUG:Body: Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 14:03:36.556039, 2024-06-09 14:03:36.556038
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 14:03:36,562 DEBUG:Message Content:
+2024-06-09 14:03:36,562 DEBUG:From: strade-cont@outlook.de
+2024-06-09 14:03:36,562 DEBUG:To: f4ckyou2biatch@gmail.com
+2024-06-09 14:03:36,562 DEBUG:Subject: login
+2024-06-09 14:03:36,562 DEBUG:Body: Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 14:03:36.556039, 2024-06-09 14:03:36.556038
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 14:03:36,955 DEBUG:Converted Message:
+2024-06-09 14:03:36,955 DEBUG:Content-Type: multipart/mixed; boundary="===============1123891595940069972=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: f4ckyou2biatch@gmail.com
+Subject: login
+
+--===============1123891595940069972==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 14:03:36.556039, 2024-06-09 14:03:36.556038
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+--===============1123891595940069972==--
+
+2024-06-09 14:03:36,982 INFO:ROLLBACK
+2024-06-09 14:31:16,105 DEBUG:Using proactor: IocpProactor
+2024-06-09 14:31:16,130 INFO:BEGIN (implicit)
+2024-06-09 14:31:16,130 INFO:PRAGMA main.table_info("member")
+2024-06-09 14:31:16,130 INFO:[raw sql] ()
+2024-06-09 14:31:16,131 INFO:PRAGMA main.table_info("account")
+2024-06-09 14:31:16,131 INFO:[raw sql] ()
+2024-06-09 14:31:16,131 INFO:PRAGMA main.table_info("login")
+2024-06-09 14:31:16,132 INFO:[raw sql] ()
+2024-06-09 14:31:16,132 INFO:PRAGMA main.table_info("balance")
+2024-06-09 14:31:16,132 INFO:[raw sql] ()
+2024-06-09 14:31:16,132 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 14:31:16,133 INFO:[raw sql] ()
+2024-06-09 14:31:16,133 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 14:31:16,133 INFO:[raw sql] ()
+2024-06-09 14:31:16,133 INFO:PRAGMA main.table_info("trade")
+2024-06-09 14:31:16,133 INFO:[raw sql] ()
+2024-06-09 14:31:16,134 INFO:PRAGMA main.table_info("membership")
+2024-06-09 14:31:16,134 INFO:[raw sql] ()
+2024-06-09 14:31:16,134 INFO:PRAGMA main.table_info("abo")
+2024-06-09 14:31:16,134 INFO:[raw sql] ()
+2024-06-09 14:31:16,135 INFO:COMMIT
+2024-06-09 14:31:39,216 INFO:BEGIN (implicit)
+2024-06-09 14:31:39,218 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:31:39,219 INFO:[generated in 0.00034s] ('Princess', 1, 0)
+2024-06-09 14:31:39,425 INFO:ROLLBACK
+2024-06-09 14:31:47,272 INFO:BEGIN (implicit)
+2024-06-09 14:31:47,272 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:31:47,273 INFO:[cached since 8.054s ago] ('Princess', 1, 0)
+2024-06-09 14:31:47,479 INFO:ROLLBACK
+2024-06-09 14:41:28,291 DEBUG:Using proactor: IocpProactor
+2024-06-09 14:41:28,317 INFO:BEGIN (implicit)
+2024-06-09 14:41:28,318 INFO:PRAGMA main.table_info("member")
+2024-06-09 14:41:28,318 INFO:[raw sql] ()
+2024-06-09 14:41:28,319 INFO:PRAGMA main.table_info("account")
+2024-06-09 14:41:28,319 INFO:[raw sql] ()
+2024-06-09 14:41:28,319 INFO:PRAGMA main.table_info("login")
+2024-06-09 14:41:28,319 INFO:[raw sql] ()
+2024-06-09 14:41:28,320 INFO:PRAGMA main.table_info("balance")
+2024-06-09 14:41:28,320 INFO:[raw sql] ()
+2024-06-09 14:41:28,320 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 14:41:28,320 INFO:[raw sql] ()
+2024-06-09 14:41:28,321 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 14:41:28,321 INFO:[raw sql] ()
+2024-06-09 14:41:28,321 INFO:PRAGMA main.table_info("trade")
+2024-06-09 14:41:28,322 INFO:[raw sql] ()
+2024-06-09 14:41:28,322 INFO:PRAGMA main.table_info("membership")
+2024-06-09 14:41:28,322 INFO:[raw sql] ()
+2024-06-09 14:41:28,323 INFO:PRAGMA main.table_info("abo")
+2024-06-09 14:41:28,323 INFO:[raw sql] ()
+2024-06-09 14:41:28,323 INFO:COMMIT
+2024-06-09 14:41:52,396 INFO:BEGIN (implicit)
+2024-06-09 14:41:52,398 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:41:52,399 INFO:[generated in 0.00039s] ('Princess', 1, 0)
+2024-06-09 14:41:52,605 INFO:ROLLBACK
+2024-06-09 14:45:18,591 DEBUG:Using proactor: IocpProactor
+2024-06-09 14:45:18,616 INFO:BEGIN (implicit)
+2024-06-09 14:45:18,617 INFO:PRAGMA main.table_info("member")
+2024-06-09 14:45:18,617 INFO:[raw sql] ()
+2024-06-09 14:45:18,618 INFO:PRAGMA main.table_info("account")
+2024-06-09 14:45:18,618 INFO:[raw sql] ()
+2024-06-09 14:45:18,618 INFO:PRAGMA main.table_info("login")
+2024-06-09 14:45:18,618 INFO:[raw sql] ()
+2024-06-09 14:45:18,619 INFO:PRAGMA main.table_info("balance")
+2024-06-09 14:45:18,619 INFO:[raw sql] ()
+2024-06-09 14:45:18,619 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 14:45:18,619 INFO:[raw sql] ()
+2024-06-09 14:45:18,620 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 14:45:18,620 INFO:[raw sql] ()
+2024-06-09 14:45:18,620 INFO:PRAGMA main.table_info("trade")
+2024-06-09 14:45:18,620 INFO:[raw sql] ()
+2024-06-09 14:45:18,621 INFO:PRAGMA main.table_info("membership")
+2024-06-09 14:45:18,621 INFO:[raw sql] ()
+2024-06-09 14:45:18,621 INFO:PRAGMA main.table_info("abo")
+2024-06-09 14:45:18,621 INFO:[raw sql] ()
+2024-06-09 14:45:18,622 INFO:COMMIT
+2024-06-09 14:45:37,423 DEBUG:Using proactor: IocpProactor
+2024-06-09 14:45:37,449 INFO:BEGIN (implicit)
+2024-06-09 14:45:37,449 INFO:PRAGMA main.table_info("member")
+2024-06-09 14:45:37,449 INFO:[raw sql] ()
+2024-06-09 14:45:37,450 INFO:PRAGMA main.table_info("account")
+2024-06-09 14:45:37,450 INFO:[raw sql] ()
+2024-06-09 14:45:37,451 INFO:PRAGMA main.table_info("login")
+2024-06-09 14:45:37,451 INFO:[raw sql] ()
+2024-06-09 14:45:37,451 INFO:PRAGMA main.table_info("balance")
+2024-06-09 14:45:37,451 INFO:[raw sql] ()
+2024-06-09 14:45:37,452 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 14:45:37,452 INFO:[raw sql] ()
+2024-06-09 14:45:37,452 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 14:45:37,452 INFO:[raw sql] ()
+2024-06-09 14:45:37,453 INFO:PRAGMA main.table_info("trade")
+2024-06-09 14:45:37,453 INFO:[raw sql] ()
+2024-06-09 14:45:37,453 INFO:PRAGMA main.table_info("membership")
+2024-06-09 14:45:37,453 INFO:[raw sql] ()
+2024-06-09 14:45:37,454 INFO:PRAGMA main.table_info("abo")
+2024-06-09 14:45:37,454 INFO:[raw sql] ()
+2024-06-09 14:45:37,454 INFO:COMMIT
+2024-06-09 14:45:57,343 INFO:BEGIN (implicit)
+2024-06-09 14:45:57,345 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:45:57,346 INFO:[generated in 0.00033s] ('Princess', 1, 0)
+2024-06-09 14:45:57,556 INFO:ROLLBACK
+2024-06-09 14:48:16,226 DEBUG:Using proactor: IocpProactor
+2024-06-09 14:48:16,252 INFO:BEGIN (implicit)
+2024-06-09 14:48:16,252 INFO:PRAGMA main.table_info("member")
+2024-06-09 14:48:16,252 INFO:[raw sql] ()
+2024-06-09 14:48:16,253 INFO:PRAGMA main.table_info("account")
+2024-06-09 14:48:16,253 INFO:[raw sql] ()
+2024-06-09 14:48:16,253 INFO:PRAGMA main.table_info("login")
+2024-06-09 14:48:16,254 INFO:[raw sql] ()
+2024-06-09 14:48:16,254 INFO:PRAGMA main.table_info("balance")
+2024-06-09 14:48:16,254 INFO:[raw sql] ()
+2024-06-09 14:48:16,254 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 14:48:16,255 INFO:[raw sql] ()
+2024-06-09 14:48:16,255 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 14:48:16,255 INFO:[raw sql] ()
+2024-06-09 14:48:16,255 INFO:PRAGMA main.table_info("trade")
+2024-06-09 14:48:16,255 INFO:[raw sql] ()
+2024-06-09 14:48:16,256 INFO:PRAGMA main.table_info("membership")
+2024-06-09 14:48:16,256 INFO:[raw sql] ()
+2024-06-09 14:48:16,256 INFO:PRAGMA main.table_info("abo")
+2024-06-09 14:48:16,256 INFO:[raw sql] ()
+2024-06-09 14:48:16,257 INFO:COMMIT
+2024-06-09 14:48:40,337 INFO:BEGIN (implicit)
+2024-06-09 14:48:40,339 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:48:40,340 INFO:[generated in 0.00034s] ('Princess', 1, 0)
+2024-06-09 14:48:40,547 INFO:ROLLBACK
+2024-06-09 14:51:57,523 DEBUG:Using proactor: IocpProactor
+2024-06-09 14:51:57,550 INFO:BEGIN (implicit)
+2024-06-09 14:51:57,550 INFO:PRAGMA main.table_info("member")
+2024-06-09 14:51:57,550 INFO:[raw sql] ()
+2024-06-09 14:51:57,551 INFO:PRAGMA main.table_info("account")
+2024-06-09 14:51:57,551 INFO:[raw sql] ()
+2024-06-09 14:51:57,551 INFO:PRAGMA main.table_info("login")
+2024-06-09 14:51:57,552 INFO:[raw sql] ()
+2024-06-09 14:51:57,552 INFO:PRAGMA main.table_info("balance")
+2024-06-09 14:51:57,552 INFO:[raw sql] ()
+2024-06-09 14:51:57,552 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 14:51:57,553 INFO:[raw sql] ()
+2024-06-09 14:51:57,553 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 14:51:57,553 INFO:[raw sql] ()
+2024-06-09 14:51:57,554 INFO:PRAGMA main.table_info("trade")
+2024-06-09 14:51:57,554 INFO:[raw sql] ()
+2024-06-09 14:51:57,554 INFO:PRAGMA main.table_info("membership")
+2024-06-09 14:51:57,554 INFO:[raw sql] ()
+2024-06-09 14:51:57,555 INFO:PRAGMA main.table_info("abo")
+2024-06-09 14:51:57,555 INFO:[raw sql] ()
+2024-06-09 14:51:57,555 INFO:COMMIT
+2024-06-09 14:52:18,579 INFO:BEGIN (implicit)
+2024-06-09 14:52:18,580 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 14:52:18,581 INFO:[generated in 0.00033s] ('Princess', 1, 0)
+2024-06-09 14:52:18,787 INFO:ROLLBACK
+2024-06-09 15:14:21,716 DEBUG:Using proactor: IocpProactor
+2024-06-09 15:14:21,743 INFO:BEGIN (implicit)
+2024-06-09 15:14:21,743 INFO:PRAGMA main.table_info("member")
+2024-06-09 15:14:21,743 INFO:[raw sql] ()
+2024-06-09 15:14:21,744 INFO:PRAGMA main.table_info("account")
+2024-06-09 15:14:21,744 INFO:[raw sql] ()
+2024-06-09 15:14:21,745 INFO:PRAGMA main.table_info("login")
+2024-06-09 15:14:21,745 INFO:[raw sql] ()
+2024-06-09 15:14:21,745 INFO:PRAGMA main.table_info("balance")
+2024-06-09 15:14:21,745 INFO:[raw sql] ()
+2024-06-09 15:14:21,746 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 15:14:21,746 INFO:[raw sql] ()
+2024-06-09 15:14:21,746 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 15:14:21,746 INFO:[raw sql] ()
+2024-06-09 15:14:21,746 INFO:PRAGMA main.table_info("trade")
+2024-06-09 15:14:21,747 INFO:[raw sql] ()
+2024-06-09 15:14:21,747 INFO:PRAGMA main.table_info("membership")
+2024-06-09 15:14:21,747 INFO:[raw sql] ()
+2024-06-09 15:14:21,747 INFO:PRAGMA main.table_info("abo")
+2024-06-09 15:14:21,748 INFO:[raw sql] ()
+2024-06-09 15:14:21,748 INFO:COMMIT
+2024-06-09 15:14:40,157 INFO:BEGIN (implicit)
+2024-06-09 15:14:40,159 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 15:14:40,160 INFO:[generated in 0.00040s] ('Princess', 1, 0)
+2024-06-09 15:14:40,365 INFO:ROLLBACK
+2024-06-09 15:25:01,007 DEBUG:Using proactor: IocpProactor
+2024-06-09 15:25:01,033 INFO:BEGIN (implicit)
+2024-06-09 15:25:01,033 INFO:PRAGMA main.table_info("member")
+2024-06-09 15:25:01,033 INFO:[raw sql] ()
+2024-06-09 15:25:01,034 INFO:PRAGMA main.table_info("account")
+2024-06-09 15:25:01,034 INFO:[raw sql] ()
+2024-06-09 15:25:01,035 INFO:PRAGMA main.table_info("login")
+2024-06-09 15:25:01,035 INFO:[raw sql] ()
+2024-06-09 15:25:01,035 INFO:PRAGMA main.table_info("balance")
+2024-06-09 15:25:01,035 INFO:[raw sql] ()
+2024-06-09 15:25:01,036 INFO:PRAGMA main.table_info("account_pages")
+2024-06-09 15:25:01,036 INFO:[raw sql] ()
+2024-06-09 15:25:01,036 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-09 15:25:01,036 INFO:[raw sql] ()
+2024-06-09 15:25:01,036 INFO:PRAGMA main.table_info("trade")
+2024-06-09 15:25:01,037 INFO:[raw sql] ()
+2024-06-09 15:25:01,037 INFO:PRAGMA main.table_info("membership")
+2024-06-09 15:25:01,037 INFO:[raw sql] ()
+2024-06-09 15:25:01,037 INFO:PRAGMA main.table_info("abo")
+2024-06-09 15:25:01,038 INFO:[raw sql] ()
+2024-06-09 15:25:01,038 INFO:COMMIT
+2024-06-09 15:25:22,880 INFO:BEGIN (implicit)
+2024-06-09 15:25:22,882 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 15:25:22,883 INFO:[generated in 0.00033s] ('Princess', 1, 0)
+2024-06-09 15:25:23,090 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-09 15:25:23,090 INFO:[cached since 0.208s ago] ('Princess', 1, 0)
+2024-06-09 15:25:23,092 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-09 15:25:23,092 INFO:[generated in 0.00030s] (9, 1, 0)
+2024-06-09 15:25:23,934 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.email = ?
+ LIMIT ? OFFSET ?
+2024-06-09 15:25:23,935 INFO:[generated in 0.00108s] ('f4ckyou2biatch@gmail.com', 1, 0)
+2024-06-09 15:25:23,935 DEBUG:Body: Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 15:25:23.931114, 2024-06-09 15:25:23.931114
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 15:25:23,935 DEBUG:Message Content:
+2024-06-09 15:25:23,935 DEBUG:From: strade-cont@outlook.de
+2024-06-09 15:25:23,935 DEBUG:To: f4ckyou2biatch@gmail.com
+2024-06-09 15:25:23,935 DEBUG:Subject: login
+2024-06-09 15:25:23,936 DEBUG:Body: Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 15:25:23.931114, 2024-06-09 15:25:23.931114
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+2024-06-09 15:25:25,153 DEBUG:Converted Message:
+2024-06-09 15:25:25,153 DEBUG:Content-Type: multipart/mixed; boundary="===============6934321176067880796=="
+MIME-Version: 1.0
+From: strade-cont@outlook.de
+To: f4ckyou2biatch@gmail.com
+Subject: login
+
+--===============6934321176067880796==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+Dear Lilly,
+This is a notification to inform you that your Strade account was recently accessed.
+
+Login Details:
+Date and Time: 2024-06-09 15:25:23.931114, 2024-06-09 15:25:23.931114
+If this login was not authorized by you, please take immediate action by changing your password and reviewing your account security settings.
+If you believe your account has been compromised, please contact our support team immediately at strade-supp@outlook.de.
+Thank you for choosing Strade for your investment needs.
+
+Best regards,
+The Strade Team
+--===============6934321176067880796==--
+
+2024-06-09 15:25:25,196 INFO:ROLLBACK

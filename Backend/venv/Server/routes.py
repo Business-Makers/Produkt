@@ -10,14 +10,13 @@ from sqlalchemy.orm import Session
 from datetime import timedelta
 import time
 from database import get_db, init_db
-from models import Account, Member,Api,AccountPages_Info
+from models import Account, Member, Api, AccountPages_Info
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
-    send_password_reset_email, verify_reset_token,verify_access_token, find_mail, mailTheme
+    send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme
 from smtp import send_email
 from ExchangeConnection import get_balance_and_currency_count
 import ccxt
-
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -28,6 +27,7 @@ app.add_middleware(
     allow_methods=["*"],  # Erlaubte HTTP-Methoden
     allow_headers=["*"],  # Erlaubte HTTP-Header
 )
+
 
 @app.on_event("startup")
 def on_startup():
@@ -66,18 +66,15 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
                 data={"sub": db_user.login_name},
             )
 
-            mailAdress=find_mail(db_user,db)
+            mailAdress = find_mail(db_user, db)
             if mailAdress:
-                send_email(mailAdress,mailTheme.login.name,db)
+                send_email(mailAdress, mailTheme.login.name, db)
 
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
             raise HTTPException(status_code=401, detail="Incorrect username or password")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-
 
 
 @app.post("/register/")
@@ -103,13 +100,11 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
 
     existing_email = db.query(Member).filter(Member.email == user.eMail).first()
     if existing_email:
-           raise HTTPException(status_code=400, detail="Email already registered")
-
+        raise HTTPException(status_code=400, detail="Email already registered")
 
     existing_user = db.query(Account).filter(Account.login_name == user.login_name).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Login name already registered")
-
 
     try:
 
@@ -136,7 +131,7 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         db.add(new_account)
         db.commit()
 
-        send_email(user.eMail,mailTheme.registration.name,db)
+        send_email(user.eMail, mailTheme.registration.name, db)
         return {"message": "Registration successful! We're excited to have you with us."}
     except Exception as e:
         db.rollback()
@@ -144,8 +139,7 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
 
 
 @app.post("/connect-exchange/")
-def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db), authorization: str =Header(None),):
-
+def connect_exchange(exchange_info: ApiKeyCreation, db: Session = Depends(get_db), authorization: str = Header(None), ):
     if authorization is None or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
 
@@ -153,7 +147,7 @@ def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db)
     payload = verify_access_token(token)
     if payload is None:
         raise HTTPException(
-            status_code= 401,
+            status_code=401,
             detail="Invalid or expired token",
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -174,8 +168,8 @@ def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db)
             })
         try:
             new_ApiKey = Api(
-                api_name= exchange_info.api_name,
-                key= exchange_info.key,
+                api_name=exchange_info.api_name,
+                key=exchange_info.key,
                 secret_Key=exchange_info.secret_key,
                 passphrase=exchange_info.passphrase,
                 accountID=payload.get("account_id")
@@ -184,12 +178,12 @@ def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db)
             db.commit()
             db.refresh(new_ApiKey)
 
-            balanceofaccount,number_of_currencies = get_balance_and_currency_count(exchange)
+            balanceofaccount, number_of_currencies = get_balance_and_currency_count(exchange)
 
             new_accountpages_info = AccountPages_Info(
-                balance= balanceofaccount,
+                balance=balanceofaccount,
                 currency_count=number_of_currencies,
-                api_id= new_ApiKey.api_id,
+                api_id=new_ApiKey.api_id,
             )
             db.add(new_accountpages_info)
             db.commit()
@@ -201,13 +195,6 @@ def connect_exchange(exchange_info: ApiKeyCreation,db: Session = Depends(get_db)
 
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-
-
-
-
-
-
 
 
 @app.post("/request-password-reset/")

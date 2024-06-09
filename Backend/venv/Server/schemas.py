@@ -7,8 +7,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr, ValidationError,Field, field_validator
 from typing import Optional
 from sqlalchemy import DateTime
-
-from Backend.venv.Server.models import AccountPages_Info
+from models import AccountPages_Info
 
 
 class LoginCredentials(BaseModel):
@@ -161,6 +160,9 @@ class AcoountPages_Info_Validate(BaseModel):
         if value < 0:
             raise ValueError("Balance must be non-negative")
         return value
+
+    class Config:
+        arbitrary_types_allowed = True
 
     def validate_currency_count(cls, value):
         if value < 0:
