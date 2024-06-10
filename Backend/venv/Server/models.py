@@ -101,9 +101,9 @@ class Api(Base):
     """
     Stores API access configurations for third-party services, including credentials.
     """
-    __tablename__ = 'account_pages'
+    __tablename__ = 'api'
     api_id = Column("ap_id", Integer, primary_key=True, unique=True, autoincrement=True)
-    api_name = Column("api_name", String(50), nullable=False)
+    exchange_name = Column("exchange_name", String(50), nullable=False)
     key = Column("key", String(50), nullable=False)
     secret_Key = Column("secret_key", String(50), nullable=False, unique=True)
     passphrase = Column("passphrase", String(50), nullable=True)
@@ -111,8 +111,8 @@ class Api(Base):
     account = relationship("Account", back_populates="apis")
     account_pages_info = relationship("AccountPages_Info", back_populates="api", uselist=False)
 
-    def __init__(self, api_name, key, secret_Key, passphrase, accountID):
-        self.api_name = api_name
+    def __init__(self, exchange_name, key, secret_Key, passphrase, accountID):
+        self.exchange_name = exchange_name
         self.key = key
         self.secret_Key = secret_Key
         self.passphrase = passphrase
@@ -125,15 +125,18 @@ class AccountPages_Info(Base):
     """
     __tablename__ = 'account_pages_info'
     info_id = Column("info_id", Integer, primary_key=True, unique=True, autoincrement=True)
+    account_holder = Column("account_holder", String(50), nullable=False)
     balance = Column("balance", Float, nullable=False)
     currency_count = Column("currency_count", Integer, nullable=False)
     last_updated = Column(DateTime, default=datetime.utcnow, nullable=False)
-    api_id = Column("api_id", Integer, ForeignKey("account_pages.ap_id"), nullable=False)
+    api_id = Column("api_id", Integer, ForeignKey("api.ap_id"), nullable=False)
     api = relationship("Api", back_populates="account_pages_info")
 
-    def __init__(self, balance, currency_count, api_id):
+    def __init__(self, balance, account_holder, currency_count, exchange_name, api_id):
         self.balance = balance
+        self.account_holder = account_holder
         self.currency_count = currency_count
+        self.exchange_name = exchange_name
         self.api_id = api_id
 class Trade(Base):
     """

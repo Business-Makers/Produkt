@@ -7,15 +7,12 @@ This file contains the main FastAPI application setup, including endpoint defini
 from fastapi import FastAPI, Depends, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from datetime import timedelta
-import time
 from database import get_db, init_db
 from models import Account, Member, Api, AccountPages_Info
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
-
 
 import ccxt
 import logging
@@ -51,7 +48,7 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
     """
     Handles user login and password authentication.
 
-    This endpoint is responsible for authenticating user login credentials.
+    This endpoint authenticates user login credentials.
     It takes the login credentials provided by the user and checks them against the stored hashed password in the database.
     If the credentials are correct, it generates an access token and returns it to the client.
 
@@ -61,6 +58,9 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
 
     Returns:
         dict: A dictionary containing the access token and token type if authentication is successful.
+
+    Raises:
+        HTTPException: If the login credentials are incorrect or an internal error occurs.
     """
     try:
         db_user = db.query(Account).filter(Account.login_name == credentials.login_name).first()
@@ -73,8 +73,8 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
 
             mailAdress = find_mail(db_user, db)
             if mailAdress:
-                send_email(mailAdress, mailTheme.login.name, db)
-
+                # send_email(mailAdress, mailTheme.login.name, db)
+                pass
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
             raise HTTPException(status_code=401, detail="Incorrect username or password")
@@ -87,7 +87,7 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
     """
     Handles new user registration.
 
-    This endpoint is responsible for registering new users.
+    This endpoint registers new users.
     It takes the user registration details provided by the client, creates a new member and account in the database,
     and associates them together. It also hashes the user's password before storing it in the database.
 
@@ -96,7 +96,10 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
 
     Returns:
-        dict: A dictionary containing the success message if registration is successful.pass
+        dict: A dictionary containing the success message if registration is successful.
+
+    Raises:
+        HTTPException: If the phone number, email, or login name is already registered or if an internal error occurs.
     """
     if user.phone_number:
         existing_phone_number = db.query(Member).filter(Member.phone_number == user.phone_number).first()
@@ -136,7 +139,7 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         db.add(new_account)
         db.commit()
 
-        send_email(user.eMail, mailTheme.registration.name, db)
+        # send_email(user.eMail, mailTheme.registration.name, db)
         return {"message": "Registration successful! We're excited to have you with us."}
     except Exception as e:
         db.rollback()
@@ -144,6 +147,18 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
 
 
 def get_balance_and_currency_count(exchange):
+    """
+        Retrieve the balance and the number of non-zero currency balances from the exchange.
+
+        Parameters:
+            - exchange: The exchange instance to fetch the balance from.
+
+        Returns:
+            tuple: A tuple containing the USDT balance and the number of non-zero currency balances.
+
+        Prints:
+            An error message if there is an issue fetching the balance.
+        """
     try:
         balance = exchange.fetchBalance()
         usdt_balance = balance['total'].get('USDT', -1)
@@ -158,82 +173,130 @@ def get_balance_and_currency_count(exchange):
 
 @app.post("/connect-exchange/")
 def connect_exchange(exchange_info: ApiKeyCreation, db: Session = Depends(get_db), authorization: str = Header(None)):
-    # Check authorization header
+    """
+        Connects a user's account to a cryptocurrency exchange using provided API keys.
+
+        This endpoint allows users to connect their account to a cryptocurrency exchange.
+        It verifies the provided API keys and retrieves the balance and currency count from the exchange.
+
+        Parameters:
+            - exchange_info (ApiKeyCreation): The API key information for the exchange.
+            - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+            - authorization (str): The authorization header containing the Bearer token.
+
+        Returns:
+            dict: A dictionary containing a success message and the account information.
+
+        Raises:
+            HTTPException: If the authorization header is missing or invalid, the exchange ID is not valid, or an internal error occurs.
+        """
     if authorization is None or not authorization.startswith("Bearer "):
-        if authorization is None:
-            raise HTTPException(status_code=401, detail="Authorization header missing or invalid. NONE")
-        else:
-            raise HTTPException(status_code=401, detail="Authorization header missing or invalid. BEARER")
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
 
-    # Extract token from authorization header
     token = authorization.split(" ")[1]
-
-    # Verify token
     payload = verify_trade_token(token)
     if payload is None:
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid or expired token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    if exchange_info.exchange_id == "kucoin":
-
-        exchange = ccxt.kucoin({
-            'apiKey': exchange_info.key,
-            'secret': exchange_info.secret_key,
-            'password': exchange_info.passphrase
-        })
-    else:
-        exchange = ccxt.bitget({
+        raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+    account_id = payload.get("account_id")
+    existing_user = db.query(Api).filter(Api.secret_Key == exchange_info.secret_key).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Exchange Connection already registered")
+    try:
+        exchange_class = getattr(ccxt, exchange_info.exchange_name)
+        exchange_args = {
             'apiKey': exchange_info.key,
             'secret': exchange_info.secret_key
-        })
+        }
+        if exchange_info.passphrase:
+            exchange_args['password'] = exchange_info.passphrase
+        exchange = exchange_class(exchange_args)
 
-        # Create new API key object
-
-
-    try:
         new_ApiKey = Api(
-        api_name=exchange_info.api_name,
-        key=exchange_info.key,
-        secret_Key=exchange_info.secret_key,
-        passphrase=exchange_info.passphrase,
-        accountID=payload.get("account_id")
+            exchange_name=exchange_info.exchange_name,
+            key=exchange_info.key,
+            secret_Key=exchange_info.secret_key,
+            passphrase=exchange_info.passphrase,
+            accountID=account_id
         )
         db.add(new_ApiKey)
         db.commit()
         db.refresh(new_ApiKey)
 
-        try:
-            balance = exchange.fetchBalance()
-            usdt_balance = balance['total'].get('USDT', -1)
-            total_balances = balance['total']
-            non_zero_currencies = {currency: amount for currency, amount in total_balances.items() if amount > 0}
-            number_of_currencies = len(non_zero_currencies)
+        balance_of_account, number_of_currencies = get_balance_and_currency_count(exchange)
 
-
-
-            new_accountpages_info = AccountPages_Info(
-                balance=usdt_balance,
-                currency_count=number_of_currencies,
-                api_id=new_ApiKey.api_id,
-            )
-            # Add account info to database
-            db.add(new_accountpages_info)
-            db.commit()
-            return {"message": "Connected successfully"}
-        except Exception as e:
-            db.rollback()
-            raise HTTPException(status_code=504, detail=str(e))
-
+        new_accountpages_info = AccountPages_Info(
+            balance=balance_of_account,
+            account_holder=exchange_info.account_holder,
+            currency_count=number_of_currencies,
+            exchange_name=exchange_info.exchange_name,
+            api_id=new_ApiKey.api_id
+        )
+        db.add(new_accountpages_info)
+        db.commit()
+        db.close()
+        return {"message": "Exchange connected successfully"}
+    except AttributeError as e:
+        db.rollback()
+        raise HTTPException(status_code=400, detail=f"Exchange ID {exchange_info.exchange_name} is not valid.")
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
+@app.get("/dashboard/")
+def get_dashboard(db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+        Retrieves the dashboard data for the authenticated user.
 
+        This endpoint fetches the connected exchanges and their balance information for the authenticated user.
 
+        Parameters:
+            - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+            - authorization (str): The authorization header containing the Bearer token.
+
+        Returns:
+            dict: A dictionary containing the dashboard data.
+
+        Raises:
+            HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+        """
+    if authorization is None or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+
+    token = authorization.split(" ")[1]
+    payload = verify_trade_token(token)
+    if payload is None:
+        raise HTTPException(status_code=402, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+    account_id = payload.get("account_id")
+
+    try:
+        api_keys = db.query(Api).filter(Api.accountID == account_id).all()
+        dashboard_data = []
+        for api_key in api_keys:
+            if api_key and api_key.account_pages_info:
+                account_holder = api_key.account_pages_info.account_holder
+            else:
+                raise HTTPException(status_code=403, detail="No account pages info available.")
+            exchange_class = getattr(ccxt, api_key.exchange_name)
+            exchange_args = {
+                'apiKey': api_key.key,
+                'secret': api_key.secret_Key
+            }
+            if api_key.passphrase:
+                exchange_args['password'] = api_key.passphrase
+            exchange = exchange_class(exchange_args)
+
+            balance_of_account, number_of_currencies = get_balance_and_currency_count(exchange)
+            dashboard_data.append({
+                "exchange_name": api_key.exchange_name,
+                "account_holder": account_holder,
+                "balance": balance_of_account,
+                "currency_count": number_of_currencies
+            })
+
+        return {"dashboard": dashboard_data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
 @app.post("/request-password-reset/")

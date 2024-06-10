@@ -34,6 +34,24 @@ async function connectAccount(formData, token) {
   }
 }
 
+async function retrieveData(token){
+  try{
+    const response = await axios.get('http://localhost:8001/dashboard/',{
+      headers: {
+        Authorization: `Bearer ${token}` // Token als Header senden
+      }
+    });
+
+    return response.data;
+  }
+  catch (error){
+    console.error('Error response Data');
+
+    throw error;
+  }
+}
+
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const { token} = useToken();
@@ -42,8 +60,8 @@ export default function Dashboard() {
   const [selection, setSelection] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [formData, setFormData] = useState({
-    api_name: '',
-    exchange_id: 'kucoin',
+    account_holder: '',
+    exchange_name: '',
     key: '',
     secret_key: '',
     passphrase: ''
@@ -80,7 +98,7 @@ export default function Dashboard() {
     setSelectedImage(imageId);
     setFormData(prevFormData => ({
       ...prevFormData,
-     exchange_id: selectedExchange.name
+     exchange_name: selectedExchange.name
     }));
   };
 
@@ -99,6 +117,10 @@ export default function Dashboard() {
       console.log('Account successfully connected');
       navigate('/dashboard');
       window.alert("Exchange connected successfully");
+      const account_data = await retrieveData(token);
+      console.log("Test", account_data);
+      window.alert("retrieve Data successfull");
+
     } catch (error) {
       window.alert("Exchange connection failed");
       console.error('Error connecting account:', error);
@@ -106,52 +128,60 @@ export default function Dashboard() {
   };
 
   return (
-    <div>
-      <h2>Dashboard</h2>
-      <button className="connect-button" onClick={toggleContainer}>Connect a new account</button>
-      {isOpen && (
-        <div>
-          {!selection ? (
+      <div>
+        <h2>Dashboard</h2>
+
+
+        <button className="connect-button" onClick={toggleContainer}>Connect a new account</button>
+        {isOpen && (
             <div>
-              <button className="selection-button" onClick={() => handleSelectionClick('Exchange')}>Exchange</button>
-            </div>
-          ) : (
-            <div>
-              {selectedImage ? (
-                <div className="editing-container">
-                  <form onSubmit={handleSubmit}>
-                    <div>
-                      <label htmlFor='api_name'>Name:</label>
-                      <input id="api_name" type="text" value={formData.api_name} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                      <label htmlFor="key">API Key:</label>
-                      <input id="key" type="text" value={formData.key} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                      <label htmlFor="secret_key">API Secret:</label>
-                      <input id="secret_key" type="text" value={formData.secret_key} onChange={handleInputChange} />
-                    </div>
-                    <div>
-                      <label htmlFor="passphrase">Passphrase:</label>
-                      <input id="passphrase" type="text" value={formData.passphrase} onChange={handleInputChange} />
-                    </div>
-                    <button type="submit">Connect to {exchanges.find(exchange => exchange.id === selectedImage)?.name}</button>
-                  </form>
-                </div>
+              {!selection ? (
+                  <div>
+                    <button className="selection-button" onClick={() => handleSelectionClick('Exchange')}>Exchange
+                    </button>
+                  </div>
               ) : (
-                <div>
-                  {selection === 'Exchange' ? (
-                    <div>
-                      {exchanges.map(exchange => (
-                        <div key={exchange.id} className="image-container" onClick={() => handleImageClick(exchange.id)}>
-                          <img src={exchange.imgSrc} alt={exchange.name} />
+                  <div>
+                    {selectedImage ? (
+                        <div className="editing-container">
+                          <form onSubmit={handleSubmit}>
+                            <div>
+                              <label htmlFor='account_holder'>Name:</label>
+                              <input id="account_holder" type="text" value={formData.account_holder}
+                                     onChange={handleInputChange}/>
+                            </div>
+                            <div>
+                              <label htmlFor="key">API Key:</label>
+                              <input id="key" type="text" value={formData.key} onChange={handleInputChange}/>
+                            </div>
+                            <div>
+                              <label htmlFor="secret_key">API Secret:</label>
+                              <input id="secret_key" type="text" value={formData.secret_key}
+                                     onChange={handleInputChange}/>
+                            </div>
+                            <div>
+                              <label htmlFor="passphrase">Passphrase:</label>
+                              <input id="passphrase" type="text" value={formData.passphrase}
+                                     onChange={handleInputChange}/>
+                            </div>
+                            <button type="submit">Connect
+                              to {exchanges.find(exchange => exchange.id === selectedImage)?.name}</button>
+                          </form>
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div>
-                      {/*
+                    ) : (
+                        <div>
+                          {selection === 'Exchange' ? (
+                              <div>
+                                {exchanges.map(exchange => (
+                                    <div key={exchange.id} className="image-container"
+                                         onClick={() => handleImageClick(exchange.id)}>
+                                      <img src={exchange.imgSrc} alt={exchange.name}/>
+                                    </div>
+                                ))}
+                              </div>
+                          ) : (
+                              <div>
+                                {/*
                       <div className="image-container" onClick={() => handleImageClick(4)}>
                         <img src="path/to/wallet1.jpg" alt="Wallet Bild 1" />
                         <p>Wallet selection option 1</p>
@@ -165,14 +195,21 @@ export default function Dashboard() {
                         <p>Wallet selection option 3</p>
                       </div>
                       */}
-                    </div>
-                  )}
-                </div>
+                              </div>
+                          )}
+                        </div>
+                    )}
+                  </div>
               )}
             </div>
-          )}
+        )}
+
+        <div>
+          <p>{} </p>
         </div>
-      )}
-    </div>
+
+      </div>
+
+
   );
 }
