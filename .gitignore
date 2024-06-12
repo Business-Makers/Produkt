@@ -1,3 +1,9 @@
-backend/venv/mydb.db
 backend/venv/pyvenv.cfg
+.start_Frontend.bat
+.start_Backend.bat
+backend/venv/Server/smtp_infos.py
+.idea/dataSources.xml
+backend/venv/Server/email_debug.log
+sk.env
+node_modules/
 __pycache__/

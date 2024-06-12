@@ -1,7 +1,6 @@
 @echo off
-cd .\Backend\
-cd .\venv\
-cd .\Scripts\
+cd .\Backend\venv\Scripts\
 .\activate
 cd..
-python .\app.py
+cd .\Server\
+python main.py
