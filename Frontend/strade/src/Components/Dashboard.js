@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import '../Styles/LoggedIn.css';
 import '../Styles/Dashboard.css';
 import useToken from './useToken';
+import Chart from './Chart';
+import Donut from './DonutChart';
 import axios from 'axios';
 import KucoinImage from '../Images/Kucoin.png';
 import BinanceImage from '../Images/Binance.png';
@@ -127,6 +129,11 @@ export default function Dashboard() {
     }
   };
 
+  const chartData = {
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    series: [30, 40, 35, 50, 49, 60]
+  };
+
   return (
       <div>
         <h2>Dashboard</h2>
@@ -203,13 +210,20 @@ export default function Dashboard() {
               )}
             </div>
         )}
+        <div className="Account-Data">
+          <Donut></Donut>
+          <div className="Balance">
+            <h4 style={{color: 'black'}}>Current Balance:</h4>
+            <h3 className="Money"> {chartData.series[chartData.series.length - 1]}</h3>
+          </div>
+          <Chart data={chartData}></Chart>
+        </div>
 
-        <div>
-          <p>{} </p>
+        <div className='Specifics'>
+          
         </div>
 
       </div>
-
 
   );
 }

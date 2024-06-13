@@ -4,26 +4,7 @@ import '../Styles/Subscription.css';
 
 const Subscription = () => {
   const [activeTab, setActiveTab] = useState('Yearly');
-  const [buttonText, setButtonText] = useState({
-    Yearly: {
-      basic: '99$ / Year',
-      silver: '199$ / Year',
-      gold: '299$ / Year'
-    },
-    Monthly: {
-      basic: '8$ / Month',
-      silver: '15$ / Month',
-      gold: '20$ / Month'
-    }
-  });
-
-  function handleTabClick(tab) {
-    setActiveTab(tab); // Aktiviere den entsprechenden Tab
-  }
-
-    // Use the setButtonText or remove this line if not needed
-  // eslint-disable-next-line no-unused-vars
-  setButtonText({
+  const buttonText = {
     Yearly: {
       basic: '100$ / Year',
       silver: '200$ / Year',
@@ -34,7 +15,11 @@ const Subscription = () => {
       silver: '15$ / Month',
       gold: '20$ / Month'
     }
-  });
+  };
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab); // Activate the corresponding tab
+  };
 
   return (
     <div className="subscription-wrapper">
@@ -47,7 +32,6 @@ const Subscription = () => {
         </div>
       </div>
       <div className="subscriptions-container">
-
         <div className="subscription basic">
           <h2>Basic Membership</h2>
           <p className="active-status">(Currently active)</p>

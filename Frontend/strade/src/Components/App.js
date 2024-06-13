@@ -26,7 +26,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {!isAuthenticated ? (
+        {!!isAuthenticated ? (
           <>
             <header className="App-header">
               <nav className="nav">

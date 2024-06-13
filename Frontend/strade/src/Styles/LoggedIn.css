@@ -25,8 +25,8 @@ body, html, #root {
   .main-content {
     flex: 1;
     padding: 20px;
-    margin-right: 30%;
-    /* TODO: margin-right ist nicht so toll :( */
+    margin-right: 60%;
+    /* TODO: margin-right ist ganz super :) */
     color: white;
   }
 
