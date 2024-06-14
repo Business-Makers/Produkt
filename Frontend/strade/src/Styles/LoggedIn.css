@@ -13,8 +13,7 @@ body, html, #root {
   
   .App-header2 {
     display: flex;
-    flex: 1;
-    flex-direction: row;
+    justify-content: space-between;
   }
   
   .App-footer2 {
@@ -28,5 +27,57 @@ body, html, #root {
     margin-right: 60%;
     /* TODO: margin-right ist ganz super :) */
     color: white;
+  }
+
+  .profile-icon-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+  }
+
+  .profile-icon-container {
+    cursor: pointer;
+  }
+  
+  .profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .dropdown-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .dropdown-menu li {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .dropdown-menu li:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .dropdown-menu button {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 10px 20px;
+    cursor: pointer;
   }
 
