@@ -9,16 +9,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from database import get_db, init_db
 from models import Account, Member, Api, AccountPages_Info
-from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
+from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation, OrderRequest, AddTakeProfitStopLossRequest
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
-
+from trade_service import TradeService
 import ccxt
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -29,7 +25,7 @@ app.add_middleware(
     allow_methods=["*"],  # Erlaubte HTTP-Methoden
     allow_headers=["*"],  # Erlaubte HTTP-Header
 )
-
+from web_socket import websocket_endpoint
 
 @app.on_event("startup")
 def on_startup():
@@ -42,7 +38,7 @@ def on_startup():
         """
     init_db()
 
-
+app.websocket("\ws\{user_id}")(websocket_endpoint)
 @app.post("/login/")
 def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
     """
@@ -299,6 +295,98 @@ def get_dashboard(db: Session = Depends(get_db), authorization: str = Header(Non
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
+@app.get("/trades/")
+def get_trade(db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+        Retrieves the dashboard data for the authenticated user.
+
+        This endpoint fetches the connected exchanges and their balance information for the authenticated user.
+
+        Parameters:
+            - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+            - authorization (str): The authorization header containing the Bearer token.
+
+        Returns:
+            dict: A dictionary containing the dashboard data.
+
+        Raises:
+            HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+        """
+    if authorization is None or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+
+    token = authorization.split(" ")[1]
+    payload = verify_trade_token(token)
+    if payload is None:
+        raise HTTPException(status_code=402, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+    account_id = payload.get("account_id")
+
+    try:
+        api_keys = db.query(Api).filter(Api.accountID == account_id).all()
+        trade_data = []
+        for api_key in api_keys:
+            if api_key and api_key.account_pages_info:
+                account_holder = api_key.account_pages_info.account_holder
+            else:
+                raise HTTPException(status_code=403, detail="No account pages info available.")
+            exchange_class = getattr(ccxt, api_key.exchange_name)
+            exchange_args = {
+                'apiKey': api_key.key,
+                'secret': api_key.secret_Key
+            }
+            if api_key.passphrase:
+                exchange_args['password'] = api_key.passphrase
+            exchange = exchange_class(exchange_args)
+
+            balance_of_account, number_of_currencies = get_balance_and_currency_count(exchange)
+            trade_data.append({
+                "exchange_name": api_key.exchange_name,
+                "account_holder": account_holder,
+                "balance": balance_of_account,
+                "currency_count": number_of_currencies
+            })
+
+        return {"trades": trade_data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+@app.post("/trades/create-order/")
+def create_order(order: OrderRequest, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+    Creates a market or limit order, optionally with take-profit and/or stop-loss.
+
+    Parameters:
+        - order (OrderRequest): The order details.
+        - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+        - authorization (str): The authorization header containing the Bearer token.
+
+    Returns:
+        dict: A dictionary containing the order details if creation is successful.
+
+    Raises:
+        HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+    """
+    trade_service = TradeService(db, authorization)
+    return trade_service.create_order(order)
+
+@app.post("/trades/add-take-profit-stop-loss/")
+def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+    Adds take-profit and/or stop-loss orders to an existing trade.
+
+    Parameters:
+        - request (AddTakeProfitStopLossRequest): The request details containing trade ID, take-profit prices, and stop-loss price.
+        - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+        - authorization (str): The authorization header containing the Bearer token.
+
+    Returns:
+        dict: A dictionary containing the details of the added orders if successful.
+
+    Raises:
+        HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+    """
+    trade_service = TradeService(db, authorization)
+    return trade_service.add_take_profit_and_stop_loss(request.trade_id, request.take_profit_prices, request.stop_loss_price)
 @app.post("/request-password-reset/")
 def forgot_password(email: str, db: Session = Depends(get_db)):
     """

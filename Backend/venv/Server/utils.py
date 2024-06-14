@@ -317,3 +317,16 @@ def getMailText(receiverMail, subject, db: Session):
     text = text.replace("[name]", name)
     text = text.replace("[support]", smtp_infos.username_support)
     return text
+
+def get_api_credentials(user_id: int, exchange_name: str, db: Session):
+    # Hier würdest du tatsächlich die Datenbankabfrage durchführen
+    # Für dieses Beispiel verwenden wir Platzhalterwerte
+    api_key_data = db.query(Api).filter(Api.accountID == user_id, Api.exchange_name == exchange_name).first()
+    if api_key_data:
+        return {
+            "api_key": api_key_data.key,
+            "secret": api_key_data.secret_Key,
+            "password": api_key_data.passphrase  # Falls erforderlich
+        }
+    else:
+        raise ValueError(f"No API credentials found for user {user_id} and exchange {exchange_name}")

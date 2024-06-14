@@ -20,7 +20,8 @@ operations across the system.
 from sqlalchemy import Column, String, Integer, DATE, Float, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
-Base = declarative_base()  
+
+Base = declarative_base()
 
 
 class Member(Base):
@@ -102,7 +103,7 @@ class Api(Base):
     Stores API access configurations for third-party services, including credentials.
     """
     __tablename__ = 'api'
-    api_id = Column("ap_id", Integer, primary_key=True, unique=True, autoincrement=True)
+    api_id = Column("api_id", Integer, primary_key=True, unique=True, autoincrement=True)
     exchange_name = Column("exchange_name", String(50), nullable=False)
     key = Column("key", String(50), nullable=False)
     secret_Key = Column("secret_key", String(50), nullable=False, unique=True)
@@ -110,6 +111,7 @@ class Api(Base):
     accountID = Column("accountID", Integer, ForeignKey("account.account_id"), nullable=False)
     account = relationship("Account", back_populates="apis")
     account_pages_info = relationship("AccountPages_Info", back_populates="api", uselist=False)
+    trades = relationship("Trade", back_populates="api")
 
     def __init__(self, exchange_name, key, secret_Key, passphrase, accountID):
         self.exchange_name = exchange_name
@@ -129,7 +131,7 @@ class AccountPages_Info(Base):
     balance = Column("balance", Float, nullable=False)
     currency_count = Column("currency_count", Integer, nullable=False)
     last_updated = Column(DateTime, default=datetime.utcnow, nullable=False)
-    api_id = Column("api_id", Integer, ForeignKey("api.ap_id"), nullable=False)
+    api_id = Column("api_id", Integer, ForeignKey("api.api_id"), nullable=False)
     api = relationship("Api", back_populates="account_pages_info")
 
     def __init__(self, balance, account_holder, currency_count, exchange_name, api_id):
@@ -138,36 +140,57 @@ class AccountPages_Info(Base):
         self.currency_count = currency_count
         self.exchange_name = exchange_name
         self.api_id = api_id
+
+
 class Trade(Base):
     """
-    stores all Trades, including details like currency, volume, status, rates
+    Stores all Trades, including details like currency, volume, status, rates.
     """
     __tablename__ = 'trade'
     trade_id = Column("trade_id", Integer, primary_key=True, unique=True, autoincrement=True)
+    trade_type = Column("trade_type", String(50), nullable=False)
     currency_name = Column("currency_name", String(50), nullable=False)
     currency_volume = Column("currency_volume", Float, nullable=False)
     trade_status = Column("trade_status", String(50))
     date_create = Column("date_create", DATE, nullable=False)
-    date_bought = Column("date_bought", DATE)
-    date_sale = Column("date_sale", DATE)
-    purchase_rate = Column("purchase_rate", Float)
-    selling_rate = Column("selling_rate", Float)
-    comment = Column("comment", String(50))
-    memberID = Column("memberID", Integer, ForeignKey("member.member_id"), nullable=False)
+    date_bought = Column("date_bought", DATE, nullable=True)
+    date_sale = Column("date_sale", DATE, nullable=True)
+    purchase_rate = Column("purchase_rate", Float, nullable=True)
+    selling_rate = Column("selling_rate", Float, nullable=True)
+    comment = Column("comment", String(200),nullable=True)
+    api_id = Column("api_id", Integer, ForeignKey("api.api_id"), nullable=False)
+    api = relationship("Api", back_populates="trades")
+    stop_loss_price = Column("stop_loss_price", Float, nullable=True)
+    take_profits = relationship("TakeProfit", back_populates="trade")
 
-    def __init__(self, currency_name, currency_volume, trade_status, date_create, memberID, date_bought=None,
-                 date_sale=None, purchase_rate=None, selling_rate=None, comment=None):
+    def __init__(self, trade_type, currency_name, currency_volume, trade_status, date_create, api_id, stop_loss_price=None, date_bought=None, date_sale=None, purchase_rate=None, selling_rate=None, comment=None):
+        self.trade_type = trade_type
         self.currency_name = currency_name
         self.currency_volume = currency_volume
         self.trade_status = trade_status
         self.date_create = date_create
-        self.memberID = memberID
+        self.api_id = api_id
+        self.stop_loss_price = stop_loss_price
         self.date_bought = date_bought
         self.date_sale = date_sale
         self.purchase_rate = purchase_rate
         self.selling_rate = selling_rate
         self.comment = comment
 
+
+class TakeProfit(Base):
+    """
+    Stores multiple Take-Profit prices for a trade.
+    """
+    __tablename__ = 'take_profit'
+    takeprofit_id = Column("takeprofit_id", Integer, primary_key=True, unique=True, autoincrement=True)
+    price = Column("price", Float, nullable=False)
+    trade_id = Column("trade_id", Integer, ForeignKey("trade.trade_id"), nullable=False)
+    trade = relationship("Trade", back_populates="take_profits")
+
+    def __init__(self, trade_id, price):
+        self.trade_id = trade_id
+        self.price = price
 
 class Membership(Base):
     """

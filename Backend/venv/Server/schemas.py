@@ -5,7 +5,7 @@ This file contains Pydantic models representing data schemas used for validation
 """
 from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr, ValidationError, Field, validator
-from typing import Optional
+from typing import Optional, List
 from sqlalchemy import DateTime
 from models import AccountPages_Info
 
@@ -178,6 +178,7 @@ class AcoountPages_Info_Validate(BaseModel):
 
 
 class TradeSchema(BaseModel):
+    trade_type: str
     currency_name: str
     currency_volume: float
     trade_status: str
@@ -190,3 +191,22 @@ class TradeSchema(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
+
+
+
+class OrderRequest(BaseModel):
+    symbol: str
+    side: str
+    amount: float
+    price: Optional[float] = None
+    stop_price: Optional[float] = None
+    order_type: str  # 'market', 'limit'
+    take_profit_prices: Optional[List[float]] = None
+    stop_loss_price: Optional[float] = None
+    comment: Optional[str] = None
+
+class AddTakeProfitStopLossRequest(BaseModel):
+    comment: Optional[str] = None
+    trade_id: int
+    take_profit_prices: Optional[List[float]] = None
+    stop_loss_price: Optional[float] = None
