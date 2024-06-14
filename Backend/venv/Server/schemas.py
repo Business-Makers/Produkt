@@ -4,7 +4,7 @@ Pydantic Schemas File
 This file contains Pydantic models representing data schemas used for validation and serialization.
 """
 from fastapi import HTTPException
-from pydantic import BaseModel, EmailStr, ValidationError,Field, field_validator
+from pydantic import BaseModel, EmailStr, ValidationError,Field, validator
 from typing import Optional
 from sqlalchemy import DateTime
 from models import AccountPages_Info
@@ -83,7 +83,7 @@ class UserRegistration(BaseModel):
     login_name: str
     password: str
 
-    @field_validator('login_name')
+    @validator('login_name')
     def validate_login_name(cls, v):
         if len(v) < 3:
             raise ValueError('Login name must be at least 3 characters long.')
@@ -91,7 +91,7 @@ class UserRegistration(BaseModel):
             raise ValueError('Login name must be alphanumeric.')
         return v
 
-    @field_validator('password')
+    @validator('password')
     def validate_password(cls, v):
         if len(v) < 8:
             raise ValueError('Password must be at least 8 characters long.')
@@ -156,7 +156,7 @@ class AcoountPages_Info_Validate(BaseModel):
     last_updated: DateTime
     account_page_id: int
 
-    @field_validator('balance')
+    @validator('balance')
     def validate_balance(cls, value):
         if value < 0:
             raise ValueError("Balance must be non-negative")
@@ -170,7 +170,7 @@ class AcoountPages_Info_Validate(BaseModel):
             raise ValueError("Currency count must be non-negative")
         return value
 
-    @field_validator('account_page_id')
+    @validator('account_page_id')
     def validate_account_page_id(cls, value):
         if value is None:
             raise ValueError("Account page ID must not be None")

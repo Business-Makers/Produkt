@@ -73,7 +73,7 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
 
             mailAdress = find_mail(db_user, db)
             if mailAdress:
-                # send_email(mailAdress, mailTheme.login.name, db)
+                #send_email(mailAdress, mailTheme.login.name, db)
                 pass
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
