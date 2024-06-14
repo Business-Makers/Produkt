@@ -119,12 +119,12 @@
 .Account-Data {
   display: flex; /* Flexbox-Layout aktivieren */
   flex-wrap: wrap; /* Elemente umbrechen, wenn sie nicht in eine Zeile passen */
-  justify-content: space-between; /* Platz zwischen den Elementen */
+  justify-content:center; /* Platz zwischen den Elementen */
   align-items: center; /* Elemente vertikal zentrieren */
   background-color: #404040;
   padding: 10px;
   border-radius: 15px;
-  width: 350%;
+  width: 200%;
 }
 
 /* Stile für die Balance-Box */
