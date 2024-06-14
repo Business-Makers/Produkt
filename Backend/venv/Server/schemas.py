@@ -4,7 +4,7 @@ Pydantic Schemas File
 This file contains Pydantic models representing data schemas used for validation and serialization.
 """
 from fastapi import HTTPException
-from pydantic import BaseModel, EmailStr, ValidationError,Field, validator
+from pydantic import BaseModel, EmailStr, ValidationError, Field, validator
 from typing import Optional
 from sqlalchemy import DateTime
 from models import AccountPages_Info
@@ -177,3 +177,16 @@ class AcoountPages_Info_Validate(BaseModel):
         return value
 
 
+class TradeSchema(BaseModel):
+    currency_name: str
+    currency_volume: float
+    trade_status: str
+    date_create: DateTime
+    date_bought: Optional[DateTime] = None
+    date_sale: Optional[DateTime] = None
+    purchase_rate: Optional[float] = None
+    selling_rate: Optional[float] = None
+    comment: Optional[str] = None
+
+    class Config:
+        arbitrary_types_allowed = True
