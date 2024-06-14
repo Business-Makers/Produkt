@@ -4,14 +4,13 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from '../Components/App';
+import { act } from 'react';
 
 describe('App Component', () => {
   test('renders login links when not authenticated', () => {
-    render(
-      <Router>
-        <App />
-      </Router>
-    );
+    act(() => { // Füge act hier hinzu
+      render(<App />);
+    });
 
     // Check for login and signup links
     const loginLink = screen.getByRole('link', { name: /login/i });
@@ -23,7 +22,7 @@ describe('App Component', () => {
 
   test('renders navigation sidebar when authenticated', () => {
     // Mock useToken hook to simulate authenticated state
-    jest.mock('./useToken', () => ({
+    jest.mock('../Components/useToken', () => ({
       __esModule: true,
       default: () => ({
         token: 'mockedToken',
@@ -31,11 +30,9 @@ describe('App Component', () => {
       }),
     }));
 
-    render(
-      <Router>
-        <App />
-      </Router>
-    );
+    act(() => { // Füge act hier hinzu
+      render(<App />);
+    });
 
     // Check for sidebar navigation links
     const subscriptionLink = screen.getByRole('link', { name: /subscription/i });

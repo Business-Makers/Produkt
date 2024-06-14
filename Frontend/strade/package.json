@@ -39,8 +39,10 @@
     },
     "moduleNameMapper": {
       "\\.(css|scss)$": "identity-obj-proxy",
-      "^axios$": "axios/dist/node/axios.cjs"
-    }
+      "^axios$": "axios/dist/node/axios.cjs",
+      "\\.(jpg|jpeg|png|gif|svg)$": "<rootDir>/__mocks__/fileMock.js"
+    },
+    "maxWorkers": "50%"
   },
   "eslintConfig": {
     "extends": [
