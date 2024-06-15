@@ -149,6 +149,7 @@ class Trade(Base):
     __tablename__ = 'trade'
     trade_id = Column("trade_id", Integer, primary_key=True, unique=True, autoincrement=True)
     trade_type = Column("trade_type", String(50), nullable=False)
+    trade_price = Column("trade_price", Float, nullable=False)
     currency_name = Column("currency_name", String(50), nullable=False)
     currency_volume = Column("currency_volume", Float, nullable=False)
     trade_status = Column("trade_status", String(50))
@@ -163,7 +164,8 @@ class Trade(Base):
     stop_loss_price = Column("stop_loss_price", Float, nullable=True)
     take_profits = relationship("TakeProfit", back_populates="trade")
 
-    def __init__(self, trade_type, currency_name, currency_volume, trade_status, date_create, api_id, stop_loss_price=None, date_bought=None, date_sale=None, purchase_rate=None, selling_rate=None, comment=None):
+    def __init__(self, trade_price, trade_type, currency_name, currency_volume, trade_status, date_create, api_id, stop_loss_price=None, date_bought=None, date_sale=None, purchase_rate=None, selling_rate=None, comment=None):
+        self.trade_price = trade_price
         self.trade_type = trade_type
         self.currency_name = currency_name
         self.currency_volume = currency_volume

@@ -195,6 +195,7 @@ class TradeSchema(BaseModel):
 
 
 class OrderRequest(BaseModel):
+    trade_price: float
     symbol: str
     side: str
     amount: float

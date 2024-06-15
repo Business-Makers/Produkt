@@ -4,17 +4,19 @@ FastAPI Application File
 This file contains the main FastAPI application setup, including endpoint definitions and event handlers.
 """
 
-from fastapi import FastAPI, Depends, HTTPException, Header
+from fastapi import FastAPI, Depends, HTTPException, Header, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from database import get_db, init_db
-from models import Account, Member, Api, AccountPages_Info
+from models import Account, Member, Api, AccountPages_Info, Trade,TakeProfit
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation, OrderRequest, AddTakeProfitStopLossRequest
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
 from trade_service import TradeService
 import ccxt
+from web_socket import websocket_endpoint
+from background_threading import background_threads
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -25,10 +27,11 @@ app.add_middleware(
     allow_methods=["*"],  # Erlaubte HTTP-Methoden
     allow_headers=["*"],  # Erlaubte HTTP-Header
 )
-from web_socket import websocket_endpoint
 
+trade_service = None
+background= None
 @app.on_event("startup")
-def on_startup():
+async def on_startup():
     """
         Event handler function called on application startup.
 
@@ -37,6 +40,10 @@ def on_startup():
         Inside this function, it calls the `init_db()` function to initialize the database by creating all tables.
         """
     init_db()
+
+    #todo: Background async await
+
+
 
 app.websocket("\ws\{user_id}")(websocket_endpoint)
 @app.post("/login/")
@@ -71,6 +78,8 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
             if mailAdress:
                 #send_email(mailAdress, mailTheme.login.name, db)
                 pass
+            background = background_threads(db,access_token)
+            background.background_check_limit_orders()
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
             raise HTTPException(status_code=401, detail="Incorrect username or password")
@@ -298,20 +307,18 @@ def get_dashboard(db: Session = Depends(get_db), authorization: str = Header(Non
 @app.get("/trades/")
 def get_trade(db: Session = Depends(get_db), authorization: str = Header(None)):
     """
-        Retrieves the dashboard data for the authenticated user.
+    Retrieves all trades for the authenticated user.
 
-        This endpoint fetches the connected exchanges and their balance information for the authenticated user.
+    Parameters:
+        - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+        - authorization (str): The authorization header containing the Bearer token.
 
-        Parameters:
-            - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
-            - authorization (str): The authorization header containing the Bearer token.
+    Returns:
+        dict: A dictionary containing all trades for the authenticated user.
 
-        Returns:
-            dict: A dictionary containing the dashboard data.
-
-        Raises:
-            HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
-        """
+    Raises:
+        HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+    """
     if authorization is None or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
 
@@ -323,30 +330,33 @@ def get_trade(db: Session = Depends(get_db), authorization: str = Header(None)):
 
     try:
         api_keys = db.query(Api).filter(Api.accountID == account_id).all()
-        trade_data = []
+        if not api_keys:
+            raise HTTPException(status_code=404, detail="API keys not found for the account")
+
+        trades_data = []
         for api_key in api_keys:
-            if api_key and api_key.account_pages_info:
-                account_holder = api_key.account_pages_info.account_holder
-            else:
-                raise HTTPException(status_code=403, detail="No account pages info available.")
-            exchange_class = getattr(ccxt, api_key.exchange_name)
-            exchange_args = {
-                'apiKey': api_key.key,
-                'secret': api_key.secret_Key
-            }
-            if api_key.passphrase:
-                exchange_args['password'] = api_key.passphrase
-            exchange = exchange_class(exchange_args)
+            trades = db.query(Trade).filter(Trade.api_id == api_key.api_id).all()
+            for trade in trades:
+                trades_data.append({
+                    "account_Holder": api_key.account_pages_info.account_holder,
+                    "exchange_name": api_key.exchange_name,
+                    "trade_id": trade.trade_id,
+                    "trade_type": trade.trade_type,
+                    "trade_price": trade.trade_price,
+                    "currency_name": trade.currency_name,
+                    "currency_volume": trade.currency_volume,
+                    "trade_status": trade.trade_status,
+                    "date_create": trade.date_create,
+                    "date_bought": trade.date_bought,
+                    "date_sale": trade.date_sale,
+                    "purchase_rate": trade.purchase_rate,
+                    "selling_rate": trade.selling_rate,
+                    "comment": trade.comment,
+                    "stop_loss_price": trade.stop_loss_price,
+                    "take_profits": [{"price": tp.price} for tp in trade.take_profits]
+                })
 
-            balance_of_account, number_of_currencies = get_balance_and_currency_count(exchange)
-            trade_data.append({
-                "exchange_name": api_key.exchange_name,
-                "account_holder": account_holder,
-                "balance": balance_of_account,
-                "currency_count": number_of_currencies
-            })
-
-        return {"trades": trade_data}
+        return {"trades": trades_data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
@@ -386,7 +396,13 @@ def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session
         HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
     """
     trade_service = TradeService(db, authorization)
-    return trade_service.add_take_profit_and_stop_loss(request.trade_id, request.take_profit_prices, request.stop_loss_price)
+    return trade_service.add_take_profit_and_stop_loss(request.trade_id, request.take_profit_prices, request.stop_loss_price, request.comment)
+
+@app.post("/complete_trade/")
+def complete_trade(trade_id: int, db: Session = Depends(get_db), authorization: str = Header(None)):
+    trade_service = TradeService(db, authorization)
+    result = trade_service.complete_trade(trade_id)
+    return result
 @app.post("/request-password-reset/")
 def forgot_password(email: str, db: Session = Depends(get_db)):
     """
