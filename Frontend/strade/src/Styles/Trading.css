@@ -1,0 +1,102 @@
+/* Container für den gesamten Bereich */
+.crypto-chart-container {
+    display: flex;
+    width: 100vh;
+  }
+  
+  /* Stil für den Hauptinhalt */
+  .chart-content {
+    flex: 1; /* Nimmt den verbleibenden Platz ein */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Stil für die Kryptowährungsauswahl */
+  .crypto-selector {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .crypto-selector label {
+    color: #fff;
+    margin-right: 10px;
+  }
+  
+  .crypto-selector select {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #333;
+    color: #fff;
+  }
+  
+  /* Angepasster Stil für die .chart-container */
+  .chart-container {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .chart-container h2 {
+    color: #dbdbdb;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .chart-container canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+  
+  /* Stil für den Kaufbereich */
+  .purchase-container {
+    background-color: #2d2d2d;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    display: flex;
+    align-content: center;
+    width: 100vh;
+  }
+  
+  .purchase-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .purchase-form input {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .purchase-form button {
+    padding: 8px 20px;
+    background-color: #4caf50; /* Grüne Farbe */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Übergangseffekt für die Hintergrundfarbe */
+  }
+  
+  .purchase-form button:hover {
+    background-color: #45a049; /* Dunklere grüne Farbe beim Hover */
+  }
+  
+  .purchase-status {
+    text-align: center;
+    margin-top: 10px;
+    color: #fff;
+  }
+  
+  /* Stil für die Achsenbeschriftungen */
+  .chart-container .chartjs-axis {
+    color: #ffffff !important; /* Hellerer Grauton für die Achsenbeschriftungen */
+  }
+  

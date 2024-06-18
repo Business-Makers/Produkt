@@ -138,7 +138,6 @@ export default function Dashboard() {
       <div>
         <h2>Dashboard</h2>
 
-
         <button className="connect-button" onClick={toggleContainer}>Connect a new account</button>
         {isOpen && (
             <div>
@@ -187,22 +186,7 @@ export default function Dashboard() {
                                 ))}
                               </div>
                           ) : (
-                              <div>
-                                {/*
-                      <div className="image-container" onClick={() => handleImageClick(4)}>
-                        <img src="path/to/wallet1.jpg" alt="Wallet Bild 1" />
-                        <p>Wallet selection option 1</p>
-                      </div>
-                      <div className="image-container" onClick={() => handleImageClick(5)}>
-                        <img src="path/to/wallet2.jpg" alt="Wallet Bild 2" />
-                        <p>Wallet selection option 2</p>
-                      </div>
-                      <div className="image-container" onClick={() => handleImageClick(6)}>
-                        <img src="path/to/wallet3.jpg" alt="Wallet Bild 3" />
-                        <p>Wallet selection option 3</p>
-                      </div>
-                      */}
-                              </div>
+                              <div></div>
                           )}
                         </div>
                     )}
