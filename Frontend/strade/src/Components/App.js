@@ -24,7 +24,7 @@ import Settings from './Settings';
  * This is implemented via the use of the BrowserRouter from the package 'react-router-dom'.*/ 
 function App() {
   const { token, setToken } = useToken();
-  let isAuthenticated = !!token;
+  let isAuthenticated = token;
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -41,7 +41,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {!!isAuthenticated ? (
+        {isAuthenticated ? (
           <>
             <header className="App-header">
               <nav className="nav">
