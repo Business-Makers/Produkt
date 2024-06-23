@@ -235,3 +235,4 @@ class Abo(Base):
         self.abo_end = abo_end
         self.abo_status = abo_status
         self.accountID = accountID
+

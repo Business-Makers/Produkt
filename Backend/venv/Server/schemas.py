@@ -211,3 +211,9 @@ class AddTakeProfitStopLossRequest(BaseModel):
     trade_id: int
     take_profit_prices: Optional[List[float]] = None
     stop_loss_price: Optional[float] = None
+
+
+class UpdateTradeRequest(BaseModel):
+    trade_id: int
+    new_stop_loss_price: float
+    new_take_profit_prices: List[float]
