@@ -13,7 +13,7 @@ from fastapi.security import OAuth2PasswordBearer
 from fastapi import HTTPException, status
 from enum import Enum, auto
 from sqlalchemy.orm import Session
-from models import Account, Member
+from models import Account, Member, Api
 import mailText
 import smtp_infos
 from dotenv import load_dotenv
@@ -317,3 +317,14 @@ def getMailText(receiverMail, subject, db: Session):
     text = text.replace("[name]", name)
     text = text.replace("[support]", smtp_infos.username_support)
     return text
+
+def get_api_credentials(account_id: int, exchange_name: str, db: Session):
+    api_data = db.query(Api).filter(Api.accountID == account_id, Api.exchange_name == exchange_name).first()
+    if api_data:
+        return {
+            "api_key": api_data.key,
+            "secret": api_data.secret_Key,
+            "passphrase": api_data.passphrase
+        }
+    else:
+        raise ValueError(f"No API credentials found for user {account_id} and exchange {exchange_name}")

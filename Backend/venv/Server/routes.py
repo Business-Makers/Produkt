@@ -3,22 +3,24 @@ FastAPI Application File
 
 This file contains the main FastAPI application setup, including endpoint definitions and event handlers.
 """
+import asyncio
+import json
 
-from fastapi import FastAPI, Depends, HTTPException, Header
+from fastapi import FastAPI, Depends, HTTPException, Header, BackgroundTasks, WebSocketDisconnect, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from database import get_db, init_db
-from models import Account, Member, Api, AccountPages_Info
-from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation
+from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit
+from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation, OrderRequest, \
+    AddTakeProfitStopLossRequest, UpdateTradeRequest
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
-
+from trade_service import TradeService
 import ccxt
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+from web_socket import websocket_endpoint
+from background_threading import background_threads
+from web_socket import manager
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -30,9 +32,11 @@ app.add_middleware(
     allow_headers=["*"],  # Erlaubte HTTP-Header
 )
 
+background = background_threads()
+
 
 @app.on_event("startup")
-def on_startup():
+async def on_startup():
     """
         Event handler function called on application startup.
 
@@ -41,6 +45,11 @@ def on_startup():
         Inside this function, it calls the `init_db()` function to initialize the database by creating all tables.
         """
     init_db()
+
+    #todo: Background async await
+
+
+app.websocket("\ws\{user_id}")(websocket_endpoint)
 
 
 @app.post("/login/")
@@ -73,8 +82,11 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
 
             mailAdress = find_mail(db_user, db)
             if mailAdress:
-                # send_email(mailAdress, mailTheme.login.name, db)
+                #send_email(mailAdress, mailTheme.login.name, db)
                 pass
+            background.set_authorization(access_token)
+            background.start_background_tasks()
+
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
             raise HTTPException(status_code=401, detail="Incorrect username or password")
@@ -297,6 +309,158 @@ def get_dashboard(db: Session = Depends(get_db), authorization: str = Header(Non
         return {"dashboard": dashboard_data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+
+@app.get("/trades/")
+def get_trade(db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+    Retrieves all trades for the authenticated user.
+
+    Parameters:
+        - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+        - authorization (str): The authorization header containing the Bearer token.
+
+    Returns:
+        dict: A dictionary containing all trades for the authenticated user.
+
+    Raises:
+        HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+    """
+    if authorization is None or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+
+    token = authorization.split(" ")[1]
+    payload = verify_trade_token(token)
+    if payload is None:
+        raise HTTPException(status_code=402, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+    account_id = payload.get("account_id")
+
+    try:
+        api_keys = db.query(Api).filter(Api.accountID == account_id).all()
+        if not api_keys:
+            raise HTTPException(status_code=404, detail="API keys not found for the account")
+
+        trades_data = []
+        for api_key in api_keys:
+            trades = db.query(Trade).filter(Trade.api_id == api_key.api_id).all()
+            for trade in trades:
+                trades_data.append({
+                    "account_Holder": api_key.account_pages_info.account_holder,
+                    "exchange_name": api_key.exchange_name,
+                    "trade_id": trade.trade_id,
+                    "trade_type": trade.trade_type,
+                    "trade_price": trade.trade_price,
+                    "currency_name": trade.currency_name,
+                    "currency_volume": trade.currency_volume,
+                    "trade_status": trade.trade_status,
+                    "date_create": trade.date_create,
+                    "date_bought": trade.date_bought,
+                    "date_sale": trade.date_sale,
+                    "purchase_rate": trade.purchase_rate,
+                    "selling_rate": trade.selling_rate,
+                    "comment": trade.comment,
+                    "stop_loss_price": trade.stop_loss_price,
+                    "take_profits": [{"price": tp.price} for tp in trade.take_profits]
+                })
+        asyncio.create_task(send_real_time_updates(account_id, db, authorization))
+        return {"trades": trades_data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+
+async def send_real_time_updates(account_id: int, db: Session, authorization: str):
+    trade_service = TradeService(db, authorization)
+    api_keys = db.query(Api).filter(Api.accountID == account_id).all()
+
+    while True:
+        for api_key in api_keys:
+            trades = db.query(Trade).filter(Trade.api_id == api_key.api_id).all()
+            exchange = trade_service._get_exchange_instance()
+            for trade in trades:
+                ticker = exchange.fetch_ticker(trade.currency_name)
+                current_price = ticker['last']
+                purchase_rate = trade.purchase_rate
+                selling_rate = (current_price - purchase_rate) * trade.currency_volume
+
+                message = {
+                    "trade_id": trade.trade_id,
+                    "current_price": current_price,
+                    "purchase_rate": purchase_rate,
+                    "selling_rate": selling_rate
+                }
+
+                await manager.broadcast(json.dumps(message), account_id)
+        await asyncio.sleep(10)  # Update every 5 seconds
+
+
+@app.post("/trades/create-order/")
+def create_order(order: OrderRequest, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+    Creates a market or limit order, optionally with take-profit and/or stop-loss.
+
+    Parameters:
+        - order (OrderRequest): The order details.
+        - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+        - authorization (str): The authorization header containing the Bearer token.
+
+    Returns:
+        dict: A dictionary containing the order details if creation is successful.
+
+    Raises:
+        HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+    """
+    trade_service = TradeService(db, authorization)
+    return trade_service.create_order(order)
+
+
+@app.post("/trades/add-take-profit-stop-loss/")
+def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session = Depends(get_db),
+                              authorization: str = Header(None)):
+    """
+    Adds take-profit and/or stop-loss orders to an existing trade.
+
+    Parameters:
+        - request (AddTakeProfitStopLossRequest): The request details containing trade ID, take-profit prices, and stop-loss price.
+        - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+        - authorization (str): The authorization header containing the Bearer token.
+
+    Returns:
+        dict: A dictionary containing the details of the added orders if successful.
+
+    Raises:
+        HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+    """
+    trade_service = TradeService(db, authorization)
+    return trade_service.add_take_profit_and_stop_loss(request.trade_id, request.take_profit_prices,
+                                                       request.stop_loss_price, request.comment)
+
+
+@app.post("/complete_trade/")
+def complete_trade(trade_id: int, db: Session = Depends(get_db), authorization: str = Header(None)):
+    trade_service = TradeService(db, authorization)
+    result = trade_service.complete_trade(trade_id)
+    return result
+
+
+@app.put("/trades/update/")
+def update_trade(request: UpdateTradeRequest, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+    Updates the stop-loss and take-profit prices for an existing trade.
+
+    Parameters:
+        - request (UpdateTradeRequest): The request details containing trade ID, new stop-loss price, and new take-profit prices.
+        - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+        - authorization (str): The authorization header containing the Bearer token.
+
+    Returns:
+        dict: A dictionary containing the details of the updated orders if successful.
+
+    Raises:
+        HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
+    """
+    trade_service = TradeService(db, authorization)
+    return trade_service.update_stop_loss_and_take_profits(request.trade_id, request.new_stop_loss_price,
+                                                           request.new_take_profit_prices)
 
 
 @app.post("/request-password-reset/")
