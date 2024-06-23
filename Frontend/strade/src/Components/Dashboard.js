@@ -56,7 +56,7 @@ async function retrieveData(token){
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { token} = useToken();
+  const { token } = useToken();
 
   const [isOpen, setIsOpen] = useState(false);
   const [selection, setSelection] = useState(null);
