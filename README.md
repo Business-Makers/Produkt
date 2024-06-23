@@ -9,7 +9,12 @@ This frontend is built using React, including the following modules:
 ## Installation
 To set up this project, run the following commands:
 ```bash
-pip install fastapi uvicorn sqlalchemy pydantic aiocache "python-jose[cryptography]" pytest aiocache
+npm install apexcharts react-apexcharts
+npm install axios
+npm install react-icons
+npm install react-router-doms
+npm install chart.js react-chartjs-2
+npm install chartjs-adapter-date-fns
 ```
 
 ## Contact

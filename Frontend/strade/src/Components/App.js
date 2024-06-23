@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import '../Styles/App.css';
 import '../Styles/LoggedIn.css';
 import Homepage from './Homepage';
@@ -13,6 +13,9 @@ import Trading from './Trading';
 import Portfolio from './Portfolio';
 import Market from './Market';
 import Comms from './Comms';
+import Profile from './Profile';
+import ProfileIcon from './ProfileIcon';
+import Settings from './Settings';
 
 /**The Navigation of the whole Frontend: 
  * 
@@ -21,12 +24,24 @@ import Comms from './Comms';
  * This is implemented via the use of the BrowserRouter from the package 'react-router-dom'.*/ 
 function App() {
   const { token, setToken } = useToken();
-  const isAuthenticated = !!token;
+  let isAuthenticated = token;
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogOut = () => {
+    sessionStorage.removeItem(token);
+    setIsDropdownOpen(false);
+    // Weitere Logout-Logik hier
+  };
 
   return (
     <Router>
       <div className="App">
-        {!isAuthenticated ? (
+        {isAuthenticated ? (
           <>
             <header className="App-header">
               <nav className="nav">
@@ -61,6 +76,18 @@ function App() {
           <div className="App2">
             <header className="App-header2">
               <SideNav />
+              <div className="profile-icon-container">
+                <ProfileIcon onClick={toggleDropdown} />
+                {isDropdownOpen && (
+                  <div className="dropdown-menu">
+                    <ul>
+                      <li><Link to="/profile">Profile</Link></li>
+                      <li><Link to="/settings">Settings</Link></li>
+                      <li><button onClick={handleLogOut}>Log Out</button></li>
+                    </ul>
+                  </div>
+                )}
+              </div>
             </header>
             <div className="main-content">
               <Routes>
@@ -71,6 +98,8 @@ function App() {
                 <Route path="/comms" element={<Comms />} />
                 <Route path="/" element={<Dashboard />} />
                 <Route path="*" element={<Navigate to="/" />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/settings" element={<Settings />} />
               </Routes>
             </div>
           </div>

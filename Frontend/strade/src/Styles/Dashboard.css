@@ -115,3 +115,51 @@
     background-color: #218838;
   }
   
+  /* Allgemeine Stile für den Container */
+.Account-Data {
+  display: flex; /* Flexbox-Layout aktivieren */
+  flex-wrap: wrap; /* Elemente umbrechen, wenn sie nicht in eine Zeile passen */
+  justify-content:center; /* Platz zwischen den Elementen */
+  align-items: center; /* Elemente vertikal zentrieren */
+  background-color: #404040;
+  padding: 10px;
+  border-radius: 15px;
+  width: 100vh;
+}
+
+/* Stile für die Balance-Box */
+.Balance {
+  flex: 1; /* Gleichmäßige Verteilung des verfügbaren Platzes */
+  min-width: 100px; /* Mindestbreite für kleine Bildschirme */
+  max-width: 250px;
+  margin: 10px; /* Außenabstand */
+  padding: 5px; /* Innenabstand */
+  background-color: #3fcdc4; /* Hintergrundfarbe */
+  border-radius: 8px; /* Abgerundete Ecken */
+  text-align: center; /* Text zentrieren */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Äußerer Schatten mit weicher Kante */
+}
+
+/* Stile für das Chart-Element */
+.chart-container {
+  flex: 2; /* Größerer Platz für das Diagramm */
+  min-width: 300px; /* Mindestbreite für kleine Bildschirme */
+  margin: 10px; /* Außenabstand */
+  color: black;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+  .Account-Data {
+    flex-direction: column; /* Elemente in Spalten anordnen auf kleinen Bildschirmen */
+    align-items: stretch; /* Elemente über die gesamte Breite dehnen */
+  }
+
+  .Balance, .chart-container {
+    margin: 5px 0; /* Vertikaler Abstand zwischen den Elementen */
+  }
+}
+
+.Money {
+  color: #238321;
+}

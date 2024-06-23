@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import '../Styles/LoggedIn.css';
 import '../Styles/Dashboard.css';
 import useToken from './useToken';
+import Chart from './Chart';
+import Donut from './DonutChart';
 import axios from 'axios';
 import KucoinImage from '../Images/Kucoin.png';
 import BinanceImage from '../Images/Binance.png';
@@ -54,7 +56,7 @@ async function retrieveData(token){
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { token} = useToken();
+  const { token } = useToken();
 
   const [isOpen, setIsOpen] = useState(false);
   const [selection, setSelection] = useState(null);
@@ -127,10 +129,14 @@ export default function Dashboard() {
     }
   };
 
+  const chartData = {
+    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    series: [30, 40, 35, 50, 49, 60]
+  };
+
   return (
       <div>
         <h2>Dashboard</h2>
-
 
         <button className="connect-button" onClick={toggleContainer}>Connect a new account</button>
         {isOpen && (
@@ -180,22 +186,7 @@ export default function Dashboard() {
                                 ))}
                               </div>
                           ) : (
-                              <div>
-                                {/*
-                      <div className="image-container" onClick={() => handleImageClick(4)}>
-                        <img src="path/to/wallet1.jpg" alt="Wallet Bild 1" />
-                        <p>Wallet selection option 1</p>
-                      </div>
-                      <div className="image-container" onClick={() => handleImageClick(5)}>
-                        <img src="path/to/wallet2.jpg" alt="Wallet Bild 2" />
-                        <p>Wallet selection option 2</p>
-                      </div>
-                      <div className="image-container" onClick={() => handleImageClick(6)}>
-                        <img src="path/to/wallet3.jpg" alt="Wallet Bild 3" />
-                        <p>Wallet selection option 3</p>
-                      </div>
-                      */}
-                              </div>
+                              <div></div>
                           )}
                         </div>
                     )}
@@ -203,13 +194,20 @@ export default function Dashboard() {
               )}
             </div>
         )}
+        <div className="Account-Data">
+          <Donut></Donut>
+          <div className="Balance">
+            <h4 style={{color: 'black'}}>Current Balance:</h4>
+            <h3 className="Money"> {chartData.series[chartData.series.length - 1]}</h3>
+          </div>
+          <Chart data={chartData}></Chart>
+        </div>
 
-        <div>
-          <p>{} </p>
+        <div className='Specifics'>
+          
         </div>
 
       </div>
-
 
   );
 }
