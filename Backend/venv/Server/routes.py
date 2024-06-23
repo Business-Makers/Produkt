@@ -151,7 +151,7 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         db.add(new_account)
         db.commit()
 
-        # send_email(user.eMail, mailTheme.registration.name, db)
+        send_email(user.eMail, mailTheme.registration.name, db)
         return {"message": "Registration successful! We're excited to have you with us."}
     except Exception as e:
         db.rollback()
@@ -463,6 +463,36 @@ def update_trade(request: UpdateTradeRequest, db: Session = Depends(get_db), aut
                                                            request.new_take_profit_prices)
 
 
+@app.delete("/cancel_order/{order_id}")
+def cancel_order(order_id: str, symbol: str, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+        Cancels an order and removes it from the database.
+
+        Parameters:
+            - order_id (str): The ID of the order to cancel.
+            - symbol (str): The symbol of the order to cancel.
+            - db (Session, optional): The database session dependency obtained using `Depends(get_db)`.
+            - authorization (str): The authorization header containing the Bearer token.
+
+        Returns:
+            dict: A dictionary containing the cancellation details if successful.
+
+        Raises:
+            HTTPException: If the authorization header is missing or invalid, the order is not found, or an internal error occurs.
+    """
+    trade_service = TradeService(db, authorization)
+    # Storniere die Order auf der Börse
+    response = trade_service.cancel_order(order_id, symbol)
+
+    # Entferne die Order aus der Datenbank
+    trade = db.query(Trade).filter(Trade.trade_id == order_id).first()
+    if not trade:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    db.delete(trade)
+    db.commit()
+
+    return {"message": "Order canceled and removed from database successfully", "order": response}
 @app.post("/request-password-reset/")
 def forgot_password(email: str, db: Session = Depends(get_db)):
     """

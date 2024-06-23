@@ -3,6 +3,7 @@ import Chart from 'react-apexcharts';
 import '../Styles/Chart.css';
 
 const MyChart = ({ data }) => {
+    const categories = data.map(account => account.exchange_name);
   const chartOptions = {
     chart: {
       id: 'basic-line',
@@ -29,7 +30,7 @@ const MyChart = ({ data }) => {
       width: 2 // Linienbreite
     },
     xaxis: {
-        categories: data.categories,
+        categories: categories,
         labels: {
           style: {
             colors: '#FFFFFF'  // Farbe für die x-Achsenbeschriftungen
@@ -93,7 +94,7 @@ const MyChart = ({ data }) => {
   const chartSeries = [
     {
       name: 'Balance',
-      data: data.series
+      data: data.map(account => account.balance)
     }
   ];
 

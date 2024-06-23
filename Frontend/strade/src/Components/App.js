@@ -41,7 +41,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {isAuthenticated ? (
+        {!!!isAuthenticated ? (
           <>
             <header className="App-header">
               <nav className="nav">
@@ -97,6 +97,7 @@ function App() {
                 <Route path="/market" element={<Market />} />
                 <Route path="/comms" element={<Comms />} />
                 <Route path="/" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="*" element={<Navigate to="/" />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />

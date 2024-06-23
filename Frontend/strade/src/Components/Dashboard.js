@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Styles/LoggedIn.css';
 import '../Styles/Dashboard.css';
 import useToken from './useToken';
@@ -18,9 +18,6 @@ import GEMINI from '../Images/gemini.png';
 import HTX from '../Images/htx.png';
 import KRAKEN from '../Images/kraken.png';
 import OKX from '../Images/OKX.png';
-
-import { useNavigate } from 'react-router-dom';
-
 
 async function connectAccount(formData, token) {
   try {
@@ -55,8 +52,9 @@ async function retrieveData(token){
 
 
 export default function Dashboard() {
-  const navigate = useNavigate();
   const { token } = useToken();
+  const [dashboardData, setDashboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selection, setSelection] = useState(null);
@@ -115,23 +113,18 @@ export default function Dashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await connectAccount(formData, token);
-      console.log('Account successfully connected');
-      navigate('/dashboard');
+      const spam = await connectAccount(formData, token);
       window.alert("Exchange connected successfully");
       const account_data = await retrieveData(token);
       console.log("Test", account_data);
-      window.alert("retrieve Data successfull");
+      setDashboardData(account_data);
+      console.log("Name-Test:", dashboardData.exchange_name);
+      setLoading(false);
 
     } catch (error) {
       window.alert("Exchange connection failed");
       console.error('Error connecting account:', error);
     }
-  };
-
-  const chartData = {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    series: [30, 40, 35, 50, 49, 60]
   };
 
   return (
@@ -194,20 +187,21 @@ export default function Dashboard() {
               )}
             </div>
         )}
-        <div className="Account-Data">
-          <Donut></Donut>
-          <div className="Balance">
-            <h4 style={{color: 'black'}}>Current Balance:</h4>
-            <h3 className="Money"> {chartData.series[chartData.series.length - 1]}</h3>
+        {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <div>
+          <h2>Exchange Data</h2>
+          <ul>
+              <li>
+                <strong>Name:</strong> {dashboardData.exchange_name}<br />
+                <strong>Owner:</strong> {dashboardData.account_holder}<br />
+                <strong>Balance:</strong> {dashboardData.balance}<br />
+                <strong>Currency Count:</strong> {dashboardData.currency_count}
+              </li>
+          </ul>
+        </div>
+      )}
           </div>
-          <Chart data={chartData}></Chart>
-        </div>
-
-        <div className='Specifics'>
-          
-        </div>
-
-      </div>
-
-  );
-}
+          );
+        }

@@ -367,3 +367,13 @@ class TradeService:
             raise e
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+    def cancel_order(self, order_id: str, symbol: str):
+        try:
+            exchange = self._get_exchange_instance()
+            canceled_order = exchange.cancel_order(order_id, symbol)
+            return {"message": "Order canceled successfully", "order": canceled_order}
+        except HTTPException as e:
+            raise e
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")

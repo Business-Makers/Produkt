@@ -31,7 +31,7 @@ export default function LogIn() {
       setToken(data.access_token);
       console.log('Login successful:', data);
       window.alert('Login successful!');
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
     }
