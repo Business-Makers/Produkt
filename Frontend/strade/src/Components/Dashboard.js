@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
 import '../Styles/LoggedIn.css';
 import '../Styles/Dashboard.css';
-import useToken from './useToken';
-import Chart from './Chart';
-import Donut from './DonutChart';
+
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import useToken from './useToken';
 import KucoinImage from '../Images/Kucoin.png';
 import BinanceImage from '../Images/Binance.png';
 import BinanceTRImage from '../Images/BinanceTR.png';
@@ -13,49 +12,20 @@ import BITGET from '../Images/Bitget.png';
 import BITSTAMP from '../Images/Bitstamp.png';
 import BYBIT from '../Images/Bybit.png';
 import COINBASE from '../Images/coinBase.png';
-import GATEIO from '../Images/gate.iopng.png';
+import GATEIO from '../Images/gateio.png';
 import GEMINI from '../Images/gemini.png';
 import HTX from '../Images/htx.png';
 import KRAKEN from '../Images/kraken.png';
 import OKX from '../Images/OKX.png';
 
-async function connectAccount(formData, token) {
-  try {
-    const response = await axios.post('http://localhost:8001/connect-exchange/', formData, {
-      headers: {
-        Authorization: `Bearer ${token}` // Token als Header senden
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error connecting to the exchange:', error);
-    throw error;
-  }
-}
+import { mockDashboardData } from './mockData';
 
-async function retrieveData(token){
-  try{
-    const response = await axios.get('http://localhost:8001/dashboard/',{
-      headers: {
-        Authorization: `Bearer ${token}` // Token als Header senden
-      }
-    });
-
-    return response.data;
-  }
-  catch (error){
-    console.error('Error response Data');
-
-    throw error;
-  }
-}
-
+// TODO: Wenn man von Terminal auf Dashboard wechselt, kommt dieser removeChild-Fehler
 
 export default function Dashboard() {
   const { token } = useToken();
   const [dashboardData, setDashboardData] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [isOpen, setIsOpen] = useState(false);
   const [selection, setSelection] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -72,7 +42,7 @@ export default function Dashboard() {
     { id: 2, name: 'binance', imgSrc: BinanceImage},
     { id: 3, name: 'binanceTR', imgSrc: BinanceTRImage},
     { id: 4, name: 'bitfinex', imgSrc: BITFINEX},
-    { id: 5, name: 'bidget', imgSrc: BITGET},
+    { id: 5, name: 'bitget', imgSrc: BITGET},
     { id: 6, name: 'bitstamp', imgSrc: BITSTAMP},
     { id: 7, name: 'bybit', imgSrc: BYBIT},
     { id: 8, name: 'coinBase', imgSrc: COINBASE},
@@ -82,6 +52,22 @@ export default function Dashboard() {
     { id: 12, name: 'kraken', imgSrc: KRAKEN},
     { id: 13, name: 'OKX', imgSrc: OKX},
   ];
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        setLoading(true);
+        const account_data = await retrieveData(token);
+        setDashboardData(account_data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [token]);
 
   const toggleContainer = () => {
     setIsOpen(!isOpen);
@@ -98,7 +84,7 @@ export default function Dashboard() {
     setSelectedImage(imageId);
     setFormData(prevFormData => ({
       ...prevFormData,
-     exchange_name: selectedExchange.name
+      exchange_name: selectedExchange.name
     }));
   };
 
@@ -116,11 +102,10 @@ export default function Dashboard() {
       const spam = await connectAccount(formData, token);
       window.alert("Exchange connected successfully");
       const account_data = await retrieveData(token);
-      console.log("Test", account_data);
+      // const account_data = mockDashboardData;
       setDashboardData(account_data);
-      console.log("Name-Test:", dashboardData.exchange_name);
+      localStorage.setItem('dashboardData', JSON.stringify(account_data));
       setLoading(false);
-
     } catch (error) {
       window.alert("Exchange connection failed");
       console.error('Error connecting account:', error);
@@ -128,80 +113,112 @@ export default function Dashboard() {
   };
 
   return (
-      <div>
-        <h2>Dashboard</h2>
+    <div>
+      <h2>Dashboard</h2>
 
-        <button className="connect-button" onClick={toggleContainer}>Connect a new account</button>
-        {isOpen && (
+      <button className="connect-button" onClick={toggleContainer}>Connect a new account</button>
+      {isOpen && (
+        <div>
+          {!selection ? (
             <div>
-              {!selection ? (
-                  <div>
-                    <button className="selection-button" onClick={() => handleSelectionClick('Exchange')}>Exchange
-                    </button>
-                  </div>
+              <button className="selection-button" onClick={() => handleSelectionClick('Exchange')}>Exchange</button>
+            </div>
+          ) : (
+            <div>
+              {selectedImage ? (
+                <div className="editing-container">
+                  <form onSubmit={handleSubmit}>
+                    <div>
+                      <label htmlFor='account_holder'>Name:</label>
+                      <input id="account_holder" type="text" value={formData.account_holder}
+                             onChange={handleInputChange} />
+                    </div>
+                    <div>
+                      <label htmlFor="key">API Key:</label>
+                      <input id="key" type="text" value={formData.key} onChange={handleInputChange} />
+                    </div>
+                    <div>
+                      <label htmlFor="secret_key">API Secret:</label>
+                      <input id="secret_key" type="text" value={formData.secret_key} onChange={handleInputChange} />
+                    </div>
+                    <div>
+                      <label htmlFor="passphrase">Passphrase:</label>
+                      <input id="passphrase" type="text" value={formData.passphrase} onChange={handleInputChange} />
+                    </div>
+                    <button type="submit">Connect to {exchanges.find(exchange => exchange.id === selectedImage)?.name}</button>
+                  </form>
+                </div>
               ) : (
-                  <div>
-                    {selectedImage ? (
-                        <div className="editing-container">
-                          <form onSubmit={handleSubmit}>
-                            <div>
-                              <label htmlFor='account_holder'>Name:</label>
-                              <input id="account_holder" type="text" value={formData.account_holder}
-                                     onChange={handleInputChange}/>
-                            </div>
-                            <div>
-                              <label htmlFor="key">API Key:</label>
-                              <input id="key" type="text" value={formData.key} onChange={handleInputChange}/>
-                            </div>
-                            <div>
-                              <label htmlFor="secret_key">API Secret:</label>
-                              <input id="secret_key" type="text" value={formData.secret_key}
-                                     onChange={handleInputChange}/>
-                            </div>
-                            <div>
-                              <label htmlFor="passphrase">Passphrase:</label>
-                              <input id="passphrase" type="text" value={formData.passphrase}
-                                     onChange={handleInputChange}/>
-                            </div>
-                            <button type="submit">Connect
-                              to {exchanges.find(exchange => exchange.id === selectedImage)?.name}</button>
-                          </form>
+                <div>
+                  {selection === 'Exchange' ? (
+                    <div>
+                      {exchanges.map(exchange => (
+                        <div key={exchange.id} className="image-container"
+                             onClick={() => handleImageClick(exchange.id)}>
+                          <img src={exchange.imgSrc} alt={exchange.name} />
                         </div>
-                    ) : (
-                        <div>
-                          {selection === 'Exchange' ? (
-                              <div>
-                                {exchanges.map(exchange => (
-                                    <div key={exchange.id} className="image-container"
-                                         onClick={() => handleImageClick(exchange.id)}>
-                                      <img src={exchange.imgSrc} alt={exchange.name}/>
-                                    </div>
-                                ))}
-                              </div>
-                          ) : (
-                              <div></div>
-                          )}
-                        </div>
-                    )}
-                  </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
+                </div>
               )}
             </div>
-        )}
-        {loading ? (
+          )}
+        </div>
+      )}
+      {loading ? (
         <div>Loading...</div>
       ) : (
         <div>
-          <h2>Exchange Data</h2>
-          <ul>
-              <li>
-                <strong>Name:</strong> {dashboardData.exchange_name}<br />
-                <strong>Owner:</strong> {dashboardData.account_holder}<br />
-                <strong>Balance:</strong> {dashboardData.balance}<br />
-                <strong>Currency Count:</strong> {dashboardData.currency_count}
-              </li>
-          </ul>
+          {dashboardData && dashboardData.length > 0 ? ( // Prüfen, ob dashboardData existiert und nicht leer ist
+            <div>
+              <h2>Exchange Data</h2>
+              {dashboardData.map((data, index) => (
+                <ul key={index}>
+                  <li>
+                    <strong>Name:</strong> {data.exchange_name}<br />
+                    <strong>Owner:</strong> {data.account_holder}<br />
+                    <strong>Balance:</strong> {data.balance}<br />
+                    <strong>Currency Count:</strong> {data.currency_count}
+                  </li>
+                </ul>
+              ))}
+            </div>
+          ) : (
+            <div>No exchange connected.</div>
+          )}
         </div>
       )}
-          </div>
-          );
-        }
+    </div>
+  );
+}
+
+async function connectAccount(formData, token) {
+  try {
+    const response = await axios.post('http://localhost:8001/connect-account/', formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error connecting account:', error);
+    throw error;
+  }
+}
+
+async function retrieveData(token) {
+  try {
+    const response = await axios.get('http://localhost:8001/dashboard/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.dashboard; // Dashboard-Array zurückgeben
+  } catch (error) {
+    console.error('Error fetching dashboard data:', error);
+    throw error;
+  }
+}
