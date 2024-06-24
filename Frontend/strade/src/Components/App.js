@@ -23,25 +23,27 @@ import Settings from './Settings';
  * 
  * This is implemented via the use of the BrowserRouter from the package 'react-router-dom'.*/ 
 function App() {
-  const { token, setToken } = useToken();
-  let isAuthenticated = token;
-
+  const { token, setToken, removeToken } = useToken();
+  const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(!!token);
+  }, [token]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   const handleLogOut = () => {
-    sessionStorage.removeItem(token);
-    setIsDropdownOpen(false);
-    // Weitere Logout-Logik hier
+    removeToken();
+    setIsAuthenticated(false);
   };
 
   return (
     <Router>
       <div className="App">
-        {isAuthenticated ? (
+        {!!! isAuthenticated ? (
           <>
             <header className="App-header">
               <nav className="nav">

@@ -9,7 +9,7 @@ export default function useToken() {
   const [token, setToken] = useState(getToken());
 
   const saveToken = userToken => {
-    sessionStorage.setItem('access_token', userToken); // TODO: Das hier hängt auch mit der schlechten Tokenerstellung aus LogIn zusammen
+    sessionStorage.setItem('access_token', userToken);
     setToken(userToken);
   };
 
@@ -18,32 +18,3 @@ export default function useToken() {
     token
   }
 }
-
-/*
-export default function useToken() {
-  const getToken = () => {
-    const tokenString = sessionStorage.getItem('token');
-    if (!tokenString) {
-      return null;
-    }
-    try {
-      const userToken = JSON.parse(tokenString);
-      return userToken?.token || null;
-    } catch (e) {
-      console.error("Error parsing token from localStorage", e);
-      return null;
-    }
-  };
-
-  const [token, setToken] = useState(getToken());
-
-  const saveToken = userToken => {
-    sessionStorage.setItem('token', JSON.stringify(userToken));
-    setToken(userToken.token);
-  };
-
-  return {
-    setToken: saveToken,
-    token
-  }
-}*/

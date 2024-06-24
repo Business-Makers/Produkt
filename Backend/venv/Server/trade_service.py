@@ -55,34 +55,49 @@ class TradeService:
 
             exchange = self._get_exchange_instance()
             order_params = {
-                'symbol': order.symbol,
-                'side': order.side,
-                'amount': order.amount,
-                'price': order.price,
-                'params': {'timeInForce': 'GTC'}
+                'order_type': order.order_type
             }
 
             if order.order_type == 'market':
-                created_order = exchange.create_market_order(**order_params)
+                additional_params = {
+                    'symbol': order.symbol,
+                    'side': order.side,
+                    'amount': order.amount,
+                    #'take_profit_price': order.take_profit_prices,
+                    #'stop_loss_price': order.stop_loss_prices,
+                    'params': {'timeInForce': 'GTC'}
+                }
+                order_params.update(additional_params)
+                created_order = exchange.create_market_order(**additional_params)
                 date_bought = datetime.now()
 
             elif order.order_type == 'limit':
-                created_order = exchange.create_limit_order(**order_params)
+                additional_params = {
+                    'symbol': order.symbol,
+                    'side': order.side,
+                    'amount': order.amount,
+                    'price': order.price,
+                    #'stop_price': order.stop_price,
+                    #'take_profit_price': order.take_profit_prices,
+                    #'stop_loss_price': order.stop_loss_prices,
+                    'params': {'timeInForce': 'GTC'}
+                }
+                order_params.update(additional_params)
+                created_order = exchange.create_limit_order(**additional_params)
                 date_bought = None
             else:
                 raise HTTPException(status_code=400, detail="Invalid order type")
 
-            new_trade = Trade(
-                trade_price=order.trade_price,
-                trade_type=order.order_type,
-                currency_name=order.symbol,
-                currency_volume=order.amount,
-                trade_status=created_order['status'],
-                date_create=created_order['timestamp'],
-                date_bought=date_bought,
-                api_id=self.api_key.api_id,
-                stop_loss_price=order.stop_loss_price
-            )
+            if order.order_type == 'market':
+                new_trade = Trade(
+                    trade_type=order.order_type,
+                    currency_name=order.symbol,
+                    currency_volume=order.amount,
+                    trade_status=created_order['status'],
+                    date_create=created_order['timestamp'],
+                    date_bought=date_bought,
+                    api_id=order.
+                )
             self.db.add(new_trade)
             self.db.commit()
             self.db.refresh(new_trade)

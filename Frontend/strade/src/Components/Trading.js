@@ -19,17 +19,28 @@ const CryptoChart = () => {
   const token = useToken();
 
   const handleBuy = async () => {
-    const orderData = {
-      trade_price: parseFloat(price),
-      symbol: selectedCrypto,
-      side: 'buy',
-      amount: parseFloat(amount),
-      price: orderType === 'limit' ? parseFloat(price) : undefined,
-      stop_price: orderType === 'limit' ? parseFloat(stopPrice) : undefined,
-      order_type: orderType,
-      take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : undefined,
-      stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined,
-    };
+      let orderData;
+      if (orderType.toLowerCase() === 'market') {
+          orderData = {
+              order_type: orderType.toLowerCase(),
+              symbol: selectedCrypto,
+              side: selectedExchange,
+              amount: parseFloat(amount),
+              take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : undefined,
+              stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined
+          };
+      } else {
+      orderData = {
+          order_type: orderType.toLowerCase(),
+          symbol: selectedCrypto,
+          side: selectedExchange,
+          amount: parseFloat(amount),
+          price: orderType === 'limit' ? parseFloat(price) : undefined,
+          stop_price: orderType === 'limit' ? parseFloat(stopPrice) : undefined,
+          take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : undefined,
+          stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined
+      };
+  }
 
     try {
       const response = await axios.post('http://localhost:8001/trades/create-order/', orderData, {
@@ -39,6 +50,7 @@ const CryptoChart = () => {
       });
       console.log('Order placed successfully', response.data);
     } catch (error) {
+          console.log(orderData);
       console.error('Error placing order', error);
     }
   };
@@ -110,14 +122,14 @@ const CryptoChart = () => {
               />
             </>
           )}
-          <label htmlFor="takeProfitPrices">Take Profit Prices (comma separated):</label>
+          <label htmlFor="takeProfitPrices">Take Profit Prices (comma separated) (optional):</label>
           <input
             type="text"
             id="takeProfitPrices"
             value={takeProfitPrices}
             onChange={(e) => setTakeProfitPrices(e.target.value.split(','))}
           />
-          <label htmlFor="stopLossPrice">Stop Loss Price:</label>
+          <label htmlFor="stopLossPrice">Stop Loss Price (optional):</label>
           <input
             type="number"
             id="stopLossPrice"
