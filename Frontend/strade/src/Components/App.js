@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
+import { ExchangeProvider } from './ExchangeContext';
 import '../Styles/App.css';
 import '../Styles/LoggedIn.css';
 import Homepage from './Homepage';
@@ -36,14 +37,15 @@ function App() {
   };
 
   const handleLogOut = () => {
-    removeToken();
+    sessionStorage.removeItem('access_token');
     setIsAuthenticated(false);
   };
 
   return (
+  <ExchangeProvider>
     <Router>
       <div className="App">
-        {!!! isAuthenticated ? (
+        {isAuthenticated ? (
           <>
             <header className="App-header">
               <nav className="nav">
@@ -109,6 +111,7 @@ function App() {
         )}
       </div>
     </Router>
+  </ExchangeProvider>
   );
 }
 

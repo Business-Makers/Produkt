@@ -4,11 +4,12 @@ import '../Styles/Trading.css';
 import React, { useState } from 'react';
 import TradingViewWidget from './TradingViewWidget';
 import useToken from './useToken';
+import { useExchanges } from './ExchangeContext';
 import axios from 'axios';
 
 const CryptoChart = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('BTC');
-  const [selectedExchange, setSelectedExchange] = useState('KUCOIN');
+  const [selectedExchange, setSelectedExchange] = useState('');
   const [orderType, setOrderType] = useState('market');
   const [amount, setAmount] = useState('');
   const [price, setPrice] = useState('');
@@ -16,6 +17,7 @@ const CryptoChart = () => {
   const [takeProfitPrices, setTakeProfitPrices] = useState([]);
   const [stopLossPrice, setStopLossPrice] = useState('');
 
+  const { exchanges } = useExchanges();
   const token = useToken();
 
   const handleBuy = async () => {
@@ -73,11 +75,13 @@ const CryptoChart = () => {
         <div className="exchange-selector">
           <label htmlFor="exchange">Select Exchange: </label>
           <select id="exchange" value={selectedExchange} onChange={(e) => setSelectedExchange(e.target.value)}>
-            <option value="KUCOIN">KuCoin</option>
-            <option value="BINANCE">Binance</option>
-            <option value="COINBASE">Coinbase</option>
-            <option value="KRAKEN">Kraken</option>
-            <option value="BITFINEX">Bitfinex</option>
+            {exchanges.length === 0 ? (
+              <option value="" disabled>No exchanges connected</option>
+            ) : (
+              exchanges.map((exchange, index) => (
+                <option key={index} value={exchange.exchange_name}>{exchange.exchange_name}</option>
+              ))
+            )}
           </select>
         </div>
         <div className="chart-container">
