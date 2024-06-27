@@ -4,9 +4,14 @@ from models import Api, Trade, TakeProfit
 from utils import verify_trade_token
 from fastapi import HTTPException, FastAPI
 from datetime import datetime
+import logging
 
+logging.basicConfig(filename='trade_debug.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
+logger = logging.getLogger(__name__)
 class TradeService:
+
+
     def __init__(self, db: Session, authorization: str):
         self.db = db
         self.authorization = authorization
@@ -60,7 +65,9 @@ class TradeService:
 
     def create_order(self, order):
         try:
+            logger.info("Erstelle Bestellung: %s", order)
             if not self.has_sufficient_usdt_balance(order.amount * order.price):
+                logger.warning("Unzureichender USDT-Bestand für Bestellung: %s", order)
                 raise HTTPException(status_code=400, detail="Insufficient USDT balance")
 
             exchange = self._get_exchange_instance()
@@ -80,6 +87,7 @@ class TradeService:
                 order_params.update(additional_params)
                 created_order = exchange.create_market_order(**additional_params)
                 date_bought = datetime.now()
+                logger.info("Market-Bestellung erstellt: %s", created_order)
 
             elif order.order_type == 'limit':
                 additional_params = {
@@ -95,7 +103,9 @@ class TradeService:
                 order_params.update(additional_params)
                 created_order = exchange.create_limit_order(**additional_params)
                 date_bought = None
+                logger.info("Limit-Bestellung erstellt: %s", created_order)
             else:
+                logger.error("Ungültiger Bestelltyp: %s", order.order_type)
                 raise HTTPException(status_code=400, detail="Invalid order type")
             new_trade = None
             api_id = self.get_api_id(order)
@@ -124,17 +134,22 @@ class TradeService:
             self.db.add(new_trade)
             self.db.commit()
             self.db.refresh(new_trade)
+            logger.info("Neuer Trade in der Datenbank gespeichert: %s", new_trade)
 
             # Optionally add Take-Profit and Stop-Loss orders
             if order.take_profit_prices:
                 self.add_take_profits(new_trade.trade_id, order.take_profit_prices)
+                logger.info("Take-Profit-Aufträge hinzugefügt: %s", order.take_profit_prices)
             if order.stop_loss_price:
                 self.add_stop_loss(new_trade.trade_id, order.stop_loss_price)
+                logger.info("Stop-Loss-Auftrag hinzugefügt: %s", order.stop_loss_price)
 
             return {"message": "Order created successfully", "order": created_order}
         except HTTPException as e:
+            logger.error("HTTP-Fehler bei der Bestellungserstellung: %s", e.detail)
             raise e
         except Exception as e:
+            logger.exception("Interner Serverfehler bei der Bestellungserstellung")
             raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
     def add_take_profits(self, trade_id, take_profit_prices):

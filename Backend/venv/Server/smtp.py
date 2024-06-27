@@ -4,14 +4,13 @@ from email.mime.text import MIMEText
 import smtp_infos
 from fastapi import HTTPException
 import smtplib
-import logging
 from utils import getMailText
 from sqlalchemy.orm import Session
 
 usernameSMTP = smtp_infos.username_cont
 passwordSMTP = smtp_infos.password_cont
 
-logging.basicConfig(filename='email_debug.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
+
 
 
 def send_email(receiver, subject, db: Session):
@@ -49,7 +48,7 @@ def send_email(receiver, subject, db: Session):
     receiver_mail = receiver
     subject_mail = subject
     body = getMailText(receiver, subject, db)
-    logging.debug(f"Body: {body}")
+
 
     try:
         msg = MIMEMultipart()
@@ -58,20 +57,14 @@ def send_email(receiver, subject, db: Session):
         msg['Subject'] = subject_mail
         msg.attach(MIMEText(body, 'plain'))
 
-        logging.debug("Message Content:")
-        logging.debug(f"From: {sender_mail}")
-        logging.debug(f"To: {receiver_mail}")
-        logging.debug(f"Subject: {subject_mail}")
-        logging.debug(f"Body: {body}")
 
         try:
             text = msg.as_string()
             server.sendmail(sender_mail, receiver_mail, text)
-            logging.debug("Converted Message:")
-            logging.debug(text)
+
 
         except Exception as e:
-            logging.error(f"Could not create msg: {e}")
+            return e
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Could not create msg")
