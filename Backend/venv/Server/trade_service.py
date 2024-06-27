@@ -2,7 +2,7 @@ import ccxt
 from sqlalchemy.orm import Session
 from models import Api, Trade, TakeProfit
 from utils import verify_trade_token
-from fastapi import HTTPException
+from fastapi import HTTPException, FastAPI
 from datetime import datetime
 
 
@@ -12,6 +12,7 @@ class TradeService:
         self.authorization = authorization
         self.account_id = self._get_account_id_from_token()
         self.api_key = self._get_api_key()
+        self.api_id = None
 
     def _get_account_id_from_token(self):
         if self.authorization is None:
@@ -22,6 +23,15 @@ class TradeService:
             raise HTTPException(status_code=401, detail="Invalid or expired token",
                                 headers={"WWW-Authenticate": "Bearer"})
         return payload.get("account_id")
+
+    def get_api_id(self, order):
+        apiID = None
+        api_name = order.side
+        account_apis = self.db.query(Api).filter(Api.accountID == self.account_id).all()
+        for a in account_apis:
+            if a.exchange_name == api_name:
+                apiID = a.api_id
+        raise HTTPException(status_code=404, detail=f"API named '{api_name}' not found.")
 
     def _get_api_key(self):
         api_key = self.db.query(Api).filter(Api.accountID == self.account_id).first()
@@ -57,14 +67,14 @@ class TradeService:
             order_params = {
                 'order_type': order.order_type
             }
-
+            created_order = None
             if order.order_type == 'market':
                 additional_params = {
                     'symbol': order.symbol,
                     'side': order.side,
                     'amount': order.amount,
-                    #'take_profit_price': order.take_profit_prices,
-                    #'stop_loss_price': order.stop_loss_prices,
+                    # 'take_profit_price': order.take_profit_prices,
+                    # 'stop_loss_price': order.stop_loss_prices,
                     'params': {'timeInForce': 'GTC'}
                 }
                 order_params.update(additional_params)
@@ -77,9 +87,9 @@ class TradeService:
                     'side': order.side,
                     'amount': order.amount,
                     'price': order.price,
-                    #'stop_price': order.stop_price,
-                    #'take_profit_price': order.take_profit_prices,
-                    #'stop_loss_price': order.stop_loss_prices,
+                    # 'stop_price': order.stop_price,
+                    # 'take_profit_price': order.take_profit_prices,
+                    # 'stop_loss_price': order.stop_loss_prices,
                     'params': {'timeInForce': 'GTC'}
                 }
                 order_params.update(additional_params)
@@ -87,16 +97,29 @@ class TradeService:
                 date_bought = None
             else:
                 raise HTTPException(status_code=400, detail="Invalid order type")
-
+            new_trade = None
+            api_id = self.get_api_id(order)
             if order.order_type == 'market':
                 new_trade = Trade(
+                    trade_price=0,
                     trade_type=order.order_type,
                     currency_name=order.symbol,
                     currency_volume=order.amount,
                     trade_status=created_order['status'],
                     date_create=created_order['timestamp'],
                     date_bought=date_bought,
-                    api_id=order.
+                    api_id=api_id
+                )
+            if order.order_type == 'limit':
+                new_trade = Trade(
+                    trade_price=order.price,
+                    trade_type=order.order_type,
+                    currency_name=order.symbol,
+                    currency_volume=order.amount,
+                    trade_status=created_order['status'],
+                    date_create=created_order['timestamp'],
+                    date_bought=date_bought,
+                    api_id=api_id
                 )
             self.db.add(new_trade)
             self.db.commit()

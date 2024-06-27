@@ -85,7 +85,7 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
                 #send_email(mailAdress, mailTheme.login.name, db)
                 pass
             background.set_authorization(access_token)
-            background.start_background_tasks()
+            #background.start_background_tasks()
 
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:

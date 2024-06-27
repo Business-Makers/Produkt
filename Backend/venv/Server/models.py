@@ -149,7 +149,7 @@ class Trade(Base):
     __tablename__ = 'trade'
     trade_id = Column("trade_id", Integer, primary_key=True, unique=True, autoincrement=True)
     trade_type = Column("trade_type", String(50), nullable=False)
-    trade_price = Column("trade_price", Float, nullable=True)
+    trade_price = Column("trade_price", Float, nullable=False)
     currency_name = Column("currency_name", String(50), nullable=False)
     currency_volume = Column("currency_volume", Float, nullable=False)
     trade_status = Column("trade_status", String(50))
