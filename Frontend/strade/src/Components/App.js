@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { ExchangeProvider } from './ExchangeContext';
 import '../Styles/App.css';
 import '../Styles/LoggedIn.css';
@@ -12,7 +12,6 @@ import useToken from './useToken';
 import SideNav from './SideNav';
 import Trading from './Trading';
 import Portfolio from './Portfolio';
-import Market from './Market';
 import Comms from './Comms';
 import Profile from './Profile';
 import ProfileIcon from './ProfileIcon';
@@ -24,7 +23,7 @@ import Settings from './Settings';
  * 
  * This is implemented via the use of the BrowserRouter from the package 'react-router-dom'.*/ 
 function App() {
-  const { token, setToken, removeToken } = useToken();
+  const { token, setToken } = useToken();
   const [isAuthenticated, setIsAuthenticated] = useState(!!token);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -98,7 +97,6 @@ function App() {
                 <Route path="/subscription" element={<Subscription />} />
                 <Route path="/trading" element={<Trading />} />
                 <Route path="/portfolio" element={<Portfolio />} />
-                <Route path="/market" element={<Market />} />
                 <Route path="/comms" element={<Comms />} />
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/dashboard" element={<Dashboard />} />

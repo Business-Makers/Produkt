@@ -28,16 +28,6 @@ function SideNav() {
           </Link>
         </li>
         <li>
-          <Link to="/presets">
-            <FaRobot /> Presets
-          </Link>
-        </li>
-        <li>
-          <Link to="/market">
-            <FaRobot /> Marketplace
-          </Link>
-        </li>
-        <li>
           <Link to="/subscription">
             <FaDollarSign /> Subscription
           </Link>
