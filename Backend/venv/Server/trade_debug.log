@@ -1,0 +1,222 @@
+2024-06-27 20:00:14,981 INFO:BEGIN (implicit)
+2024-06-27 20:00:14,981 INFO:PRAGMA main.table_info("member")
+2024-06-27 20:00:14,982 INFO:[raw sql] ()
+2024-06-27 20:00:14,982 INFO:PRAGMA main.table_info("account")
+2024-06-27 20:00:14,983 INFO:[raw sql] ()
+2024-06-27 20:00:14,983 INFO:PRAGMA main.table_info("login")
+2024-06-27 20:00:14,983 INFO:[raw sql] ()
+2024-06-27 20:00:14,984 INFO:PRAGMA main.table_info("balance")
+2024-06-27 20:00:14,984 INFO:[raw sql] ()
+2024-06-27 20:00:14,984 INFO:PRAGMA main.table_info("api")
+2024-06-27 20:00:14,984 INFO:[raw sql] ()
+2024-06-27 20:00:14,985 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-27 20:00:14,985 INFO:[raw sql] ()
+2024-06-27 20:00:14,985 INFO:PRAGMA main.table_info("trade")
+2024-06-27 20:00:14,985 INFO:[raw sql] ()
+2024-06-27 20:00:14,986 INFO:PRAGMA main.table_info("take_profit")
+2024-06-27 20:00:14,986 INFO:[raw sql] ()
+2024-06-27 20:00:14,986 INFO:PRAGMA main.table_info("membership")
+2024-06-27 20:00:14,987 INFO:[raw sql] ()
+2024-06-27 20:00:14,987 INFO:PRAGMA main.table_info("abo")
+2024-06-27 20:00:14,987 INFO:[raw sql] ()
+2024-06-27 20:00:14,987 INFO:PRAGMA main.table_info("subscription")
+2024-06-27 20:00:14,988 INFO:[raw sql] ()
+2024-06-27 20:00:14,988 INFO:COMMIT
+2024-06-27 20:04:16,854 INFO:BEGIN (implicit)
+2024-06-27 20:04:16,855 INFO:PRAGMA main.table_info("member")
+2024-06-27 20:04:16,855 INFO:[raw sql] ()
+2024-06-27 20:04:16,856 INFO:PRAGMA main.table_info("account")
+2024-06-27 20:04:16,856 INFO:[raw sql] ()
+2024-06-27 20:04:16,856 INFO:PRAGMA main.table_info("login")
+2024-06-27 20:04:16,857 INFO:[raw sql] ()
+2024-06-27 20:04:16,857 INFO:PRAGMA main.table_info("balance")
+2024-06-27 20:04:16,857 INFO:[raw sql] ()
+2024-06-27 20:04:16,857 INFO:PRAGMA main.table_info("api")
+2024-06-27 20:04:16,858 INFO:[raw sql] ()
+2024-06-27 20:04:16,858 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-27 20:04:16,858 INFO:[raw sql] ()
+2024-06-27 20:04:16,859 INFO:PRAGMA main.table_info("trade")
+2024-06-27 20:04:16,859 INFO:[raw sql] ()
+2024-06-27 20:04:16,859 INFO:PRAGMA main.table_info("take_profit")
+2024-06-27 20:04:16,860 INFO:[raw sql] ()
+2024-06-27 20:04:16,860 INFO:PRAGMA main.table_info("membership")
+2024-06-27 20:04:16,860 INFO:[raw sql] ()
+2024-06-27 20:04:16,860 INFO:PRAGMA main.table_info("abo")
+2024-06-27 20:04:16,861 INFO:[raw sql] ()
+2024-06-27 20:04:16,861 INFO:PRAGMA main.table_info("subscription")
+2024-06-27 20:04:16,861 INFO:[raw sql] ()
+2024-06-27 20:04:16,862 INFO:COMMIT
+2024-06-27 20:08:49,956 INFO:BEGIN (implicit)
+2024-06-27 20:08:49,956 INFO:PRAGMA main.table_info("member")
+2024-06-27 20:08:49,957 INFO:[raw sql] ()
+2024-06-27 20:08:49,957 INFO:PRAGMA main.table_info("account")
+2024-06-27 20:08:49,958 INFO:[raw sql] ()
+2024-06-27 20:08:49,958 INFO:PRAGMA main.table_info("login")
+2024-06-27 20:08:49,958 INFO:[raw sql] ()
+2024-06-27 20:08:49,959 INFO:PRAGMA main.table_info("balance")
+2024-06-27 20:08:49,959 INFO:[raw sql] ()
+2024-06-27 20:08:49,959 INFO:PRAGMA main.table_info("api")
+2024-06-27 20:08:49,959 INFO:[raw sql] ()
+2024-06-27 20:08:49,960 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-27 20:08:49,960 INFO:[raw sql] ()
+2024-06-27 20:08:49,960 INFO:PRAGMA main.table_info("trade")
+2024-06-27 20:08:49,961 INFO:[raw sql] ()
+2024-06-27 20:08:49,961 INFO:PRAGMA main.table_info("take_profit")
+2024-06-27 20:08:49,961 INFO:[raw sql] ()
+2024-06-27 20:08:49,961 INFO:PRAGMA main.table_info("membership")
+2024-06-27 20:08:49,961 INFO:[raw sql] ()
+2024-06-27 20:08:49,962 INFO:PRAGMA main.table_info("abo")
+2024-06-27 20:08:49,962 INFO:[raw sql] ()
+2024-06-27 20:08:49,962 INFO:PRAGMA main.table_info("subscription")
+2024-06-27 20:08:49,963 INFO:[raw sql] ()
+2024-06-27 20:08:49,963 INFO:COMMIT
+2024-06-27 20:13:31,430 INFO:BEGIN (implicit)
+2024-06-27 20:13:31,431 INFO:PRAGMA main.table_info("member")
+2024-06-27 20:13:31,431 INFO:[raw sql] ()
+2024-06-27 20:13:31,432 INFO:PRAGMA main.table_info("account")
+2024-06-27 20:13:31,432 INFO:[raw sql] ()
+2024-06-27 20:13:31,433 INFO:PRAGMA main.table_info("login")
+2024-06-27 20:13:31,433 INFO:[raw sql] ()
+2024-06-27 20:13:31,433 INFO:PRAGMA main.table_info("balance")
+2024-06-27 20:13:31,433 INFO:[raw sql] ()
+2024-06-27 20:13:31,434 INFO:PRAGMA main.table_info("api")
+2024-06-27 20:13:31,434 INFO:[raw sql] ()
+2024-06-27 20:13:31,434 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-27 20:13:31,435 INFO:[raw sql] ()
+2024-06-27 20:13:31,435 INFO:PRAGMA main.table_info("trade")
+2024-06-27 20:13:31,435 INFO:[raw sql] ()
+2024-06-27 20:13:31,436 INFO:PRAGMA main.table_info("take_profit")
+2024-06-27 20:13:31,436 INFO:[raw sql] ()
+2024-06-27 20:13:31,436 INFO:PRAGMA main.table_info("membership")
+2024-06-27 20:13:31,437 INFO:[raw sql] ()
+2024-06-27 20:13:31,437 INFO:PRAGMA main.table_info("abo")
+2024-06-27 20:13:31,437 INFO:[raw sql] ()
+2024-06-27 20:13:31,438 INFO:PRAGMA main.table_info("subscription")
+2024-06-27 20:13:31,438 INFO:[raw sql] ()
+2024-06-27 20:13:31,438 INFO:COMMIT
+2024-06-27 20:15:23,551 INFO:BEGIN (implicit)
+2024-06-27 20:15:23,551 INFO:PRAGMA main.table_info("member")
+2024-06-27 20:15:23,551 INFO:[raw sql] ()
+2024-06-27 20:15:23,552 INFO:PRAGMA main.table_info("account")
+2024-06-27 20:15:23,553 INFO:[raw sql] ()
+2024-06-27 20:15:23,553 INFO:PRAGMA main.table_info("login")
+2024-06-27 20:15:23,553 INFO:[raw sql] ()
+2024-06-27 20:15:23,554 INFO:PRAGMA main.table_info("balance")
+2024-06-27 20:15:23,554 INFO:[raw sql] ()
+2024-06-27 20:15:23,554 INFO:PRAGMA main.table_info("api")
+2024-06-27 20:15:23,554 INFO:[raw sql] ()
+2024-06-27 20:15:23,555 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-27 20:15:23,555 INFO:[raw sql] ()
+2024-06-27 20:15:23,556 INFO:PRAGMA main.table_info("trade")
+2024-06-27 20:15:23,556 INFO:[raw sql] ()
+2024-06-27 20:15:23,556 INFO:PRAGMA main.table_info("take_profit")
+2024-06-27 20:15:23,556 INFO:[raw sql] ()
+2024-06-27 20:15:23,557 INFO:PRAGMA main.table_info("membership")
+2024-06-27 20:15:23,557 INFO:[raw sql] ()
+2024-06-27 20:15:23,557 INFO:PRAGMA main.table_info("abo")
+2024-06-27 20:15:23,558 INFO:[raw sql] ()
+2024-06-27 20:15:23,558 INFO:PRAGMA main.table_info("subscription")
+2024-06-27 20:15:23,558 INFO:[raw sql] ()
+2024-06-27 20:15:23,559 INFO:COMMIT
+2024-06-27 20:20:29,460 INFO:BEGIN (implicit)
+2024-06-27 20:20:29,460 INFO:PRAGMA main.table_info("member")
+2024-06-27 20:20:29,460 INFO:[raw sql] ()
+2024-06-27 20:20:29,461 INFO:PRAGMA main.table_info("account")
+2024-06-27 20:20:29,462 INFO:[raw sql] ()
+2024-06-27 20:20:29,462 INFO:PRAGMA main.table_info("login")
+2024-06-27 20:20:29,462 INFO:[raw sql] ()
+2024-06-27 20:20:29,463 INFO:PRAGMA main.table_info("balance")
+2024-06-27 20:20:29,463 INFO:[raw sql] ()
+2024-06-27 20:20:29,463 INFO:PRAGMA main.table_info("api")
+2024-06-27 20:20:29,463 INFO:[raw sql] ()
+2024-06-27 20:20:29,464 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-27 20:20:29,464 INFO:[raw sql] ()
+2024-06-27 20:20:29,464 INFO:PRAGMA main.table_info("trade")
+2024-06-27 20:20:29,465 INFO:[raw sql] ()
+2024-06-27 20:20:29,465 INFO:PRAGMA main.table_info("take_profit")
+2024-06-27 20:20:29,465 INFO:[raw sql] ()
+2024-06-27 20:20:29,466 INFO:PRAGMA main.table_info("membership")
+2024-06-27 20:20:29,466 INFO:[raw sql] ()
+2024-06-27 20:20:29,466 INFO:PRAGMA main.table_info("abo")
+2024-06-27 20:20:29,466 INFO:[raw sql] ()
+2024-06-27 20:20:29,467 INFO:PRAGMA main.table_info("subscription")
+2024-06-27 20:20:29,467 INFO:[raw sql] ()
+2024-06-27 20:20:29,467 INFO:COMMIT
+2024-06-27 20:26:51,285 INFO:BEGIN (implicit)
+2024-06-27 20:26:51,285 INFO:PRAGMA main.table_info("member")
+2024-06-27 20:26:51,285 INFO:[raw sql] ()
+2024-06-27 20:26:51,286 INFO:PRAGMA main.table_info("account")
+2024-06-27 20:26:51,287 INFO:[raw sql] ()
+2024-06-27 20:26:51,287 INFO:PRAGMA main.table_info("login")
+2024-06-27 20:26:51,287 INFO:[raw sql] ()
+2024-06-27 20:26:51,288 INFO:PRAGMA main.table_info("balance")
+2024-06-27 20:26:51,288 INFO:[raw sql] ()
+2024-06-27 20:26:51,288 INFO:PRAGMA main.table_info("api")
+2024-06-27 20:26:51,289 INFO:[raw sql] ()
+2024-06-27 20:26:51,289 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-27 20:26:51,289 INFO:[raw sql] ()
+2024-06-27 20:26:51,290 INFO:PRAGMA main.table_info("trade")
+2024-06-27 20:26:51,290 INFO:[raw sql] ()
+2024-06-27 20:26:51,290 INFO:PRAGMA main.table_info("take_profit")
+2024-06-27 20:26:51,291 INFO:[raw sql] ()
+2024-06-27 20:26:51,291 INFO:PRAGMA main.table_info("membership")
+2024-06-27 20:26:51,291 INFO:[raw sql] ()
+2024-06-27 20:26:51,292 INFO:PRAGMA main.table_info("abo")
+2024-06-27 20:26:51,292 INFO:[raw sql] ()
+2024-06-27 20:26:51,292 INFO:PRAGMA main.table_info("subscription")
+2024-06-27 20:26:51,293 INFO:[raw sql] ()
+2024-06-27 20:26:51,293 INFO:COMMIT
+2024-06-27 20:27:12,744 INFO:BEGIN (implicit)
+2024-06-27 20:27:12,762 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-27 20:27:12,762 INFO:[generated in 0.00067s] ('Mustermann12', 1, 0)
+2024-06-27 20:27:12,992 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-27 20:27:12,993 INFO:[cached since 0.2314s ago] ('Mustermann12', 1, 0)
+2024-06-27 20:27:12,995 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-27 20:27:12,995 INFO:[generated in 0.00039s] (1, 1, 0)
+2024-06-27 20:27:12,996 INFO:ROLLBACK
+2024-06-27 20:28:19,158 INFO:BEGIN (implicit)
+2024-06-27 20:28:19,159 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-27 20:28:19,159 INFO:[cached since 66.4s ago] ('Mustermann12', 1, 0)
+2024-06-27 20:28:19,388 INFO:SELECT account.account_id AS account_account_id, account.login_name AS account_login_name, account.hashed_password AS account_hashed_password, account."memberID" AS "account_memberID" 
+FROM account 
+WHERE account.login_name = ?
+ LIMIT ? OFFSET ?
+2024-06-27 20:28:19,389 INFO:[cached since 66.63s ago] ('Mustermann12', 1, 0)
+2024-06-27 20:28:19,390 INFO:SELECT member.member_id AS member_member_id, member.firstname AS member_firstname, member.lastname AS member_lastname, member.birthday AS member_birthday, member.address AS member_address, member.country AS member_country, member.email AS member_email, member.phone_number AS member_phone_number 
+FROM member 
+WHERE member.member_id = ?
+ LIMIT ? OFFSET ?
+2024-06-27 20:28:19,390 INFO:[cached since 66.4s ago] (1, 1, 0)
+2024-06-27 20:28:19,391 INFO:ROLLBACK
+2024-06-27 20:28:22,659 INFO:BEGIN (implicit)
+2024-06-27 20:28:22,662 INFO:SELECT api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.secret_key AS api_secret_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+2024-06-27 20:28:22,662 INFO:[generated in 0.00075s] (1,)
+2024-06-27 20:28:22,665 INFO:SELECT account_pages_info.info_id AS account_pages_info_info_id, account_pages_info.account_holder AS account_pages_info_account_holder, account_pages_info.balance AS account_pages_info_balance, account_pages_info.currency_count AS account_pages_info_currency_count, account_pages_info.last_updated AS account_pages_info_last_updated, account_pages_info.api_id AS account_pages_info_api_id 
+FROM account_pages_info 
+WHERE ? = account_pages_info.api_id
+2024-06-27 20:28:22,666 INFO:[generated in 0.00047s] (1,)
+2024-06-27 20:28:25,882 INFO:ROLLBACK
+2024-06-27 20:28:25,887 INFO:BEGIN (implicit)
+2024-06-27 20:28:25,887 INFO:SELECT api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.secret_key AS api_secret_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+2024-06-27 20:28:25,888 INFO:[cached since 3.226s ago] (1,)
+2024-06-27 20:28:25,889 INFO:SELECT account_pages_info.info_id AS account_pages_info_info_id, account_pages_info.account_holder AS account_pages_info_account_holder, account_pages_info.balance AS account_pages_info_balance, account_pages_info.currency_count AS account_pages_info_currency_count, account_pages_info.last_updated AS account_pages_info_last_updated, account_pages_info.api_id AS account_pages_info_api_id 
+FROM account_pages_info 
+WHERE ? = account_pages_info.api_id
+2024-06-27 20:28:25,889 INFO:[cached since 3.224s ago] (1,)
+2024-06-27 20:28:29,381 INFO:ROLLBACK

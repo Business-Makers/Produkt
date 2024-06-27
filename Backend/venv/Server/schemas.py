@@ -7,7 +7,12 @@ from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr, ValidationError, Field, validator
 from typing import Optional, List
 from sqlalchemy import DateTime
-from models import AccountPages_Info
+import logging
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
 
 
 class LoginCredentials(BaseModel):
@@ -217,3 +222,17 @@ class UpdateTradeRequest(BaseModel):
     trade_id: int
     new_stop_loss_price: float
     new_take_profit_prices: List[float]
+
+class Subscription_Info(BaseModel):
+    """
+    A model representing the information required for a subscription.
+
+    Attributes:
+        currency (str): The currency in which the payment will be made.
+        product_name (str): The name of the product or subscription.
+        product_days (int): The duration of the subscription in days.
+
+    """
+    currency: str
+    product_name: str
+    product_days: int

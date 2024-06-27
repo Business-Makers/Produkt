@@ -38,13 +38,12 @@ const CryptoChart = () => {
   const [trades, setTrades] = useState([]);
   
   useEffect(() => {
-    /*const fetchData = async () => {
+    const fetchData = async () => {
       const tradeData = await getTradeHistory(token);
       setTrades(tradeData);
     };
-    fetchData();*/
-    setTrades(mockTrades);
-  }, [/*token*/]);
+    fetchData();
+  }, [exchanges]);
 
   const handleBuy = async () => {
       let orderData;
@@ -71,6 +70,7 @@ const CryptoChart = () => {
   }
 
     try {
+          console.log(orderData);
       const response = await axios.post('http://localhost:8001/trades/create-order/', orderData, {
         headers: {
           Authorization: `Bearer ${token}`,

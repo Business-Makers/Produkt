@@ -20,6 +20,12 @@ operations across the system.
 from sqlalchemy import Column, String, Integer, DATE, Float, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
+import logging
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
 
 Base = declarative_base()
 
@@ -59,9 +65,10 @@ class Account(Base):
     login_name = Column("login_name", String(50), nullable=False, unique=True)
     hashed_password = Column("hashed_password", String(50), nullable=False)
     memberID = Column("memberID", Integer, ForeignKey("member.member_id"), nullable=False)
+
     member = relationship("Member", back_populates="accounts")
     apis = relationship("Api", back_populates="account")
-
+    subscriptions = relationship("Subscription", back_populates="account")
     def __init__(self, login_name, hashed_password, memberID):
         self.login_name = login_name
         self.hashed_password = hashed_password
@@ -236,3 +243,47 @@ class Abo(Base):
         self.abo_status = abo_status
         self.accountID = accountID
 
+
+
+
+
+class Subscription(Base):
+
+    """
+    Represents a subscription in the database.
+
+    Attributes:
+        __tablename__ (str): The name of the database table.
+        subscription_id (int): The unique identifier for the subscription.
+        amount (float): The amount paid for the subscription.
+        date_start (date): The start date of the subscription.
+        date_end (date): The end date of the subscription.
+        product_name (str): The name of the subscribed product.
+        abo_status (str): The status of the subscription.
+        currency (str): The currency in which the payment was made.
+        account_id (int): The identifier of the associated account.
+        account (relationship): The relationship to the associated Account object.
+    """
+
+    __tablename__ = 'subscription'
+    subscription_id = Column("subscription_id", Integer, primary_key=True, unique=True, autoincrement=True)
+    amount = Column('amount', Integer, nullable=False)
+    date_start = Column('date_start', DATE, nullable=False)
+    date_end = Column('date_end', DATE, nullable=False)
+    product_name = Column('product_name', String, nullable=False)
+    abo_status = Column('abo_status', String, nullable=False)
+    currency = Column('currency', String, nullable=False)
+    account_id = Column(Integer, ForeignKey('account.account_id'), unique=True, nullable=False)
+    payment_id = Column(String, nullable=False, unique=True)
+
+    account = relationship("Account", back_populates="subscriptions")
+
+    def __init__(self, amount, date_start, date_end, product_name, abo_status, currency, account_id, payment_id):
+        self.amount = amount
+        self.date_start = date_start
+        self.date_end = date_end
+        self.product_name = product_name
+        self.abo_status = abo_status
+        self.currency = currency
+        self.account_id = account_id
+        self.payment_id = payment_id

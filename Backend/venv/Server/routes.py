@@ -5,14 +5,17 @@ This file contains the main FastAPI application setup, including endpoint defini
 """
 import asyncio
 import json
+from datetime import date, timedelta
 
-from fastapi import FastAPI, Depends, HTTPException, Header, BackgroundTasks, WebSocketDisconnect, WebSocket
+from fastapi import FastAPI, Depends, HTTPException, Header, BackgroundTasks, WebSocketDisconnect, WebSocket, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from database import get_db, init_db
-from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit
+from fastapi.responses import JSONResponse
+
+from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit,Subscription
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation, OrderRequest, \
-    AddTakeProfitStopLossRequest, UpdateTradeRequest
+    AddTakeProfitStopLossRequest, UpdateTradeRequest, Subscription_Info
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
@@ -21,6 +24,12 @@ import ccxt
 from web_socket import websocket_endpoint
 from background_threading import background_threads
 from web_socket import manager
+import logging
+from paypal import Paypal
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -34,6 +43,7 @@ app.add_middleware(
 
 background = background_threads()
 
+logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def on_startup():
@@ -409,7 +419,9 @@ def create_order(order: OrderRequest, db: Session = Depends(get_db), authorizati
     Raises:
         HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
     """
+    logger.warning("pre tradeService")
     trade_service = TradeService(db, authorization)
+    logger.warning("post tradeservice")
     return trade_service.create_order(order)
 
 
@@ -541,3 +553,107 @@ def reset_password(reset_request: PasswordResetRequest, db: Session = Depends(ge
     db.commit()
 
     return {"message": "Password reset successfully."}
+
+
+@app.get('/payment/execute')
+def execute_payment(request: Request, db: Session = Depends(get_db), authorization: str = Header(None)):
+    if authorization is None or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+
+    token = authorization.split(" ")[1]
+    payload = verify_trade_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+
+    paypal = Paypal()
+    payment_id = request.query_params.get('paymentId')
+    payer_id = request.query_params.get('PayerID')
+    if not payment_id or not payer_id:
+        raise HTTPException(status_code=400, detail="Missing paymentId or PayerID")
+
+    result = paypal.execute_payment(payment_id, payer_id)
+    if result == "Payment executed successfully":
+        try:
+            db.query(Subscription).filter(Subscription.payment_id == payment_id).update({"abo_status": "active"})
+            db.commit()
+            return JSONResponse(content={"message": "Payment executed successfully"})
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=str(e))
+    else:
+        raise HTTPException(status_code=400, detail="Payment execution failed")
+
+
+@app.post('/payment')
+def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db), authorization: str = Header(None)):
+
+    """
+    Creates a PayPal payment for a subscription and stores the subscription details in the database.
+
+    Args:
+        subscription (Subscription_Info): The subscription information including currency, amount, product name, product days, and subscription status.
+        db (Session): Database session used for transaction.
+        authorization (str): Authorization header containing the Bearer token for authentication.
+
+    Raises:
+        HTTPException: If the authorization header is missing, invalid, or token verification fails (401).
+        HTTPException: If payment creation fails (400).
+        HTTPException: If there's an internal server error during database operations (500).
+
+    Returns:
+        JSONResponse: Contains a success message and approval URL if payment is created successfully, or an error message otherwise.
+
+    """
+
+    paypal = Paypal()
+    if authorization is None or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+
+    token = authorization.split(" ")[1]
+    payload = verify_trade_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+    account_id = payload.get("account_id")
+
+    subscription_amount = 0
+    if subscription.product_name == "Basic" and subscription.product_days == 365:
+        subscription_amount = 99
+    if subscription.product_name == "Basic" and subscription.product_days == 30:
+        subscription_amount = 8
+    if subscription.product_name == "Silver" and subscription.product_days == 365:
+        subscription_amount = 199
+    if subscription.product_name == "Silver" and subscription.product_days == 30:
+        subscription_amount = 15
+    if subscription.product_name == "Gold" and subscription.product_days == 365:
+        subscription_amount = 299
+    if subscription.product_name == "Gold" and subscription.product_days == 30:
+        subscription_amount = 20
+
+    result = paypal.create_payment(subscription.currency,
+                                   subscription_amount,
+                                   subscription.product_name)
+    if "approval_url" in result:
+        try:
+            new_subscription = Subscription(
+                amount=subscription_amount,
+                date_start=date.today(),
+                date_end=date.today() + timedelta(days=subscription.product_days),
+                product_name=subscription.product_name,
+                abo_status="Active",
+                currency=subscription.currency,
+                account_id=account_id,
+                payment_id=result['payment_id']
+            )
+            db.add(new_subscription)
+            db.commit()
+            db.refresh(new_subscription)
+            return JSONResponse(
+                content={"message": "Payment creation successfully", "approval_url": result["approval_url"]})
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+    else:
+        raise HTTPException(status_code=400, detail="Payment creation failed")
+
+
