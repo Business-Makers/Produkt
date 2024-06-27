@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaChartLine, FaWallet, FaRobot, FaToolbox, FaDollarSign, FaComments } from 'react-icons/fa';
+import { FaChartLine, FaWallet, FaToolbox, FaDollarSign, FaComments } from 'react-icons/fa';
 import '../Styles/SideNav.css';
 
 function SideNav() {

@@ -34,7 +34,7 @@ export default function LogIn() {
       navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
-      window.alert('Login failed :(');
+      window.alert('Login failed');
     }
   };
 
