@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaChartLine, FaWallet, FaRobot, FaToolbox, FaDollarSign, FaComments } from 'react-icons/fa';
+import { FaChartLine, FaWallet, FaToolbox, FaDollarSign, FaComments } from 'react-icons/fa';
 import '../Styles/SideNav.css';
 
 function SideNav() {
@@ -25,16 +25,6 @@ function SideNav() {
         <li>
           <Link to="/trading">
             <FaToolbox /> Terminal
-          </Link>
-        </li>
-        <li>
-          <Link to="/presets">
-            <FaRobot /> Presets
-          </Link>
-        </li>
-        <li>
-          <Link to="/market">
-            <FaRobot /> Marketplace
           </Link>
         </li>
         <li>

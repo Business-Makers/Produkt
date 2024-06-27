@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const TradingViewWidget = ({ symbol }) => {
+  const containerRef = useRef(null);
+  const scriptRef = useRef(null);
+
   useEffect(() => {
     // Dynamisch das Script-Tag hinzufügen
     const script = document.createElement('script');
@@ -16,7 +19,7 @@ const TradingViewWidget = ({ symbol }) => {
           symbol: symbol,
           interval: "D",
           timezone: "Etc/UTC",
-          theme: "dark", // Setze das Theme auf "dark"
+          theme: "dark",
           style: "1",
           locale: "en",
           toolbar_bg: "#1e1e1e",
@@ -27,16 +30,21 @@ const TradingViewWidget = ({ symbol }) => {
       }
     };
 
-    document.getElementById('tradingview-widget-container').appendChild(script);
+    if (containerRef.current) {
+      containerRef.current.appendChild(script);
+      scriptRef.current = script;
+    }
 
     return () => {
       // Clean up the script if the component is unmounted
-      document.getElementById('tradingview-widget-container').removeChild(script);
+      if (scriptRef.current && containerRef.current) {
+        containerRef.current.removeChild(scriptRef.current);
+      }
     };
   }, [symbol]);
 
   return (
-    <div className="tradingview-widget-container" id="tradingview-widget-container">
+    <div className="tradingview-widget-container" ref={containerRef}>
       <div id="tradingview_12345"></div>
     </div>
   );

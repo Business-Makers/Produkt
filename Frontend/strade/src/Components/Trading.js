@@ -1,14 +1,30 @@
 import '../Styles/LoggedIn.css';
 import '../Styles/Trading.css';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TradingViewWidget from './TradingViewWidget';
 import useToken from './useToken';
+import { useExchanges } from './ExchangeContext';
 import axios from 'axios';
+import mockTrades from './mockTrades';
+
+const getTradeHistory = async (token) => {
+  try {
+    const response = await axios.get('http://localhost:8001/trades/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.trades_data;
+  } catch (error) {
+    console.error('Error fetching trade history:', error);
+    return [];
+  }
+}
 
 const CryptoChart = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('BTC');
-  const [selectedExchange, setSelectedExchange] = useState('KUCOIN');
+  const [selectedExchange, setSelectedExchange] = useState('');
   const [orderType, setOrderType] = useState('market');
   const [amount, setAmount] = useState('');
   const [price, setPrice] = useState('');
@@ -16,7 +32,19 @@ const CryptoChart = () => {
   const [takeProfitPrices, setTakeProfitPrices] = useState([]);
   const [stopLossPrice, setStopLossPrice] = useState('');
 
+  const { exchanges } = useExchanges();
   const token = useToken();
+
+  const [trades, setTrades] = useState([]);
+  
+  useEffect(() => {
+    /*const fetchData = async () => {
+      const tradeData = await getTradeHistory(token);
+      setTrades(tradeData);
+    };
+    fetchData();*/
+    setTrades(mockTrades);
+  }, [/*token*/]);
 
   const handleBuy = async () => {
       let orderData;
@@ -58,6 +86,7 @@ const CryptoChart = () => {
   const getSymbol = () => `${selectedExchange}:${selectedCrypto}USDT`;
 
   return (
+    <div>
     <div className="crypto-chart-container">
       <div className="left-container">
         <div className="crypto-selector">
@@ -73,11 +102,13 @@ const CryptoChart = () => {
         <div className="exchange-selector">
           <label htmlFor="exchange">Select Exchange: </label>
           <select id="exchange" value={selectedExchange} onChange={(e) => setSelectedExchange(e.target.value)}>
-            <option value="KUCOIN">KuCoin</option>
-            <option value="BINANCE">Binance</option>
-            <option value="COINBASE">Coinbase</option>
-            <option value="KRAKEN">Kraken</option>
-            <option value="BITFINEX">Bitfinex</option>
+            {exchanges.length === 0 ? (
+              <option value="" disabled>No exchanges connected</option>
+            ) : (
+              exchanges.map((exchange, index) => (
+                <option key={index} value={exchange.exchange_name}>{exchange.exchange_name}</option>
+              ))
+            )}
           </select>
         </div>
         <div className="chart-container">
@@ -139,6 +170,34 @@ const CryptoChart = () => {
           <button type="button" onClick={handleBuy}>Buy</button>
         </div>
       </div>
+    </div>
+    <div className="trade-history-container">
+      <h2>Trade History</h2>
+      {trades.length === 0 ? (
+        <p>No trades available.</p>
+      ) : (
+        <div className="trade-history">
+          {trades.map((trade, index) => (
+            <div key={index} className="trade-item">
+              <div className="trade-left">
+                <p><strong>Currency:</strong> {trade.currency_name}</p>
+                <p><strong>Account Holder:</strong> {trade.account_Holder}</p>
+              </div>
+              <div className="trade-middle">
+                <p><strong>Trade Date:</strong> {trade.date_create}</p>
+                <p><strong>Trade ID:</strong> {trade.trade_id}</p>
+              </div>
+              <div className="trade-right">
+                <p><strong>Volume:</strong> {trade.currency_volume}</p>
+                <p><strong>Purchase Price:</strong> {trade.purchase_rate}</p>
+              </div>
+              <div className="trade-chart">
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
     </div>
   );
 };

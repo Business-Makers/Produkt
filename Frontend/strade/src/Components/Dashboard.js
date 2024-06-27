@@ -2,6 +2,7 @@ import '../Styles/LoggedIn.css';
 import '../Styles/Dashboard.css';
 
 import React, { useState, useEffect } from 'react';
+import { useExchanges } from './ExchangeContext';
 import axios from 'axios';
 import useToken from './useToken';
 import KucoinImage from '../Images/Kucoin.png';
@@ -24,7 +25,7 @@ import { mockDashboardData } from './mockData';
 
 export default function Dashboard() {
   const { token } = useToken();
-  const [dashboardData, setDashboardData] = useState([]);
+  const { exchanges, setExchanges } = useExchanges();
   const [loading, setLoading] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [selection, setSelection] = useState(null);
@@ -37,7 +38,7 @@ export default function Dashboard() {
     passphrase: ''
   });
 
-  const exchanges = [
+  const exchangeList = [
     { id: 1, name: 'kucoin', imgSrc: KucoinImage},
     { id: 2, name: 'binance', imgSrc: BinanceImage},
     { id: 3, name: 'binanceTR', imgSrc: BinanceTRImage},
@@ -58,7 +59,7 @@ export default function Dashboard() {
       try {
         setLoading(true);
         const account_data = await retrieveData(token);
-        setDashboardData(account_data);
+        setExchanges(account_data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -67,7 +68,7 @@ export default function Dashboard() {
     };
 
     fetchDashboardData();
-  }, [token]);
+  }, [token, setExchanges]);
 
   const toggleContainer = () => {
     setIsOpen(!isOpen);
@@ -80,7 +81,7 @@ export default function Dashboard() {
   };
 
   const handleImageClick = (imageId) => {
-    const selectedExchange = exchanges.find(exchange => exchange.id === imageId);
+    const selectedExchange = exchangeList.find(exchange => exchange.id === imageId);
     setSelectedImage(imageId);
     setFormData(prevFormData => ({
       ...prevFormData,
@@ -103,7 +104,7 @@ export default function Dashboard() {
       window.alert("Exchange connected successfully");
       const account_data = await retrieveData(token);
       // const account_data = mockDashboardData;
-      setDashboardData(account_data);
+      setExchanges(account_data);
       localStorage.setItem('dashboardData', JSON.stringify(account_data));
       setLoading(false);
     } catch (error) {
@@ -116,7 +117,7 @@ export default function Dashboard() {
     <div>
       <h2>Dashboard</h2>
 
-      <button className="connect-button" onClick={toggleContainer}>Connect a new account</button>
+      <button className="connect-button" onClick={toggleContainer}>Connect a new exchange</button>
       {isOpen && (
         <div>
           {!selection ? (
@@ -145,14 +146,14 @@ export default function Dashboard() {
                       <label htmlFor="passphrase">Passphrase:</label>
                       <input id="passphrase" type="text" value={formData.passphrase} onChange={handleInputChange} />
                     </div>
-                    <button type="submit">Connect to {exchanges.find(exchange => exchange.id === selectedImage)?.name}</button>
+                    <button type="submit">Connect to {exchangeList.find(exchange => exchange.id === selectedImage)?.name}</button>
                   </form>
                 </div>
               ) : (
                 <div>
                   {selection === 'Exchange' ? (
                     <div>
-                      {exchanges.map(exchange => (
+                      {exchangeList.map(exchange => (
                         <div key={exchange.id} className="image-container"
                              onClick={() => handleImageClick(exchange.id)}>
                           <img src={exchange.imgSrc} alt={exchange.name} />
@@ -172,19 +173,17 @@ export default function Dashboard() {
         <div>Loading...</div>
       ) : (
         <div>
-          {dashboardData && dashboardData.length > 0 ? ( // Prüfen, ob dashboardData existiert und nicht leer ist
+          {exchanges && exchanges.length > 0 ? ( // Prüfen, ob dashboardData existiert und nicht leer ist
             <div>
               <h2>Exchange Data</h2>
-              {dashboardData.map((data, index) => (
-                <ul key={index}>
-                  <li>
-                    <strong>Name:</strong> {data.exchange_name}<br />
-                    <strong>Owner:</strong> {data.account_holder}<br />
-                    <strong>Balance:</strong> {data.balance}<br />
-                    <strong>Currency Count:</strong> {data.currency_count}
-                  </li>
-                </ul>
-              ))}
+                {exchanges.map((exchange, index) => (
+                <div key={index}>
+                  <strong>{exchange.exchange_name}</strong>
+                  <p>Account Holder: {exchange.account_holder}</p>
+                  <p>Balance: {exchange.balance}</p>
+                  <p>Currency Count: {exchange.currency_count}</p>
+                </div>
+                ))}
             </div>
           ) : (
             <div>No exchange connected.</div>

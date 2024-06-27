@@ -6,6 +6,7 @@
   background-color: #121212;
   padding: 20px;
   box-sizing: border-box;
+  border-radius: 10px;
 }
 
 /* Container für den linken Bereich (Chart und Auswahlen) */
@@ -113,4 +114,39 @@
 
 .order-form button:hover {
   background-color: #45a049;
+}
+
+.trade-history-container {
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #121212;
+  border-radius: 10px;
+}
+
+.trade-history {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.trade-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.trade-left, .trade-middle, .trade-right {
+  flex: 1;
+}
+
+.trade-chart {
+  flex: 2;
+}
+
+.no-trades-message {
+  text-align: center;
+  font-size: 18px;
+  color: #888;
 }
