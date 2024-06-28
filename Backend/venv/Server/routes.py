@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 from database import get_db, init_db
 from fastapi.responses import JSONResponse
 
-from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit,Subscription
+from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit, Subscription
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation, OrderRequest, \
     AddTakeProfitStopLossRequest, UpdateTradeRequest, Subscription_Info
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
@@ -26,10 +26,13 @@ from background_threading import background_threads
 from web_socket import manager
 import logging
 from paypal import Paypal
+
+logging.basicConfig(filename='trade_debug.log', level=logging.WARNING, format='%(asctime)s %(levelname)s:%(message)s')
 logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
 logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
 logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -45,6 +48,7 @@ background = background_threads()
 
 logger = logging.getLogger(__name__)
 
+
 @app.on_event("startup")
 async def on_startup():
     """
@@ -56,7 +60,7 @@ async def on_startup():
         """
     init_db()
 
-    #todo: Background async await
+    # todo: Background async await
 
 
 app.websocket("\ws\{user_id}")(websocket_endpoint)
@@ -92,10 +96,10 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
 
             mailAdress = find_mail(db_user, db)
             if mailAdress:
-                #send_email(mailAdress, mailTheme.login.name, db)
+                # send_email(mailAdress, mailTheme.login.name, db)
                 pass
             background.set_authorization(access_token)
-            #background.start_background_tasks()
+            # background.start_background_tasks()
 
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
@@ -336,46 +340,67 @@ def get_trade(db: Session = Depends(get_db), authorization: str = Header(None)):
     Raises:
         HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
     """
-    if authorization is None or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+    try:
+        if authorization is None or not authorization.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
 
-    token = authorization.split(" ")[1]
-    payload = verify_trade_token(token)
-    if payload is None:
-        raise HTTPException(status_code=402, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
-    account_id = payload.get("account_id")
+        token = authorization.split(" ")[1]
+        payload = verify_trade_token(token)
+        if payload is None:
+            raise HTTPException(status_code=402, detail="Invalid or expired token",
+                                headers={"WWW-Authenticate": "Bearer"})
+        account_id = payload.get("account_id")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Authorization Error: {str(e)}")
 
     try:
         api_keys = db.query(Api).filter(Api.accountID == account_id).all()
         if not api_keys:
             raise HTTPException(status_code=404, detail="API keys not found for the account")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database Query Error (api_keys): {str(e)}")
 
-        trades_data = []
+    trades_data = []
+    try:
         for api_key in api_keys:
-            trades = db.query(Trade).filter(Trade.api_id == api_key.api_id).all()
+            try:
+                trades = db.query(Trade).filter(Trade.api_id == api_key.api_id).all()
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Database Query Error (trades): {str(e)}")
+
+            if api_key and api_key.account_pages_info:
+                account_holder = api_key.account_pages_info.account_holder
+            else:
+                raise HTTPException(status_code=403, detail="No account pages info available for API key")
+
             for trade in trades:
-                trades_data.append({
-                    "account_Holder": api_key.account_pages_info.account_holder,
-                    "exchange_name": api_key.exchange_name,
-                    "trade_id": trade.trade_id,
-                    "trade_type": trade.trade_type,
-                    "trade_price": trade.trade_price,
-                    "currency_name": trade.currency_name,
-                    "currency_volume": trade.currency_volume,
-                    "trade_status": trade.trade_status,
-                    "date_create": trade.date_create,
-                    "date_bought": trade.date_bought,
-                    "date_sale": trade.date_sale,
-                    "purchase_rate": trade.purchase_rate,
-                    "selling_rate": trade.selling_rate,
-                    "comment": trade.comment,
-                    "stop_loss_price": trade.stop_loss_price,
-                    "take_profits": [{"price": tp.price} for tp in trade.take_profits]
-                })
-        asyncio.create_task(send_real_time_updates(account_id, db, authorization))
+                try:
+                    trades_data.append({
+                        "account_holder": account_holder,
+                        # "exchange_name": api_key.exchange_name,
+                        "trade_id": trade.trade_id,
+                        "trade_type": trade.trade_type,
+                        "trade_price": trade.trade_price,
+                        "currency_name": trade.currency_name,
+                        "currency_volume": trade.currency_volume,
+                        "trade_status": trade.trade_status,
+                        "date_create": trade.date_create,
+                        "date_bought": trade.date_bought,
+                        "date_sale": trade.date_sale,
+                        "purchase_rate": trade.purchase_rate,
+                        "selling_rate": trade.selling_rate,
+                        "comment": trade.comment,
+                        "stop_loss_price": trade.stop_loss_price
+                        # "take_profits": [{"price": tp.price} for tp in trade.take_profits]
+                    })
+                except Exception as e:
+                    raise HTTPException(status_code=500, detail=f"Error processing trade data: {str(e)}")
+            # asyncio.create_task(send_real_time_updates(account_id, db, authorization))
         return {"trades": trades_data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+
 
 
 async def send_real_time_updates(account_id: int, db: Session, authorization: str):
@@ -400,7 +425,7 @@ async def send_real_time_updates(account_id: int, db: Session, authorization: st
                 }
 
                 await manager.broadcast(json.dumps(message), account_id)
-        await asyncio.sleep(10)  # Update every 5 seconds
+        await asyncio.sleep(10)  # Update every 10 seconds
 
 
 @app.post("/trades/create-order/")
@@ -419,10 +444,8 @@ def create_order(order: OrderRequest, db: Session = Depends(get_db), authorizati
     Raises:
         HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
     """
-    logger.warning("pre tradeService")
-    trade_service = TradeService(db, authorization)
-    logger.warning("post tradeservice")
-    return trade_service.create_order(order)
+    return {"message": "create order connected successfully"}
+
 
 
 @app.post("/trades/add-take-profit-stop-loss/")
@@ -505,6 +528,8 @@ def cancel_order(order_id: str, symbol: str, db: Session = Depends(get_db), auth
     db.commit()
 
     return {"message": "Order canceled and removed from database successfully", "order": response}
+
+
 @app.post("/request-password-reset/")
 def forgot_password(email: str, db: Session = Depends(get_db)):
     """
@@ -586,7 +611,6 @@ def execute_payment(request: Request, db: Session = Depends(get_db), authorizati
 
 @app.post('/payment')
 def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db), authorization: str = Header(None)):
-
     """
     Creates a PayPal payment for a subscription and stores the subscription details in the database.
 
@@ -655,5 +679,3 @@ def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db
 
     else:
         raise HTTPException(status_code=400, detail="Payment creation failed")
-
-

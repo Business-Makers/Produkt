@@ -21,8 +21,6 @@ import OKX from '../Images/OKX.png';
 
 import { mockDashboardData } from './mockData';
 
-// TODO: Wenn man von Terminal auf Dashboard wechselt, kommt dieser removeChild-Fehler
-
 export default function Dashboard() {
   const { token } = useToken();
   const { exchanges, setExchanges } = useExchanges();
@@ -68,7 +66,7 @@ export default function Dashboard() {
     };
 
     fetchDashboardData();
-  }, [token, setExchanges]);
+  }, [token]);
 
   const toggleContainer = () => {
     setIsOpen(!isOpen);
@@ -196,7 +194,7 @@ export default function Dashboard() {
 
 async function connectAccount(formData, token) {
   try {
-    const response = await axios.post('http://localhost:8001/connect-account/', formData, {
+    const response = await axios.post('http://localhost:8001/connect-exchange/', formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

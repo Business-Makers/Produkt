@@ -12,6 +12,7 @@ logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
 logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
 logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
 logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 usernameSMTP = smtp_infos.username_cont
 passwordSMTP = smtp_infos.password_cont

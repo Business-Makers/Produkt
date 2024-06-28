@@ -18,7 +18,6 @@ const getTradeHistory = async (token) => {
     return response.data.trades_data;
   } catch (error) {
     console.error('Error fetching trade history:', error);
-    return [];
   }
 }
 
@@ -33,39 +32,55 @@ const CryptoChart = () => {
   const [stopLossPrice, setStopLossPrice] = useState('');
 
   const { exchanges } = useExchanges();
-  const token = useToken();
+  const { token } = useToken();
 
-  const [trades, setTrades] = useState([]);
-  
+  const [ trades, setTrades ] = useState([]);
+
   useEffect(() => {
+  if (token) {
     const fetchData = async () => {
-      const tradeData = await getTradeHistory(token);
-      setTrades(tradeData);
+      try {
+        const tradeData = await getTradeHistory(token);
+        setTrades(tradeData);
+        console.log(trades);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchData();
-  }, [exchanges]);
+  }
+}, [token]);
+
+useEffect(() => {
+    console.log("Exchanges", exchanges);
+  if (exchanges && exchanges.length > 0 && !selectedExchange) {
+    setSelectedExchange(exchanges[0].exchange_name);
+  }
+}, [exchanges]);
 
   const handleBuy = async () => {
       let orderData;
       if (orderType.toLowerCase() === 'market') {
           orderData = {
               order_type: orderType.toLowerCase(),
+              trade_price: 0.0,
               symbol: selectedCrypto,
               side: selectedExchange,
               amount: parseFloat(amount),
-              take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : undefined,
-              stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined
+              take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : 0,
+              stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : 0
           };
       } else {
       orderData = {
           order_type: orderType.toLowerCase(),
+          trade_price: 0.0,
           symbol: selectedCrypto,
           side: selectedExchange,
           amount: parseFloat(amount),
-          price: orderType === 'limit' ? parseFloat(price) : undefined,
-          stop_price: orderType === 'limit' ? parseFloat(stopPrice) : undefined,
-          take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : undefined,
-          stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined
+          price: orderType === 'limit' ? parseFloat(price) : 0,
+          stop_price: orderType === 'limit' ? parseFloat(stopPrice) : 0,
+          take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : 0,
+          stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : 0
       };
   }
 
@@ -173,29 +188,29 @@ const CryptoChart = () => {
     </div>
     <div className="trade-history-container">
       <h2>Trade History</h2>
-      {trades.length === 0 ? (
-        <p>No trades available.</p>
-      ) : (
-        <div className="trade-history">
-          {trades.map((trade, index) => (
-            <div key={index} className="trade-item">
-              <div className="trade-left">
-                <p><strong>Currency:</strong> {trade.currency_name}</p>
-                <p><strong>Account Holder:</strong> {trade.account_Holder}</p>
-              </div>
-              <div className="trade-middle">
-                <p><strong>Trade Date:</strong> {trade.date_create}</p>
-                <p><strong>Trade ID:</strong> {trade.trade_id}</p>
-              </div>
-              <div className="trade-right">
-                <p><strong>Volume:</strong> {trade.currency_volume}</p>
-                <p><strong>Purchase Price:</strong> {trade.purchase_rate}</p>
-              </div>
-              <div className="trade-chart">
-              </div>
-            </div>
-          ))}
+      {trades && trades.length > 0 ? (
+          <div className="trade-history">
+              {trades.map((trade, index) => (
+                  <div key={index} className="trade-item">
+                      <div className="trade-left">
+                          <p><strong>Currency:</strong> {trade.currency_name}</p>
+                          <p><strong>Account Holder:</strong> {trade.account_Holder}</p>
+                      </div>
+                      <div className="trade-middle">
+                          <p><strong>Trade Date:</strong> {trade.date_create}</p>
+                          <p><strong>Trade ID:</strong> {trade.trade_id}</p>
+                      </div>
+                      <div className="trade-right">
+                          <p><strong>Volume:</strong> {trade.currency_volume}</p>
+                          <p><strong>Purchase Price:</strong> {trade.purchase_rate}</p>
+                      </div>
+                      <div className="trade-chart">
+                      </div>
+                  </div>
+              ))}
         </div>
+      ) : (
+          <p>No trades available.</p>
       )}
     </div>
     </div>
