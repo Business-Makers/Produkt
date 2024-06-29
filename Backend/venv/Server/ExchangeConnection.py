@@ -9,10 +9,12 @@ logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
 logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
 logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
 
+
 class ExchangeConnection:
     """
         A class to manage connections and operations with cryptocurrency exchanges using ccxt.
         """
+
     def __init__(self, db: Session):
         """
                 Initialize the ExchangeConnection with a database session.

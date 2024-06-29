@@ -1,4 +1,3 @@
-
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtp_infos
@@ -16,8 +15,6 @@ logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 usernameSMTP = smtp_infos.username_cont
 passwordSMTP = smtp_infos.password_cont
-
-
 
 
 def send_email(receiver, subject, db: Session):
@@ -44,7 +41,7 @@ def send_email(receiver, subject, db: Session):
         server.set_debuglevel(1)
         server.starttls()
         try:
-            server.login(usernameSMTP,passwordSMTP)
+            server.login(usernameSMTP, passwordSMTP)
         except Exception as e:
             raise HTTPException(status_code=401, detail="Incorrect username or password for Outlook connection.")
 
@@ -56,14 +53,12 @@ def send_email(receiver, subject, db: Session):
     subject_mail = subject
     body = getMailText(receiver, subject, db)
 
-
     try:
         msg = MIMEMultipart()
         msg['From'] = sender_mail
         msg['To'] = receiver_mail
         msg['Subject'] = subject_mail
         msg.attach(MIMEText(body, 'plain'))
-
 
         try:
             text = msg.as_string()

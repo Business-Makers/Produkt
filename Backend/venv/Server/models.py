@@ -7,10 +7,13 @@ defined:
 - Account: Contains login and authentication information for each member.
 - Login: Tracks login activities by date, time, and location for accounts.
 - Balance: Manages financial balances with dates and volumes linked to members.
+- Api: Stores API access configurations for third-party services, including credentials.
 - AccountPages: Stores API access configurations for third-party services, including credentials.
 - Trade: Tracks currency trades, including details like volume, status, rates, and associated member.
+- TakeProfit: Stores multiple take-profit prices for a trade.
 - Membership: Defines different membership types available, detailing features and pricing.
 - Abo: Manages subscription details for accounts including start and end dates and the status of the subscription.
+- Subscription: Represents a subscription in the database, including details like amount, dates, product name, status, currency, and associated account.
 
 Each class maps to a specific table in the database and includes primary keys, foreign keys, and necessary constraints
 to ensure data integrity. Relationships between tables are established through foreign keys, enabling connected data
@@ -20,13 +23,6 @@ operations across the system.
 from sqlalchemy import Column, String, Integer, DATE, Float, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
-import logging
-
-logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 Base = declarative_base()
 
@@ -70,6 +66,7 @@ class Account(Base):
     member = relationship("Member", back_populates="accounts")
     apis = relationship("Api", back_populates="account")
     subscriptions = relationship("Subscription", back_populates="account")
+
     def __init__(self, login_name, hashed_password, memberID):
         self.login_name = login_name
         self.hashed_password = hashed_password
@@ -166,13 +163,15 @@ class Trade(Base):
     date_sale = Column("date_sale", DATE, nullable=True)
     purchase_rate = Column("purchase_rate", Float, nullable=True)
     selling_rate = Column("selling_rate", Float, nullable=True)
-    comment = Column("comment", String(200),nullable=True)
+    comment = Column("comment", String(200), nullable=True)
     api_id = Column("api_id", Integer, ForeignKey("api.api_id"), nullable=False)
     api = relationship("Api", back_populates="trades")
     stop_loss_price = Column("stop_loss_price", Float, nullable=True)
     take_profits = relationship("TakeProfit", back_populates="trade")
 
-    def __init__(self, trade_price, trade_type, currency_name, currency_volume, trade_status, date_create, api_id, stop_loss_price=None, date_bought=None, date_sale=None, purchase_rate=None, selling_rate=None, comment=None):
+    def __init__(self, trade_price, trade_type, currency_name, currency_volume, trade_status, date_create, api_id,
+                 stop_loss_price=None, date_bought=None, date_sale=None, purchase_rate=None, selling_rate=None,
+                 comment=None):
         self.trade_price = trade_price
         self.trade_type = trade_type
         self.currency_name = currency_name
@@ -201,6 +200,7 @@ class TakeProfit(Base):
     def __init__(self, trade_id, price):
         self.trade_id = trade_id
         self.price = price
+
 
 class Membership(Base):
     """
@@ -245,11 +245,7 @@ class Abo(Base):
         self.accountID = accountID
 
 
-
-
-
 class Subscription(Base):
-
     """
     Represents a subscription in the database.
 

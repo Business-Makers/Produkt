@@ -401,9 +401,18 @@ def get_trade(db: Session = Depends(get_db), authorization: str = Header(None)):
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
-
-
 async def send_real_time_updates(account_id: int, db: Session, authorization: str):
+    """
+        Sends real-time updates of trade prices and selling rates to clients.
+
+        Args:
+            account_id (int): The ID of the account.
+            db (Session): The database session.
+            authorization (str): The authorization token.
+
+        Returns:
+            None
+        """
     trade_service = TradeService(db, authorization)
     api_keys = db.query(Api).filter(Api.accountID == account_id).all()
 
@@ -447,7 +456,6 @@ def create_order(order: OrderRequest, db: Session = Depends(get_db), authorizati
     return {"message": "create order connected successfully"}
 
 
-
 @app.post("/trades/add-take-profit-stop-loss/")
 def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session = Depends(get_db),
                               authorization: str = Header(None)):
@@ -472,6 +480,27 @@ def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session
 
 @app.post("/complete_trade/")
 def complete_trade(trade_id: int, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+        Completes a trade based on the provided trade ID.
+
+        Args:
+            trade_id (int): The ID of the trade to be completed.
+            db (Session): The database session dependency.
+            authorization (str, optional): The authorization token passed in the header.
+
+        Returns:
+            dict: A dictionary containing the result of completing the trade.
+                  Example:
+                  {
+                      "success": True,
+                      "message": "Trade completed successfully."
+                  }
+                  or
+                  {
+                      "success": False,
+                      "error": "Error message"
+                  }
+        """
     trade_service = TradeService(db, authorization)
     result = trade_service.complete_trade(trade_id)
     return result
@@ -582,6 +611,25 @@ def reset_password(reset_request: PasswordResetRequest, db: Session = Depends(ge
 
 @app.get('/payment/execute')
 def execute_payment(request: Request, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+        Executes a PayPal payment and updates the subscription status in the database.
+
+        Args:
+            request (Request): The FastAPI request object.
+            db (Session): The database session dependency.
+            authorization (str, optional): The authorization token passed in the header.
+
+        Raises:
+            HTTPException: If the authorization header is missing or invalid,
+                           or if the payment execution fails.
+
+        Returns:
+            JSONResponse: A JSON response indicating the result of the payment execution.
+                          Example:
+                          {
+                              "message": "Payment executed successfully"
+                          }
+        """
     if authorization is None or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
 

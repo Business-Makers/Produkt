@@ -62,25 +62,27 @@ useEffect(() => {
       let orderData;
       if (orderType.toLowerCase() === 'market') {
           orderData = {
-              order_type: orderType.toLowerCase(),
               trade_price: 0.0,
               symbol: selectedCrypto,
               side: selectedExchange,
               amount: parseFloat(amount),
-              take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : 0,
-              stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : 0
+              order_type: orderType.toLowerCase(),
+              take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : [],
+              stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined,
+              comment: ''
           };
       } else {
       orderData = {
-          order_type: orderType.toLowerCase(),
           trade_price: 0.0,
           symbol: selectedCrypto,
           side: selectedExchange,
           amount: parseFloat(amount),
-          price: orderType === 'limit' ? parseFloat(price) : 0,
-          stop_price: orderType === 'limit' ? parseFloat(stopPrice) : 0,
-          take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : 0,
-          stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : 0
+          price: orderType === 'limit' ? parseFloat(price) : undefined,
+          stop_price: orderType === 'limit' ? parseFloat(stopPrice) : undefined,
+          order_type: orderType.toLowerCase(),
+          take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : [],
+          stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined,
+          comment: ''
       };
   }
 
@@ -170,17 +172,17 @@ useEffect(() => {
           )}
           <label htmlFor="takeProfitPrices">Take Profit Prices (comma separated) (optional):</label>
           <input
-            type="text"
-            id="takeProfitPrices"
-            value={takeProfitPrices}
-            onChange={(e) => setTakeProfitPrices(e.target.value.split(','))}
+              type="text"
+              id="takeProfitPrices"
+              value={takeProfitPrices.join(',')} // Zusammenführen des Arrays zu einem String für die Anzeige
+              onChange={(e) => setTakeProfitPrices(e.target.value.split(',').map(p => parseFloat(p)))}
           />
           <label htmlFor="stopLossPrice">Stop Loss Price (optional):</label>
           <input
-            type="number"
-            id="stopLossPrice"
-            value={stopLossPrice}
-            onChange={(e) => setStopLossPrice(e.target.value)}
+              type="number"
+              id="stopLossPrice"
+              value={stopLossPrice}
+              onChange={(e) => setStopLossPrice(e.target.value)}
           />
           <button type="button" onClick={handleBuy}>Buy</button>
         </div>

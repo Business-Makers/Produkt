@@ -39,13 +39,27 @@ Returns:
 
 """
 
-
 import paypalrestsdk
 import os
 
 
 class Paypal:
+    """
+        A class to handle PayPal payment processing using the PayPal REST SDK.
+
+        Attributes:
+            None
+
+        Methods:
+            __init__(): Initializes the PayPal SDK with configuration details.
+            create_payment(currency, price, product_name): Creates a PayPal payment.
+            execute_payment(payment_id, payer_id): Executes a PayPal payment.
+        """
+
     def __init__(self):
+        """
+               Initializes the PayPal SDK with configuration details.
+               """
 
         paypalrestsdk.configure({
             "mode": "sandbox",  # oder "live"
@@ -54,7 +68,18 @@ class Paypal:
         })
 
     def create_payment(self, currency, price, product_name):
+        """
+                Creates a PayPal payment.
 
+                Args:
+                    currency (str): The currency code (e.g., 'USD').
+                    price (float): The price of the product.
+                    product_name (str): The name of the product.
+
+                Returns:
+                    dict: A dictionary containing the approval URL if the payment was created successfully,
+                          or an error message if the payment creation failed.
+                """
 
         payment = paypalrestsdk.Payment({
             "intent": "sale",
@@ -88,6 +113,17 @@ class Paypal:
             return {"error": payment.error}, 400
 
     def execute_payment(self, payment_id, payer_id):
+        """
+                Executes a PayPal payment.
+
+                Args:
+                    payment_id (str): The ID of the payment to be executed.
+                    payer_id (str): The ID of the payer.
+
+                Returns:
+                    str or dict: A success message if the payment was executed successfully,
+                                 or an error message if the payment execution failed.
+                """
 
         payment = paypalrestsdk.Payment.find(payment_id)
 
