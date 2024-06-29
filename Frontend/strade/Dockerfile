@@ -1,20 +1,22 @@
+# frontend/strade/Dockerfile
 
-FROM node:alpine AS development
+# Use a Node.js base image
+FROM node:14
 
-
+# Set the working directory inside the container
 WORKDIR /app
 
-
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Installieren Sie die Abhängigkeiten
-RUN npm install --legacy-peer-deps
+# Install dependencies
+RUN npm install
 
-# Kopieren Sie den Rest des Anwendungscodes in den Container
-COPY .. .
+# Copy the rest of the application code
+COPY . .
 
-# Exponieren Sie den Port, auf dem die App läuft
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Starten Sie die Anwendung
+# Start the application
 CMD ["npm", "start"]
