@@ -453,8 +453,10 @@ def create_order(order: OrderRequest, db: Session = Depends(get_db), authorizati
     Raises:
         HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
     """
-    return {"message": "create order connected successfully"}
-
+    logger.warning("pre tradeService")
+    trade_service = TradeService(db, authorization)
+    logger.warning("post tradeservice")
+    return trade_service.create_order(order)
 
 @app.post("/trades/add-take-profit-stop-loss/")
 def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session = Depends(get_db),

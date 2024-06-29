@@ -258,6 +258,7 @@ class OrderRequest(BaseModel):
     take_profit_prices: Optional[List[float]] = None
     stop_loss_price: Optional[float] = None
     comment: Optional[str] = None
+    exchangeName: str
 
 
 class AddTakeProfitStopLossRequest(BaseModel):

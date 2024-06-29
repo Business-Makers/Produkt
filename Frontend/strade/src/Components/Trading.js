@@ -15,9 +15,20 @@ const getTradeHistory = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.trades_data;
+    //console.log(response.data); // Falls nicht klappt, noch .trades_data anhaengen
+    return response.data;
   } catch (error) {
     console.error('Error fetching trade history:', error);
+  }
+}
+
+const fetchCurrentPrice = async (symbol) => {
+  try {
+    const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`);
+    return response.data[symbol].usd;
+  } catch (error) {
+    console.error('Error fetching current price:', error);
+    return 0.0;
   }
 }
 
@@ -30,6 +41,7 @@ const CryptoChart = () => {
   const [stopPrice, setStopPrice] = useState('');
   const [takeProfitPrices, setTakeProfitPrices] = useState([]);
   const [stopLossPrice, setStopLossPrice] = useState('');
+  const [currentPrice, setCurrentPrice] = useState(0.0);
 
   const { exchanges } = useExchanges();
   const { token } = useToken();
@@ -49,7 +61,7 @@ const CryptoChart = () => {
     };
     fetchData();
   }
-}, [token]);
+}, []);
 
 useEffect(() => {
     console.log("Exchanges", exchanges);
@@ -58,14 +70,25 @@ useEffect(() => {
   }
 }, [exchanges]);
 
+useEffect(() => {
+    const fetchPrice = async () => {
+      const price = await fetchCurrentPrice(selectedCrypto);
+      setCurrentPrice(price);
+    };
+    fetchPrice();
+  }, [selectedCrypto]);
+
   const handleBuy = async () => {
       let orderData;
       if (orderType.toLowerCase() === 'market') {
           orderData = {
-              trade_price: 0.0,
-              symbol: selectedCrypto,
-              side: selectedExchange,
+              trade_price: currentPrice,
+              side: 'buy',
+              symbol: selectedCrypto + "/USDT",
+              exchangeName: selectedExchange,
               amount: parseFloat(amount),
+              price: 0,
+              stop_price: 0,
               order_type: orderType.toLowerCase(),
               take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : [],
               stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined,
@@ -73,9 +96,10 @@ useEffect(() => {
           };
       } else {
       orderData = {
-          trade_price: 0.0,
-          symbol: selectedCrypto,
-          side: selectedExchange,
+          trade_price: currentPrice,
+          side: 'buy',
+          symbol: selectedCrypto + "/USDT",
+          exchangeName: selectedExchange,
           amount: parseFloat(amount),
           price: orderType === 'limit' ? parseFloat(price) : undefined,
           stop_price: orderType === 'limit' ? parseFloat(stopPrice) : undefined,
