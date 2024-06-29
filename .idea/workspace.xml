@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="150729f9-ddb5-4e3e-bf62-54bf9b021add" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Backend/Server/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Backend/Server/Dockerfile" afterDir="false" />
+    </list>
+    <list id="aae42a40-b7d1-4091-82ad-502eeb49e80f" name="Changes by simon" comment="" />
+    <list id="0d5aeb36-1f8e-4afd-927b-3a75fb2820c3" name="Changes by Simon" comment="" />
+    <list id="848413c9-f14b-4ea3-a235-bb35ea967f14" name="Changes by User" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="Dockerfile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="TradeRefactoringserver" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Backend/venv/Server/routes.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2hpnDhxqUVgQDGoRfQ8Cg6Pr8K5" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Docker.Server/Dockerfile (1).executor": "Run",
+    "Docker.Server/Dockerfile.executor": "Run",
+    "Docker.docker-compose.yml.backend: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.python-app: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
+    "Docker.strade/Dockerfile.executor": "Run",
+    "Python.main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Docker-Compose",
+    "last_opened_file_path": "C:/Users/Wael Eskeif/Desktop/Studium/S4/SoftwareProjekt/Produkt/Produkt",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.build.executor": "Run",
+    "npm.install chart.js react-chartjs-2.executor": "Run",
+    "npm.install chartjs-adapter-date-fns.executor": "Run",
+    "npm.install react-icons.executor": "Run",
+    "npm.install react-router-doms.executor": "Run",
+    "npm.start (1).executor": "Run",
+    "npm.start.executor": "Run",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Wael Eskeif\Desktop\Studium\S4\SoftwareProjekt\Produkt\Produkt" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Wael Eskeif\Desktop\Studium\S4\SoftwareProjekt\Produkt\Produkt" />
+      <recent name="C:\Users\Wael Eskeif\Desktop\Studium\S4\SoftwareProjekt\Produkt\Produkt\Backend\Server" />
+      <recent name="C:\Users\Wael Eskeif\Desktop\Studium\S4\SoftwareProjekt\Produkt\Produkt\Frontend\strade" />
+      <recent name="C:\Users\Wael Eskeif\Desktop\Studium\S4\SoftwareProjekt\Produkt\Produkt\Frontend" />
+      <recent name="C:\Users\Wael Eskeif\Desktop\Studium\S4\SoftwareProjekt\Produkt\Produkt\Backend" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Docker.Server/Dockerfile">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Produkt" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Backend/venv/Server" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Backend/venv/Server/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Server/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="sourceFilePath" value="Backend/Server/Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="dockerfile" temporary="true">
+      <deployment type="dockerfile">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="strade/Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="sourceFilePath" value="Frontend/strade/Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="start (1)" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/Frontend/strade/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/Frontend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="npm.start (1)" />
+        <item itemvalue="npm.start" />
+        <item itemvalue="Docker.strade/Dockerfile" />
+        <item itemvalue="Docker.Server/Dockerfile" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-5a2391486177-2887949eec09-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.13763.11" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="150729f9-ddb5-4e3e-bf62-54bf9b021add" name="Changes" comment="" />
+      <created>1718299768533</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1718299768533</updated>
+      <workItem from="1718299769609" duration="7673000" />
+      <workItem from="1718388276878" duration="3017000" />
+      <workItem from="1718391317421" duration="1368000" />
+      <workItem from="1718393017711" duration="914000" />
+      <workItem from="1718393948279" duration="1196000" />
+      <workItem from="1718463067074" duration="1216000" />
+      <workItem from="1718470239013" duration="606000" />
+      <workItem from="1718631272330" duration="2367000" />
+      <workItem from="1718813344518" duration="2612000" />
+      <workItem from="1719130549574" duration="3790000" />
+      <workItem from="1719176212307" duration="258000" />
+      <workItem from="1719252541659" duration="755000" />
+      <workItem from="1719357413817" duration="11000" />
+      <workItem from="1719417551501" duration="3635000" />
+      <workItem from="1719424128274" duration="4122000" />
+      <workItem from="1719433540068" duration="7874000" />
+      <workItem from="1719444814655" duration="32000" />
+      <workItem from="1719448854870" duration="7552000" />
+      <workItem from="1719507715300" duration="8019000" />
+      <workItem from="1719521564041" duration="12525000" />
+      <workItem from="1719540333107" duration="3001000" />
+      <workItem from="1719595909519" duration="2564000" />
+      <workItem from="1719610992301" duration="14892000" />
+      <workItem from="1719627091210" duration="224000" />
+      <workItem from="1719672894707" duration="7449000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="backend/Docker" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="TradeRefactoringserver" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Produkt$main.coverage" NAME="main Coverage Results" MODIFIED="1719622557693" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Backend/Server" />
+  </component>
+</project>
