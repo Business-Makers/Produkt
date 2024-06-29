@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: 
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Frontend/strade:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+
+  backend:
+    image: 
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./Backend/Server:/app
+    environment:
+      - PYTHONUNBUFFERED=1
