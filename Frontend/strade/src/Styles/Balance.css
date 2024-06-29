@@ -1,0 +1,26 @@
+.balances-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .exchange-balance, .total-balance {
+    background-color: #2e2e2e;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .exchange-balance h3, .total-balance h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .total-balance {
+    border-top: 2px solid #ffffff;
+    padding-top: 20px;
+  }

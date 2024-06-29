@@ -35,6 +35,18 @@ class Donut extends Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.data !== this.props.data) {
+      this.setState({
+        options: {
+          ...this.state.options,
+          labels: this.props.data.map(account => account.exchange_name),
+        },
+        series: this.props.data.map(account => account.currency_count)
+      });
+    }
+  }
+
   render() {
     return (
       <div className="donut">

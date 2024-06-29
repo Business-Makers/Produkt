@@ -19,8 +19,10 @@ import HTX from '../Images/htx.png';
 import KRAKEN from '../Images/kraken.png';
 import OKX from '../Images/OKX.png';
 
-import { mockDashboardData } from './mockData';
+import Donut from './DonutChart';
+import MyBalances from './MyBalances';
 
+/** Displays a Dashboard, offering the ability to connect to selected crypto-exchanges and showing the data of these exchanges' accounts */
 export default function Dashboard() {
   const { token } = useToken();
   const { exchanges, setExchanges } = useExchanges();
@@ -66,7 +68,7 @@ export default function Dashboard() {
     };
 
     fetchDashboardData();
-  }, [token]);
+  }, [token, setExchanges]);
 
   const toggleContainer = () => {
     setIsOpen(!isOpen);
@@ -101,7 +103,6 @@ export default function Dashboard() {
       const spam = await connectAccount(formData, token);
       window.alert("Exchange connected successfully");
       const account_data = await retrieveData(token);
-      // const account_data = mockDashboardData;
       setExchanges(account_data);
       localStorage.setItem('dashboardData', JSON.stringify(account_data));
       setLoading(false);
@@ -171,9 +172,16 @@ export default function Dashboard() {
         <div>Loading...</div>
       ) : (
         <div>
-          {exchanges && exchanges.length > 0 ? ( // Prüfen, ob dashboardData existiert und nicht leer ist
+          {exchanges && exchanges.length > 0 ? ( // Checks if the data in exchanges can be used
             <div>
               <h2>Exchange Data</h2>
+                <MyBalances exchanges={exchanges} />
+                <Donut data=
+                            {exchanges.map(exchange => ({
+                            exchange_name: exchange.exchange_name,
+                            currency_count: exchange.currency_count
+                            }))}/>
+                {/* This was the code prior to the refactor of the data:
                 {exchanges.map((exchange, index) => (
                 <div key={index}>
                   <strong>{exchange.exchange_name}</strong>
@@ -181,7 +189,7 @@ export default function Dashboard() {
                   <p>Balance: {exchange.balance}</p>
                   <p>Currency Count: {exchange.currency_count}</p>
                 </div>
-                ))}
+                ))} */}
             </div>
           ) : (
             <div>No exchange connected.</div>
@@ -213,7 +221,7 @@ async function retrieveData(token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.dashboard; // Dashboard-Array zurückgeben
+    return response.data.dashboard;
   } catch (error) {
     console.error('Error fetching dashboard data:', error);
     throw error;

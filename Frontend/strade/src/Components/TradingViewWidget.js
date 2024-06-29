@@ -10,6 +10,7 @@ const TradingViewWidget = ({ symbol }) => {
     script.type = 'text/javascript';
     script.src = 'https://s3.tradingview.com/tv.js';
     script.async = true;
+    script.setAttribute('data-testid', 'tradingview-script'); // Test-ID für das Skript hinzufügen
 
     script.onload = () => {
       if (window.TradingView) {
@@ -44,8 +45,8 @@ const TradingViewWidget = ({ symbol }) => {
   }, [symbol]);
 
   return (
-    <div className="tradingview-widget-container" ref={containerRef}>
-      <div id="tradingview_12345"></div>
+    <div className="tradingview-widget-container" ref={containerRef} data-testid="tradingview-container">
+      <div id="tradingview_12345" data-testid="tradingview-div"></div>
     </div>
   );
 };
