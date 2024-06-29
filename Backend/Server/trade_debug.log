@@ -1,0 +1,215 @@
+2024-06-29 17:57:39,025 INFO:BEGIN (implicit)
+2024-06-29 17:57:39,026 INFO:PRAGMA main.table_info("member")
+2024-06-29 17:57:39,026 INFO:[raw sql] ()
+2024-06-29 17:57:39,032 INFO:PRAGMA temp.table_info("member")
+2024-06-29 17:57:39,033 INFO:[raw sql] ()
+2024-06-29 17:57:39,034 INFO:PRAGMA main.table_info("account")
+2024-06-29 17:57:39,035 INFO:[raw sql] ()
+2024-06-29 17:57:39,037 INFO:PRAGMA temp.table_info("account")
+2024-06-29 17:57:39,038 INFO:[raw sql] ()
+2024-06-29 17:57:39,039 INFO:PRAGMA main.table_info("login")
+2024-06-29 17:57:39,039 INFO:[raw sql] ()
+2024-06-29 17:57:39,042 INFO:PRAGMA temp.table_info("login")
+2024-06-29 17:57:39,043 INFO:[raw sql] ()
+2024-06-29 17:57:39,043 INFO:PRAGMA main.table_info("balance")
+2024-06-29 17:57:39,044 INFO:[raw sql] ()
+2024-06-29 17:57:39,046 INFO:PRAGMA temp.table_info("balance")
+2024-06-29 17:57:39,047 INFO:[raw sql] ()
+2024-06-29 17:57:39,047 INFO:PRAGMA main.table_info("api")
+2024-06-29 17:57:39,047 INFO:[raw sql] ()
+2024-06-29 17:57:39,050 INFO:PRAGMA temp.table_info("api")
+2024-06-29 17:57:39,051 INFO:[raw sql] ()
+2024-06-29 17:57:39,051 INFO:PRAGMA main.table_info("account_pages_info")
+2024-06-29 17:57:39,052 INFO:[raw sql] ()
+2024-06-29 17:57:39,055 INFO:PRAGMA temp.table_info("account_pages_info")
+2024-06-29 17:57:39,055 INFO:[raw sql] ()
+2024-06-29 17:57:39,056 INFO:PRAGMA main.table_info("trade")
+2024-06-29 17:57:39,057 INFO:[raw sql] ()
+2024-06-29 17:57:39,059 INFO:PRAGMA temp.table_info("trade")
+2024-06-29 17:57:39,060 INFO:[raw sql] ()
+2024-06-29 17:57:39,061 INFO:PRAGMA main.table_info("take_profit")
+2024-06-29 17:57:39,061 INFO:[raw sql] ()
+2024-06-29 17:57:39,064 INFO:PRAGMA temp.table_info("take_profit")
+2024-06-29 17:57:39,064 INFO:[raw sql] ()
+2024-06-29 17:57:39,065 INFO:PRAGMA main.table_info("membership")
+2024-06-29 17:57:39,065 INFO:[raw sql] ()
+2024-06-29 17:57:39,068 INFO:PRAGMA temp.table_info("membership")
+2024-06-29 17:57:39,068 INFO:[raw sql] ()
+2024-06-29 17:57:39,069 INFO:PRAGMA main.table_info("abo")
+2024-06-29 17:57:39,070 INFO:[raw sql] ()
+2024-06-29 17:57:39,072 INFO:PRAGMA temp.table_info("abo")
+2024-06-29 17:57:39,072 INFO:[raw sql] ()
+2024-06-29 17:57:39,073 INFO:PRAGMA main.table_info("subscription")
+2024-06-29 17:57:39,073 INFO:[raw sql] ()
+2024-06-29 17:57:39,076 INFO:PRAGMA temp.table_info("subscription")
+2024-06-29 17:57:39,077 INFO:[raw sql] ()
+2024-06-29 17:57:39,078 INFO:
+CREATE TABLE member (
+	member_id INTEGER NOT NULL, 
+	firstname VARCHAR(50) NOT NULL, 
+	lastname VARCHAR(50) NOT NULL, 
+	birthday VARCHAR(50) NOT NULL, 
+	address VARCHAR(50), 
+	country VARCHAR(50), 
+	email VARCHAR(50) NOT NULL, 
+	phone_number VARCHAR(50), 
+	PRIMARY KEY (member_id), 
+	UNIQUE (member_id), 
+	UNIQUE (email), 
+	UNIQUE (phone_number)
+)
+
+
+2024-06-29 17:57:39,079 INFO:[no key 0.00047s] ()
+2024-06-29 17:57:39,095 INFO:
+CREATE TABLE membership (
+	membership_name VARCHAR NOT NULL, 
+	duration INTEGER NOT NULL, 
+	trade_unlimited BOOLEAN NOT NULL, 
+	bot_unlimited BOOLEAN NOT NULL, 
+	trade_count INTEGER, 
+	bot_count INTEGER, 
+	price FLOAT NOT NULL, 
+	price_currency VARCHAR(50) NOT NULL, 
+	PRIMARY KEY (membership_name), 
+	UNIQUE (membership_name)
+)
+
+
+2024-06-29 17:57:39,095 INFO:[no key 0.00061s] ()
+2024-06-29 17:57:39,112 INFO:
+CREATE TABLE account (
+	account_id INTEGER NOT NULL, 
+	login_name VARCHAR(50) NOT NULL, 
+	hashed_password VARCHAR(50) NOT NULL, 
+	"memberID" INTEGER NOT NULL, 
+	PRIMARY KEY (account_id), 
+	UNIQUE (account_id), 
+	UNIQUE (login_name), 
+	FOREIGN KEY("memberID") REFERENCES member (member_id)
+)
+
+
+2024-06-29 17:57:39,112 INFO:[no key 0.00056s] ()
+2024-06-29 17:57:39,130 INFO:
+CREATE TABLE balance (
+	balance_date DATE NOT NULL, 
+	balance_volume FLOAT NOT NULL, 
+	"memberID" INTEGER NOT NULL, 
+	PRIMARY KEY (balance_date, "memberID"), 
+	FOREIGN KEY("memberID") REFERENCES member (member_id)
+)
+
+
+2024-06-29 17:57:39,130 INFO:[no key 0.00058s] ()
+2024-06-29 17:57:39,146 INFO:
+CREATE TABLE login (
+	login_date DATE NOT NULL, 
+	login_time VARCHAR(50) NOT NULL, 
+	location VARCHAR(50) NOT NULL, 
+	"accountID" INTEGER NOT NULL, 
+	PRIMARY KEY (login_date, "accountID"), 
+	FOREIGN KEY("accountID") REFERENCES account (account_id)
+)
+
+
+2024-06-29 17:57:39,146 INFO:[no key 0.00077s] ()
+2024-06-29 17:57:39,162 INFO:
+CREATE TABLE api (
+	api_id INTEGER NOT NULL, 
+	exchange_name VARCHAR(50) NOT NULL, 
+	"key" VARCHAR(50) NOT NULL, 
+	secret_key VARCHAR(50) NOT NULL, 
+	passphrase VARCHAR(50), 
+	"accountID" INTEGER NOT NULL, 
+	PRIMARY KEY (api_id), 
+	UNIQUE (api_id), 
+	UNIQUE (secret_key), 
+	FOREIGN KEY("accountID") REFERENCES account (account_id)
+)
+
+
+2024-06-29 17:57:39,163 INFO:[no key 0.00067s] ()
+2024-06-29 17:57:39,179 INFO:
+CREATE TABLE abo (
+	abo_start DATE NOT NULL, 
+	abo_end DATE, 
+	abso_status VARCHAR NOT NULL, 
+	"accountID" INTEGER NOT NULL, 
+	PRIMARY KEY (abo_start, "accountID"), 
+	FOREIGN KEY("accountID") REFERENCES account (account_id)
+)
+
+
+2024-06-29 17:57:39,179 INFO:[no key 0.00061s] ()
+2024-06-29 17:57:39,195 INFO:
+CREATE TABLE subscription (
+	subscription_id INTEGER NOT NULL, 
+	amount INTEGER NOT NULL, 
+	date_start DATE NOT NULL, 
+	date_end DATE NOT NULL, 
+	product_name VARCHAR NOT NULL, 
+	abo_status VARCHAR NOT NULL, 
+	currency VARCHAR NOT NULL, 
+	account_id INTEGER NOT NULL, 
+	payment_id VARCHAR NOT NULL, 
+	PRIMARY KEY (subscription_id), 
+	UNIQUE (subscription_id), 
+	UNIQUE (account_id), 
+	FOREIGN KEY(account_id) REFERENCES account (account_id), 
+	UNIQUE (payment_id)
+)
+
+
+2024-06-29 17:57:39,196 INFO:[no key 0.00060s] ()
+2024-06-29 17:57:39,211 INFO:
+CREATE TABLE account_pages_info (
+	info_id INTEGER NOT NULL, 
+	account_holder VARCHAR(50) NOT NULL, 
+	balance FLOAT NOT NULL, 
+	currency_count INTEGER NOT NULL, 
+	last_updated DATETIME NOT NULL, 
+	api_id INTEGER NOT NULL, 
+	PRIMARY KEY (info_id), 
+	UNIQUE (info_id), 
+	FOREIGN KEY(api_id) REFERENCES api (api_id)
+)
+
+
+2024-06-29 17:57:39,212 INFO:[no key 0.00062s] ()
+2024-06-29 17:57:39,228 INFO:
+CREATE TABLE trade (
+	trade_id INTEGER NOT NULL, 
+	trade_type VARCHAR(50) NOT NULL, 
+	trade_price FLOAT NOT NULL, 
+	currency_name VARCHAR(50) NOT NULL, 
+	currency_volume FLOAT NOT NULL, 
+	trade_status VARCHAR(50), 
+	date_create DATE NOT NULL, 
+	date_bought DATE, 
+	date_sale DATE, 
+	purchase_rate FLOAT, 
+	selling_rate FLOAT, 
+	comment VARCHAR(200), 
+	api_id INTEGER NOT NULL, 
+	stop_loss_price FLOAT, 
+	PRIMARY KEY (trade_id), 
+	UNIQUE (trade_id), 
+	FOREIGN KEY(api_id) REFERENCES api (api_id)
+)
+
+
+2024-06-29 17:57:39,228 INFO:[no key 0.00055s] ()
+2024-06-29 17:57:39,244 INFO:
+CREATE TABLE take_profit (
+	takeprofit_id INTEGER NOT NULL, 
+	price FLOAT NOT NULL, 
+	trade_id INTEGER NOT NULL, 
+	PRIMARY KEY (takeprofit_id), 
+	UNIQUE (takeprofit_id), 
+	FOREIGN KEY(trade_id) REFERENCES trade (trade_id)
+)
+
+
+2024-06-29 17:57:39,245 INFO:[no key 0.00053s] ()
+2024-06-29 17:57:39,263 INFO:COMMIT
