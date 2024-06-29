@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Importiere Axios
+import axios from 'axios';
 
 import '../Styles/LoggedIn.css';
 import '../Styles/Subscription.css';
@@ -35,14 +35,13 @@ const Subscription = () => {
   };
 
   const handlePriceButtonClick = async (membership) => {
-    const periodInDays = activeTab === 'Yearly' ? 365 : 30; // 365 Tage für Yearly, 30 Tage für Monthly
-    const membershipName = membership; // basic, silver oder gold
+    const periodInDays = activeTab === 'Yearly' ? 365 : 30; 
+    const membershipName = membership; 
 
-    // Zeige eine Bestätigungsdialogbox an
+  
     const confirmed = window.confirm(`Möchtest du den Kauf von ${membershipName} für ${periodInDays} Tage wirklich abschließen?`);
 
     if (confirmed) {
-      // Daten, die gesendet werden sollen
       const formData = {
         currency: 'Dollar',
         period: periodInDays,
@@ -50,7 +49,6 @@ const Subscription = () => {
       };
 
       try {
-        // Aufruf der async Funktion zur Verbindung mit dem Server
         const serverResponse = await connectWithServer(formData);
         console.log('Erfolgreich gesendet:', serverResponse);
 

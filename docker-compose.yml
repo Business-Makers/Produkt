@@ -3,23 +3,23 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./frontend/strade
+      context: ./Frontend/strade
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend/strade:/app
+      - ./Frontend/strade:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
 
   backend:
     build:
-      context: ./backend/Server
+      context: ./Backend/Server
       dockerfile: Dockerfile
     ports:
       - "8001:8001"
     volumes:
-      - ./backend/Server:/app
+      - ./Backend/Server:/app
     environment:
       - PYTHONUNBUFFERED=1
