@@ -7,10 +7,13 @@ defined:
 - Account: Contains login and authentication information for each member.
 - Login: Tracks login activities by date, time, and location for accounts.
 - Balance: Manages financial balances with dates and volumes linked to members.
+- Api: Stores API access configurations for third-party services, including credentials.
 - AccountPages: Stores API access configurations for third-party services, including credentials.
 - Trade: Tracks currency trades, including details like volume, status, rates, and associated member.
+- TakeProfit: Stores multiple take-profit prices for a trade.
 - Membership: Defines different membership types available, detailing features and pricing.
 - Abo: Manages subscription details for accounts including start and end dates and the status of the subscription.
+- Subscription: Represents a subscription in the database, including details like amount, dates, product name, status, currency, and associated account.
 
 Each class maps to a specific table in the database and includes primary keys, foreign keys, and necessary constraints
 to ensure data integrity. Relationships between tables are established through foreign keys, enabling connected data
@@ -59,8 +62,10 @@ class Account(Base):
     login_name = Column("login_name", String(50), nullable=False, unique=True)
     hashed_password = Column("hashed_password", String(50), nullable=False)
     memberID = Column("memberID", Integer, ForeignKey("member.member_id"), nullable=False)
+
     member = relationship("Member", back_populates="accounts")
     apis = relationship("Api", back_populates="account")
+    subscriptions = relationship("Subscription", back_populates="account")
 
     def __init__(self, login_name, hashed_password, memberID):
         self.login_name = login_name
@@ -149,7 +154,7 @@ class Trade(Base):
     __tablename__ = 'trade'
     trade_id = Column("trade_id", Integer, primary_key=True, unique=True, autoincrement=True)
     trade_type = Column("trade_type", String(50), nullable=False)
-    trade_price = Column("trade_price", Float, nullable=True)
+    trade_price = Column("trade_price", Float, nullable=False)
     currency_name = Column("currency_name", String(50), nullable=False)
     currency_volume = Column("currency_volume", Float, nullable=False)
     trade_status = Column("trade_status", String(50))
@@ -158,13 +163,15 @@ class Trade(Base):
     date_sale = Column("date_sale", DATE, nullable=True)
     purchase_rate = Column("purchase_rate", Float, nullable=True)
     selling_rate = Column("selling_rate", Float, nullable=True)
-    comment = Column("comment", String(200),nullable=True)
+    comment = Column("comment", String(200), nullable=True)
     api_id = Column("api_id", Integer, ForeignKey("api.api_id"), nullable=False)
     api = relationship("Api", back_populates="trades")
     stop_loss_price = Column("stop_loss_price", Float, nullable=True)
     take_profits = relationship("TakeProfit", back_populates="trade")
 
-    def __init__(self, trade_price, trade_type, currency_name, currency_volume, trade_status, date_create, api_id, stop_loss_price=None, date_bought=None, date_sale=None, purchase_rate=None, selling_rate=None, comment=None):
+    def __init__(self, trade_price, trade_type, currency_name, currency_volume, trade_status, date_create, api_id,
+                 stop_loss_price=None, date_bought=None, date_sale=None, purchase_rate=None, selling_rate=None,
+                 comment=None):
         self.trade_price = trade_price
         self.trade_type = trade_type
         self.currency_name = currency_name
@@ -193,6 +200,7 @@ class TakeProfit(Base):
     def __init__(self, trade_id, price):
         self.trade_id = trade_id
         self.price = price
+
 
 class Membership(Base):
     """
@@ -236,3 +244,43 @@ class Abo(Base):
         self.abo_status = abo_status
         self.accountID = accountID
 
+
+class Subscription(Base):
+    """
+    Represents a subscription in the database.
+
+    Attributes:
+        __tablename__ (str): The name of the database table.
+        subscription_id (int): The unique identifier for the subscription.
+        amount (float): The amount paid for the subscription.
+        date_start (date): The start date of the subscription.
+        date_end (date): The end date of the subscription.
+        product_name (str): The name of the subscribed product.
+        abo_status (str): The status of the subscription.
+        currency (str): The currency in which the payment was made.
+        account_id (int): The identifier of the associated account.
+        account (relationship): The relationship to the associated Account object.
+    """
+
+    __tablename__ = 'subscription'
+    subscription_id = Column("subscription_id", Integer, primary_key=True, unique=True, autoincrement=True)
+    amount = Column('amount', Integer, nullable=False)
+    date_start = Column('date_start', DATE, nullable=False)
+    date_end = Column('date_end', DATE, nullable=False)
+    product_name = Column('product_name', String, nullable=False)
+    abo_status = Column('abo_status', String, nullable=False)
+    currency = Column('currency', String, nullable=False)
+    account_id = Column(Integer, ForeignKey('account.account_id'), unique=True, nullable=False)
+    payment_id = Column(String, nullable=False, unique=True)
+
+    account = relationship("Account", back_populates="subscriptions")
+
+    def __init__(self, amount, date_start, date_end, product_name, abo_status, currency, account_id, payment_id):
+        self.amount = amount
+        self.date_start = date_start
+        self.date_end = date_end
+        self.product_name = product_name
+        self.abo_status = abo_status
+        self.currency = currency
+        self.account_id = account_id
+        self.payment_id = payment_id

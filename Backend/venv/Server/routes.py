@@ -5,14 +5,17 @@ This file contains the main FastAPI application setup, including endpoint defini
 """
 import asyncio
 import json
+from datetime import date, timedelta
 
-from fastapi import FastAPI, Depends, HTTPException, Header, BackgroundTasks, WebSocketDisconnect, WebSocket
+from fastapi import FastAPI, Depends, HTTPException, Header, BackgroundTasks, WebSocketDisconnect, WebSocket, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from database import get_db, init_db
-from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit
+from fastapi.responses import JSONResponse
+
+from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit, Subscription
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation, OrderRequest, \
-    AddTakeProfitStopLossRequest, UpdateTradeRequest
+    AddTakeProfitStopLossRequest, UpdateTradeRequest, Subscription_Info
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
@@ -21,6 +24,15 @@ import ccxt
 from web_socket import websocket_endpoint
 from background_threading import background_threads
 from web_socket import manager
+import logging
+from paypal import Paypal
+
+logging.basicConfig(filename='trade_debug.log', level=logging.WARNING, format='%(asctime)s %(levelname)s:%(message)s')
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 app = FastAPI()  # creates instance of FastAPI class
 
@@ -34,6 +46,8 @@ app.add_middleware(
 
 background = background_threads()
 
+logger = logging.getLogger(__name__)
+
 
 @app.on_event("startup")
 async def on_startup():
@@ -46,7 +60,7 @@ async def on_startup():
         """
     init_db()
 
-    #todo: Background async await
+    # todo: Background async await
 
 
 app.websocket("\ws\{user_id}")(websocket_endpoint)
@@ -82,10 +96,10 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
 
             mailAdress = find_mail(db_user, db)
             if mailAdress:
-                #send_email(mailAdress, mailTheme.login.name, db)
+                # send_email(mailAdress, mailTheme.login.name, db)
                 pass
             background.set_authorization(access_token)
-            background.start_background_tasks()
+            # background.start_background_tasks()
 
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
@@ -326,49 +340,79 @@ def get_trade(db: Session = Depends(get_db), authorization: str = Header(None)):
     Raises:
         HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
     """
-    if authorization is None or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+    try:
+        if authorization is None or not authorization.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
 
-    token = authorization.split(" ")[1]
-    payload = verify_trade_token(token)
-    if payload is None:
-        raise HTTPException(status_code=402, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
-    account_id = payload.get("account_id")
+        token = authorization.split(" ")[1]
+        payload = verify_trade_token(token)
+        if payload is None:
+            raise HTTPException(status_code=402, detail="Invalid or expired token",
+                                headers={"WWW-Authenticate": "Bearer"})
+        account_id = payload.get("account_id")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Authorization Error: {str(e)}")
 
     try:
         api_keys = db.query(Api).filter(Api.accountID == account_id).all()
         if not api_keys:
             raise HTTPException(status_code=404, detail="API keys not found for the account")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database Query Error (api_keys): {str(e)}")
 
-        trades_data = []
+    trades_data = []
+    try:
         for api_key in api_keys:
-            trades = db.query(Trade).filter(Trade.api_id == api_key.api_id).all()
+            try:
+                trades = db.query(Trade).filter(Trade.api_id == api_key.api_id).all()
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Database Query Error (trades): {str(e)}")
+
+            if api_key and api_key.account_pages_info:
+                account_holder = api_key.account_pages_info.account_holder
+            else:
+                raise HTTPException(status_code=403, detail="No account pages info available for API key")
+
             for trade in trades:
-                trades_data.append({
-                    "account_Holder": api_key.account_pages_info.account_holder,
-                    "exchange_name": api_key.exchange_name,
-                    "trade_id": trade.trade_id,
-                    "trade_type": trade.trade_type,
-                    "trade_price": trade.trade_price,
-                    "currency_name": trade.currency_name,
-                    "currency_volume": trade.currency_volume,
-                    "trade_status": trade.trade_status,
-                    "date_create": trade.date_create,
-                    "date_bought": trade.date_bought,
-                    "date_sale": trade.date_sale,
-                    "purchase_rate": trade.purchase_rate,
-                    "selling_rate": trade.selling_rate,
-                    "comment": trade.comment,
-                    "stop_loss_price": trade.stop_loss_price,
-                    "take_profits": [{"price": tp.price} for tp in trade.take_profits]
-                })
-        asyncio.create_task(send_real_time_updates(account_id, db, authorization))
+                try:
+                    trades_data.append({
+                        "account_holder": account_holder,
+                        # "exchange_name": api_key.exchange_name,
+                        "trade_id": trade.trade_id,
+                        "trade_type": trade.trade_type,
+                        "trade_price": trade.trade_price,
+                        "currency_name": trade.currency_name,
+                        "currency_volume": trade.currency_volume,
+                        "trade_status": trade.trade_status,
+                        "date_create": trade.date_create,
+                        "date_bought": trade.date_bought,
+                        "date_sale": trade.date_sale,
+                        "purchase_rate": trade.purchase_rate,
+                        "selling_rate": trade.selling_rate,
+                        "comment": trade.comment,
+                        "stop_loss_price": trade.stop_loss_price
+                        # "take_profits": [{"price": tp.price} for tp in trade.take_profits]
+                    })
+                except Exception as e:
+                    raise HTTPException(status_code=500, detail=f"Error processing trade data: {str(e)}")
+            # asyncio.create_task(send_real_time_updates(account_id, db, authorization))
         return {"trades": trades_data}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
 async def send_real_time_updates(account_id: int, db: Session, authorization: str):
+    """
+        Sends real-time updates of trade prices and selling rates to clients.
+
+        Args:
+            account_id (int): The ID of the account.
+            db (Session): The database session.
+            authorization (str): The authorization token.
+
+        Returns:
+            None
+        """
     trade_service = TradeService(db, authorization)
     api_keys = db.query(Api).filter(Api.accountID == account_id).all()
 
@@ -390,7 +434,7 @@ async def send_real_time_updates(account_id: int, db: Session, authorization: st
                 }
 
                 await manager.broadcast(json.dumps(message), account_id)
-        await asyncio.sleep(10)  # Update every 5 seconds
+        await asyncio.sleep(10)  # Update every 10 seconds
 
 
 @app.post("/trades/create-order/")
@@ -409,9 +453,10 @@ def create_order(order: OrderRequest, db: Session = Depends(get_db), authorizati
     Raises:
         HTTPException: If the authorization header is missing or invalid, or an internal error occurs.
     """
+    logger.warning("pre tradeService")
     trade_service = TradeService(db, authorization)
+    logger.warning("post tradeservice")
     return trade_service.create_order(order)
-
 
 @app.post("/trades/add-take-profit-stop-loss/")
 def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session = Depends(get_db),
@@ -437,6 +482,27 @@ def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session
 
 @app.post("/complete_trade/")
 def complete_trade(trade_id: int, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+        Completes a trade based on the provided trade ID.
+
+        Args:
+            trade_id (int): The ID of the trade to be completed.
+            db (Session): The database session dependency.
+            authorization (str, optional): The authorization token passed in the header.
+
+        Returns:
+            dict: A dictionary containing the result of completing the trade.
+                  Example:
+                  {
+                      "success": True,
+                      "message": "Trade completed successfully."
+                  }
+                  or
+                  {
+                      "success": False,
+                      "error": "Error message"
+                  }
+        """
     trade_service = TradeService(db, authorization)
     result = trade_service.complete_trade(trade_id)
     return result
@@ -493,6 +559,8 @@ def cancel_order(order_id: str, symbol: str, db: Session = Depends(get_db), auth
     db.commit()
 
     return {"message": "Order canceled and removed from database successfully", "order": response}
+
+
 @app.post("/request-password-reset/")
 def forgot_password(email: str, db: Session = Depends(get_db)):
     """
@@ -541,3 +609,123 @@ def reset_password(reset_request: PasswordResetRequest, db: Session = Depends(ge
     db.commit()
 
     return {"message": "Password reset successfully."}
+
+
+@app.get('/payment/execute')
+def execute_payment(request: Request, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+        Executes a PayPal payment and updates the subscription status in the database.
+
+        Args:
+            request (Request): The FastAPI request object.
+            db (Session): The database session dependency.
+            authorization (str, optional): The authorization token passed in the header.
+
+        Raises:
+            HTTPException: If the authorization header is missing or invalid,
+                           or if the payment execution fails.
+
+        Returns:
+            JSONResponse: A JSON response indicating the result of the payment execution.
+                          Example:
+                          {
+                              "message": "Payment executed successfully"
+                          }
+        """
+    if authorization is None or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+
+    token = authorization.split(" ")[1]
+    payload = verify_trade_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+
+    paypal = Paypal()
+    payment_id = request.query_params.get('paymentId')
+    payer_id = request.query_params.get('PayerID')
+    if not payment_id or not payer_id:
+        raise HTTPException(status_code=400, detail="Missing paymentId or PayerID")
+
+    result = paypal.execute_payment(payment_id, payer_id)
+    if result == "Payment executed successfully":
+        try:
+            db.query(Subscription).filter(Subscription.payment_id == payment_id).update({"abo_status": "active"})
+            db.commit()
+            return JSONResponse(content={"message": "Payment executed successfully"})
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=str(e))
+    else:
+        raise HTTPException(status_code=400, detail="Payment execution failed")
+
+
+@app.post('/payment')
+def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db), authorization: str = Header(None)):
+    """
+    Creates a PayPal payment for a subscription and stores the subscription details in the database.
+
+    Args:
+        subscription (Subscription_Info): The subscription information including currency, amount, product name, product days, and subscription status.
+        db (Session): Database session used for transaction.
+        authorization (str): Authorization header containing the Bearer token for authentication.
+
+    Raises:
+        HTTPException: If the authorization header is missing, invalid, or token verification fails (401).
+        HTTPException: If payment creation fails (400).
+        HTTPException: If there's an internal server error during database operations (500).
+
+    Returns:
+        JSONResponse: Contains a success message and approval URL if payment is created successfully, or an error message otherwise.
+
+    """
+
+    paypal = Paypal()
+    if authorization is None or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
+
+    token = authorization.split(" ")[1]
+    payload = verify_trade_token(token)
+    if payload is None:
+        raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+    account_id = payload.get("account_id")
+
+    subscription_amount = 0
+    if subscription.product_name == "Basic" and subscription.product_days == 365:
+        subscription_amount = 99
+    if subscription.product_name == "Basic" and subscription.product_days == 30:
+        subscription_amount = 8
+    if subscription.product_name == "Silver" and subscription.product_days == 365:
+        subscription_amount = 199
+    if subscription.product_name == "Silver" and subscription.product_days == 30:
+        subscription_amount = 15
+    if subscription.product_name == "Gold" and subscription.product_days == 365:
+        subscription_amount = 299
+    if subscription.product_name == "Gold" and subscription.product_days == 30:
+        subscription_amount = 20
+
+    result = paypal.create_payment(subscription.currency,
+                                   subscription_amount,
+                                   subscription.product_name)
+    if "approval_url" in result:
+        try:
+            new_subscription = Subscription(
+                amount=subscription_amount,
+                date_start=date.today(),
+                date_end=date.today() + timedelta(days=subscription.product_days),
+                product_name=subscription.product_name,
+                abo_status="Active",
+                currency=subscription.currency,
+                account_id=account_id,
+                payment_id=result['payment_id']
+            )
+            db.add(new_subscription)
+            db.commit()
+            db.refresh(new_subscription)
+            return JSONResponse(
+                content={"message": "Payment creation successfully", "approval_url": result["approval_url"]})
+        except Exception as e:
+            db.rollback()
+            raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
+    else:
+        raise HTTPException(status_code=400, detail="Payment creation failed")

@@ -1,17 +1,20 @@
-
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtp_infos
 from fastapi import HTTPException
 import smtplib
-import logging
 from utils import getMailText
 from sqlalchemy.orm import Session
+import logging
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 usernameSMTP = smtp_infos.username_cont
 passwordSMTP = smtp_infos.password_cont
-
-logging.basicConfig(filename='email_debug.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
 
 def send_email(receiver, subject, db: Session):
@@ -38,7 +41,7 @@ def send_email(receiver, subject, db: Session):
         server.set_debuglevel(1)
         server.starttls()
         try:
-            server.login(usernameSMTP,passwordSMTP)
+            server.login(usernameSMTP, passwordSMTP)
         except Exception as e:
             raise HTTPException(status_code=401, detail="Incorrect username or password for Outlook connection.")
 
@@ -49,7 +52,6 @@ def send_email(receiver, subject, db: Session):
     receiver_mail = receiver
     subject_mail = subject
     body = getMailText(receiver, subject, db)
-    logging.debug(f"Body: {body}")
 
     try:
         msg = MIMEMultipart()
@@ -58,20 +60,13 @@ def send_email(receiver, subject, db: Session):
         msg['Subject'] = subject_mail
         msg.attach(MIMEText(body, 'plain'))
 
-        logging.debug("Message Content:")
-        logging.debug(f"From: {sender_mail}")
-        logging.debug(f"To: {receiver_mail}")
-        logging.debug(f"Subject: {subject_mail}")
-        logging.debug(f"Body: {body}")
-
         try:
             text = msg.as_string()
             server.sendmail(sender_mail, receiver_mail, text)
-            logging.debug("Converted Message:")
-            logging.debug(text)
+
 
         except Exception as e:
-            logging.error(f"Could not create msg: {e}")
+            return e
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Could not create msg")

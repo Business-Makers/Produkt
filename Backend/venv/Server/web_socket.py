@@ -5,20 +5,56 @@ from fastapi import WebSocket, Depends, WebSocketDisconnect
 import json
 import ccxt
 from utils import get_api_credentials
+import logging
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 
 class ConnectionManager:
+    """
+        Manages WebSocket connections.
+
+        Attributes:
+            active_connections (List[WebSocket]): List to store active WebSocket connections.
+        """
+
     def __init__(self):
+        """
+                Initializes a ConnectionManager object.
+                """
         self.active_connections: List[WebSocket] = []
 
     async def connect(self, websocket: WebSocket):
+        """
+               Accepts a WebSocket connection and adds it to the active connections list.
+
+               Args:
+                   websocket (WebSocket): WebSocket connection object to accept.
+               """
         await websocket.accept()
         self.active_connections.append(websocket)
 
     def disconnect(self, websocket: WebSocket):
+        """
+                Disconnects a WebSocket connection and removes it from the active connections list.
+
+                Args:
+                    websocket (WebSocket): WebSocket connection object to disconnect.
+                """
         self.active_connections.remove(websocket)
 
     async def send_personal_message(self, message: str, websocket: WebSocket):
+        """
+                Sends a personal message to a specific WebSocket connection.
+
+                Args:
+                    message (str): Message to send.
+                    websocket (WebSocket): WebSocket connection object to send the message to.
+                """
         await websocket.send_text(message)
 
 
@@ -26,6 +62,21 @@ manager = ConnectionManager()
 
 
 async def fetch_infos(exchange_name: str, symbol: str, account_id: int, db: Session):
+    """
+        Fetches ticker information from a cryptocurrency exchange.
+
+        Args:
+            exchange_name (str): Name of the cryptocurrency exchange (e.g., 'binance', 'kraken').
+            symbol (str): Symbol of the cryptocurrency pair (e.g., 'BTC/USDT').
+            account_id (int): ID of the user account for which API credentials are retrieved.
+            db (Session): SQLAlchemy database session.
+
+        Returns:
+            dict: Dictionary containing ticker information retrieved from the exchange.
+
+        Raises:
+            Exception: If there's an error fetching ticker information from the exchange.
+        """
     creds = get_api_credentials(account_id, exchange_name, db)
     exchange_class = getattr(ccxt, exchange_name)
     exchange = exchange_class({
@@ -39,6 +90,15 @@ async def fetch_infos(exchange_name: str, symbol: str, account_id: int, db: Sess
 
 
 async def websocket_endpoint(websocket: WebSocket, user_id: int, db: Session = Depends(get_db)):
+    """
+        WebSocket endpoint for handling real-time data requests.
+
+        Args:
+            websocket (WebSocket): WebSocket connection object.
+            user_id (int): ID of the user making the WebSocket connection.
+            db (Session, optional): SQLAlchemy database session. Defaults to Depends(get_db).
+        """
+
     await manager.connect(websocket)
     try:
         while True:

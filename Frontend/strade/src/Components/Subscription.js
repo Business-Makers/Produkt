@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Importiere Axios
+
 import '../Styles/LoggedIn.css';
 import '../Styles/Subscription.css';
 
@@ -6,9 +8,9 @@ const Subscription = () => {
   const [activeTab, setActiveTab] = useState('Yearly');
   const buttonText = {
     Yearly: {
-      basic: '100$ / Year',
-      silver: '200$ / Year',
-      gold: '300$ / Year'
+      basic: '99$ / Year',
+      silver: '199$ / Year',
+      gold: '299$ / Year'
     },
     Monthly: {
       basic: '8$ / Month',
@@ -18,7 +20,46 @@ const Subscription = () => {
   };
 
   const handleTabClick = (tab) => {
-    setActiveTab(tab); // Activate the corresponding tab
+    setActiveTab(tab);
+  };
+
+  const connectWithServer = async (formData) => {
+    const url = 'http://localhost:8001/payment';
+    try {
+      const response = await axios.post(url, formData);
+      return response.data; // Rückgabe der Antwortdaten
+    } catch (error) {
+      console.error('Fehler beim Senden der Anfrage:', error);
+      throw error; // Fehler weiterwerfen für die Fehlerbehandlung
+    }
+  };
+
+  const handlePriceButtonClick = async (membership) => {
+    const periodInDays = activeTab === 'Yearly' ? 365 : 30; // 365 Tage für Yearly, 30 Tage für Monthly
+    const membershipName = membership; // basic, silver oder gold
+
+    // Zeige eine Bestätigungsdialogbox an
+    const confirmed = window.confirm(`Möchtest du den Kauf von ${membershipName} für ${periodInDays} Tage wirklich abschließen?`);
+
+    if (confirmed) {
+      // Daten, die gesendet werden sollen
+      const formData = {
+        currency: 'Dollar',
+        period: periodInDays,
+        membership: membershipName
+      };
+
+      try {
+        // Aufruf der async Funktion zur Verbindung mit dem Server
+        const serverResponse = await connectWithServer(formData);
+        console.log('Erfolgreich gesendet:', serverResponse);
+
+        alert(`Erfolgreich ${membershipName} für ${periodInDays} Tage gekauft!`);
+      } catch (error) {
+        console.error('Fehler beim Senden der Anfrage:', error);
+        alert('Fehler beim Senden der Anfrage. Bitte versuche es später erneut.'); // Fehlermeldung anzeigen
+      }
+    }
   };
 
   return (
@@ -40,7 +81,7 @@ const Subscription = () => {
             <li>Access to 1 Portfolio</li>
             <li>Default Usage of $Comms</li>
           </ul>
-          <button className="sbmt-button">{buttonText[activeTab].basic}</button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('basic')}>{buttonText[activeTab].basic}</button>
         </div>
         <div className="subscription silver">
           <h2>Silver Membership</h2>
@@ -49,7 +90,7 @@ const Subscription = () => {
             <li>Access to 4 different Portfolios</li>
             <li>Default Usage of $Comms</li>
           </ul>
-          <button className="sbmt-button">{buttonText[activeTab].silver}</button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('silver')}>{buttonText[activeTab].silver}</button>
         </div>
         <div className="subscription gold">
           <h2>Gold Membership</h2>
@@ -60,7 +101,7 @@ const Subscription = () => {
             <li>Three Tradingbots</li>
             <li>Up to 30 Alarms</li>
           </ul>
-          <button className="sbmt-button">{buttonText[activeTab].gold}</button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('gold')}>{buttonText[activeTab].gold}</button>
         </div>
       </div>
     </div>

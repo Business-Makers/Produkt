@@ -1,48 +1,117 @@
 import '../Styles/LoggedIn.css';
 import '../Styles/Trading.css';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TradingViewWidget from './TradingViewWidget';
 import useToken from './useToken';
+import { useExchanges } from './ExchangeContext';
 import axios from 'axios';
+import mockTrades from './mockTrades';
+
+const getTradeHistory = async (token) => {
+  try {
+    const response = await axios.get('http://localhost:8001/trades/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    //console.log(response.data); // Falls nicht klappt, noch .trades_data anhaengen
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching trade history:', error);
+  }
+}
+
+const fetchCurrentPrice = async (symbol) => {
+  try {
+    const response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${symbol}&vs_currencies=usd`);
+    return response.data[symbol].usd;
+  } catch (error) {
+    console.error('Error fetching current price:', error);
+    return 0.0;
+  }
+}
 
 const CryptoChart = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('BTC');
-  const [selectedExchange, setSelectedExchange] = useState('KUCOIN');
+  const [selectedExchange, setSelectedExchange] = useState('');
   const [orderType, setOrderType] = useState('market');
   const [amount, setAmount] = useState('');
   const [price, setPrice] = useState('');
   const [stopPrice, setStopPrice] = useState('');
   const [takeProfitPrices, setTakeProfitPrices] = useState([]);
   const [stopLossPrice, setStopLossPrice] = useState('');
+  const [currentPrice, setCurrentPrice] = useState(0.0);
 
-  const token = useToken();
+  const { exchanges } = useExchanges();
+  const { token } = useToken();
+
+  const [ trades, setTrades ] = useState([]);
+
+  useEffect(() => {
+  if (token) {
+    const fetchData = async () => {
+      try {
+        const tradeData = await getTradeHistory(token);
+        setTrades(tradeData);
+        console.log(trades);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }
+}, []);
+
+useEffect(() => {
+    console.log("Exchanges", exchanges);
+  if (exchanges && exchanges.length > 0 && !selectedExchange) {
+    setSelectedExchange(exchanges[0].exchange_name);
+  }
+}, [exchanges]);
+
+useEffect(() => {
+    const fetchPrice = async () => {
+      const price = await fetchCurrentPrice(selectedCrypto);
+      setCurrentPrice(price);
+    };
+    fetchPrice();
+  }, [selectedCrypto]);
 
   const handleBuy = async () => {
       let orderData;
       if (orderType.toLowerCase() === 'market') {
           orderData = {
-              order_type: orderType.toLowerCase(),
-              symbol: selectedCrypto,
-              side: selectedExchange,
+              trade_price: currentPrice,
+              side: 'buy',
+              symbol: selectedCrypto + "/USDT",
+              exchangeName: selectedExchange,
               amount: parseFloat(amount),
-              take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : undefined,
-              stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined
+              price: 0,
+              stop_price: 0,
+              order_type: orderType.toLowerCase(),
+              take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : [],
+              stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined,
+              comment: ''
           };
       } else {
       orderData = {
-          order_type: orderType.toLowerCase(),
-          symbol: selectedCrypto,
-          side: selectedExchange,
+          trade_price: currentPrice,
+          side: 'buy',
+          symbol: selectedCrypto + "/USDT",
+          exchangeName: selectedExchange,
           amount: parseFloat(amount),
           price: orderType === 'limit' ? parseFloat(price) : undefined,
           stop_price: orderType === 'limit' ? parseFloat(stopPrice) : undefined,
-          take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : undefined,
-          stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined
+          order_type: orderType.toLowerCase(),
+          take_profit_prices: takeProfitPrices.length > 0 ? takeProfitPrices.map(p => parseFloat(p)) : [],
+          stop_loss_price: stopLossPrice ? parseFloat(stopLossPrice) : undefined,
+          comment: ''
       };
   }
 
     try {
+          console.log(orderData);
       const response = await axios.post('http://localhost:8001/trades/create-order/', orderData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -58,6 +127,7 @@ const CryptoChart = () => {
   const getSymbol = () => `${selectedExchange}:${selectedCrypto}USDT`;
 
   return (
+    <div>
     <div className="crypto-chart-container">
       <div className="left-container">
         <div className="crypto-selector">
@@ -73,11 +143,13 @@ const CryptoChart = () => {
         <div className="exchange-selector">
           <label htmlFor="exchange">Select Exchange: </label>
           <select id="exchange" value={selectedExchange} onChange={(e) => setSelectedExchange(e.target.value)}>
-            <option value="KUCOIN">KuCoin</option>
-            <option value="BINANCE">Binance</option>
-            <option value="COINBASE">Coinbase</option>
-            <option value="KRAKEN">Kraken</option>
-            <option value="BITFINEX">Bitfinex</option>
+            {exchanges.length === 0 ? (
+              <option value="" disabled>No exchanges connected</option>
+            ) : (
+              exchanges.map((exchange, index) => (
+                <option key={index} value={exchange.exchange_name}>{exchange.exchange_name}</option>
+              ))
+            )}
           </select>
         </div>
         <div className="chart-container">
@@ -124,21 +196,49 @@ const CryptoChart = () => {
           )}
           <label htmlFor="takeProfitPrices">Take Profit Prices (comma separated) (optional):</label>
           <input
-            type="text"
-            id="takeProfitPrices"
-            value={takeProfitPrices}
-            onChange={(e) => setTakeProfitPrices(e.target.value.split(','))}
+              type="text"
+              id="takeProfitPrices"
+              value={takeProfitPrices.join(',')} // Zusammenführen des Arrays zu einem String für die Anzeige
+              onChange={(e) => setTakeProfitPrices(e.target.value.split(',').map(p => parseFloat(p)))}
           />
           <label htmlFor="stopLossPrice">Stop Loss Price (optional):</label>
           <input
-            type="number"
-            id="stopLossPrice"
-            value={stopLossPrice}
-            onChange={(e) => setStopLossPrice(e.target.value)}
+              type="number"
+              id="stopLossPrice"
+              value={stopLossPrice}
+              onChange={(e) => setStopLossPrice(e.target.value)}
           />
           <button type="button" onClick={handleBuy}>Buy</button>
         </div>
       </div>
+    </div>
+    <div className="trade-history-container">
+      <h2>Trade History</h2>
+      {trades && trades.length > 0 ? (
+          <div className="trade-history">
+              {trades.map((trade, index) => (
+                  <div key={index} className="trade-item">
+                      <div className="trade-left">
+                          <p><strong>Currency:</strong> {trade.currency_name}</p>
+                          <p><strong>Account Holder:</strong> {trade.account_Holder}</p>
+                      </div>
+                      <div className="trade-middle">
+                          <p><strong>Trade Date:</strong> {trade.date_create}</p>
+                          <p><strong>Trade ID:</strong> {trade.trade_id}</p>
+                      </div>
+                      <div className="trade-right">
+                          <p><strong>Volume:</strong> {trade.currency_volume}</p>
+                          <p><strong>Purchase Price:</strong> {trade.purchase_rate}</p>
+                      </div>
+                      <div className="trade-chart">
+                      </div>
+                  </div>
+              ))}
+        </div>
+      ) : (
+          <p>No trades available.</p>
+      )}
+    </div>
     </div>
   );
 };

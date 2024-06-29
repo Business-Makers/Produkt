@@ -2,11 +2,19 @@ import ccxt
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from models import Api, AccountPages_Info
+import logging
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
+
 
 class ExchangeConnection:
     """
         A class to manage connections and operations with cryptocurrency exchanges using ccxt.
         """
+
     def __init__(self, db: Session):
         """
                 Initialize the ExchangeConnection with a database session.

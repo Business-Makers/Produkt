@@ -17,6 +17,13 @@ from models import Account, Member, Api
 import mailText
 import smtp_infos
 from dotenv import load_dotenv
+import logging
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 20
@@ -318,7 +325,25 @@ def getMailText(receiverMail, subject, db: Session):
     text = text.replace("[support]", smtp_infos.username_support)
     return text
 
+
 def get_api_credentials(account_id: int, exchange_name: str, db: Session):
+    """
+        Retrieves API credentials for a specific account and exchange from the database.
+
+        Args:
+            account_id (int): The ID of the account for which API credentials are requested.
+            exchange_name (str): The name of the cryptocurrency exchange.
+            db (Session): The SQLAlchemy database session.
+
+        Returns:
+            dict: A dictionary containing API credentials:
+                - "api_key" (str): The API key for the specified exchange and account.
+                - "secret" (str): The secret key for the specified exchange and account.
+                - "passphrase" (str, optional): The passphrase for the specified exchange and account, if available.
+
+        Raises:
+            ValueError: If no API credentials are found for the specified account and exchange.
+        """
     api_data = db.query(Api).filter(Api.accountID == account_id, Api.exchange_name == exchange_name).first()
     if api_data:
         return {

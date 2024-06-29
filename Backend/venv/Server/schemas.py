@@ -7,7 +7,13 @@ from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr, ValidationError, Field, validator
 from typing import Optional, List
 from sqlalchemy import DateTime
-from models import AccountPages_Info
+import logging
+
+logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
+logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
 
 
 class LoginCredentials(BaseModel):
@@ -115,6 +121,15 @@ class PasswordResetRequest(BaseModel):
 
 
 def validate_user_registration(data):
+    """
+        Validate user registration data against the UserRegistration model.
+
+        Args:
+            data (dict): Dictionary containing user registration data.
+
+        Raises:
+            HTTPException: If validation fails, raises HTTP 422 Unprocessable Entity with validation errors.
+        """
     try:
         user = UserRegistration(**data)
     except ValidationError as e:
@@ -178,6 +193,25 @@ class AcoountPages_Info_Validate(BaseModel):
 
 
 class TradeSchema(BaseModel):
+    """
+        Model for representing trade details.
+
+        This Pydantic model represents the schema for trade details,
+        including trade type, currency name, currency volume, trade status,
+        creation date, bought date, sold date, purchase rate, selling rate, and comment.
+
+        Attributes:
+            trade_type (str): The type of trade (e.g., 'buy', 'sell').
+            currency_name (str): The name of the traded currency.
+            currency_volume (float): The volume of the traded currency.
+            trade_status (str): The status of the trade (e.g., 'open', 'closed').
+            date_create (datetime): The date and time when the trade was created.
+            date_bought (datetime, optional): The date and time when the trade was bought.
+            date_sale (datetime, optional): The date and time when the trade was sold.
+            purchase_rate (float, optional): The purchase rate of the trade.
+            selling_rate (float, optional): The selling rate of the trade.
+            comment (str, optional): Additional comments or notes about the trade.
+        """
     trade_type: str
     currency_name: str
     currency_volume: float
@@ -193,8 +227,27 @@ class TradeSchema(BaseModel):
         arbitrary_types_allowed = True
 
 
-
 class OrderRequest(BaseModel):
+    """
+        Model for representing an order request.
+
+        This Pydantic model represents the schema for an order request,
+        including trade price, symbol, order side, order amount, price (optional),
+        stop price (optional), order type ('market' or 'limit'),
+        take profit prices (optional list), stop loss price (optional), and comment (optional).
+
+        Attributes:
+            trade_price (float): The price of the trade.
+            symbol (str): The symbol of the trade (e.g., 'BTC/USD', 'ETH/BTC').
+            side (str): The side of the order ('buy' or 'sell').
+            amount (float): The amount of the trade.
+            price (float, optional): The price of the trade if applicable (e.g., for limit orders).
+            stop_price (float, optional): The stop price for the trade if applicable.
+            order_type (str): The type of order ('market' or 'limit').
+            take_profit_prices (List[float], optional): List of take profit prices for the trade.
+            stop_loss_price (float, optional): The stop loss price for the trade if applicable.
+            comment (str, optional): Additional comments or notes about the order.
+        """
     trade_price: float
     symbol: str
     side: str
@@ -205,8 +258,23 @@ class OrderRequest(BaseModel):
     take_profit_prices: Optional[List[float]] = None
     stop_loss_price: Optional[float] = None
     comment: Optional[str] = None
+    exchangeName: str
+
 
 class AddTakeProfitStopLossRequest(BaseModel):
+    """
+       Model for adding take profit and stop loss to a trade.
+
+       This Pydantic model represents the schema for adding take profit and stop loss to a trade.
+       It includes the trade ID, optional comment, optional list of take profit prices,
+       and optional stop loss price.
+
+       Attributes:
+           comment (str, optional): Additional comments or notes about adding take profit and stop loss.
+           trade_id (int): The ID of the trade to update.
+           take_profit_prices (List[float], optional): List of take profit prices to add.
+           stop_loss_price (float, optional): The stop loss price to add.
+       """
     comment: Optional[str] = None
     trade_id: int
     take_profit_prices: Optional[List[float]] = None
@@ -214,6 +282,32 @@ class AddTakeProfitStopLossRequest(BaseModel):
 
 
 class UpdateTradeRequest(BaseModel):
+    """
+        Model for updating trade details.
+
+        This Pydantic model represents the schema for updating trade details,
+        including the trade ID, new stop loss price, and list of new take profit prices.
+
+        Attributes:
+            trade_id (int): The ID of the trade to update.
+            new_stop_loss_price (float): The new stop loss price for the trade.
+            new_take_profit_prices (List[float]): List of new take profit prices for the trade.
+        """
     trade_id: int
     new_stop_loss_price: float
     new_take_profit_prices: List[float]
+
+
+class Subscription_Info(BaseModel):
+    """
+    A model representing the information required for a subscription.
+
+    Attributes:
+        currency (str): The currency in which the payment will be made.
+        product_name (str): The name of the product or subscription.
+        product_days (int): The duration of the subscription in days.
+
+    """
+    currency: str
+    product_name: str
+    product_days: int
