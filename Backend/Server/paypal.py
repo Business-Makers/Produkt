@@ -62,9 +62,9 @@ class Paypal:
                """
 
         paypalrestsdk.configure({
-            "mode": "sandbox",  # oder "live"
-            "client_id": "AVeNWfKsQumK7ComO_g60tC9LX_noDUI2hZ6BSToi_ZU6tcQVabHuGtxTJxSQq5C815pd622WoB7TI3D",
-            "client_secret": "EEa3DYYaAoWpGxDjfGw-gOk5TzgrZI_qiWvZY1KzoU_4KKK_sc93M7qmxvlW-iUG4fgNgXRZ1oWvM-QA"
+            "mode": os.getenv("PAYPAL_MODE", "sandbox"),
+            "client_id": os.getenv("PAYPAL_CLIENT_ID"),
+            "client_secret": os.getenv("PAYPAL_CLIENT_SECRET")
         })
 
     def create_payment(self, currency, price, product_name):
@@ -108,7 +108,7 @@ class Paypal:
         if payment.create():
             for link in payment.links:
                 if link.rel == "approval_url":
-                    return {"approval_url": str(link.href)}
+                    return {"approval_url": str(link.href), "payment_id": payment.id}
         else:
             return {"error": payment.error}, 400
 

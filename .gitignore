@@ -7,3 +7,4 @@ backend/venv/Server/email_debug.log
 sk.env
 node_modules/
 __pycache__/
+.idea/

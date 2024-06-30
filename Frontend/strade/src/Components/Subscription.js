@@ -43,9 +43,9 @@ const Subscription = () => {
 
     if (confirmed) {
       const formData = {
-        currency: 'Dollar',
-        period: periodInDays,
-        membership: membershipName
+        currency: 'USD',
+        product_name: membershipName,
+        product_days: periodInDays
       };
 
       try {

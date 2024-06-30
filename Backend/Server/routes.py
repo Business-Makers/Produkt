@@ -85,6 +85,9 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
     Raises:
         HTTPException: If the login credentials are incorrect or an internal error occurs.
     """
+    return {"OK": "Test"}
+    """
+    print("HelloWorld")
     try:
         db_user = db.query(Account).filter(Account.login_name == credentials.login_name).first()
         if db_user and verify_password(credentials.password, db_user.hashed_password):
@@ -93,20 +96,21 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
             access_token = create_access_token(
                 data={"sub": db_user.login_name, "account_id": account_id}
             )
-
+            
             mailAdress = find_mail(db_user, db)
             if mailAdress:
                 # send_email(mailAdress, mailTheme.login.name, db)
                 pass
             background.set_authorization(access_token)
             # background.start_background_tasks()
+            
 
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
             raise HTTPException(status_code=401, detail="Incorrect username or password")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
+    """
 
 @app.post("/register/")
 def register(user: UserRegistration, db: Session = Depends(get_db)):
@@ -676,18 +680,23 @@ def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db
 
     Returns:
         JSONResponse: Contains a success message and approval URL if payment is created successfully, or an error message otherwise.
-
     """
+
+    logging.info("Beginne Zahlungserstellung")
 
     paypal = Paypal()
     if authorization is None or not authorization.startswith("Bearer "):
+        logging.error("Fehlende oder ungültige Authorization-Header")
         raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
 
     token = authorization.split(" ")[1]
     payload = verify_trade_token(token)
     if payload is None:
+        logging.error("Ungültiges oder abgelaufenes Token")
         raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
+
     account_id = payload.get("account_id")
+    logging.info(f"Benutzer-ID: {account_id} autorisiert")
 
     subscription_amount = 0
     if subscription.product_name == "Basic" and subscription.product_days == 365:
@@ -703,9 +712,10 @@ def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db
     if subscription.product_name == "Gold" and subscription.product_days == 30:
         subscription_amount = 20
 
-    result = paypal.create_payment(subscription.currency,
-                                   subscription_amount,
-                                   subscription.product_name)
+    logging.info(
+        f"Abonnement-Betrag berechnet: {subscription_amount} für {subscription.product_name} ({subscription.product_days} Tage)")
+
+    result = paypal.create_payment(subscription.currency, subscription_amount, subscription.product_name)
     if "approval_url" in result:
         try:
             new_subscription = Subscription(
@@ -721,11 +731,14 @@ def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db
             db.add(new_subscription)
             db.commit()
             db.refresh(new_subscription)
+            logging.info("Abonnement erfolgreich in der Datenbank gespeichert")
             return JSONResponse(
-                content={"message": "Payment creation successfully", "approval_url": result["approval_url"]})
+                content={"message": "Payment creation successfully", "approval_url": result["approval_url"]}
+            )
         except Exception as e:
             db.rollback()
+            logging.error(f"Datenbankfehler: {str(e)}")
             raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
-
     else:
+        logging.error("Zahlungserstellung fehlgeschlagen")
         raise HTTPException(status_code=400, detail="Payment creation failed")
