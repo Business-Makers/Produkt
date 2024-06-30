@@ -175,13 +175,6 @@ export default function Dashboard() {
           {exchanges && exchanges.length > 0 ? ( // Checks if the data in exchanges can be used
             <div>
               <h2>Exchange Data</h2>
-                <MyBalances exchanges={exchanges} />
-                <Donut data=
-                            {exchanges.map(exchange => ({
-                            exchange_name: exchange.exchange_name,
-                            currency_count: exchange.currency_count
-                            }))}/>
-                {/* This was the code prior to the refactor of the data:
                 {exchanges.map((exchange, index) => (
                 <div key={index}>
                   <strong>{exchange.exchange_name}</strong>
@@ -189,7 +182,7 @@ export default function Dashboard() {
                   <p>Balance: {exchange.balance}</p>
                   <p>Currency Count: {exchange.currency_count}</p>
                 </div>
-                ))} */}
+                ))}
             </div>
           ) : (
             <div>No exchange connected.</div>
