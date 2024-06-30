@@ -69,24 +69,22 @@ class Paypal:
 
     def create_payment(self, currency, price, product_name):
         """
-                Creates a PayPal payment.
+        Creates a PayPal payment.
 
-                Args:
-                    currency (str): The currency code (e.g., 'USD').
-                    price (float): The price of the product.
-                    product_name (str): The name of the product.
+        Args:
+            currency (str): The currency code (e.g., 'USD').
+            price (float): The price of the product.
+            product_name (str): The name of the product.
 
-                Returns:
-                    dict: A dictionary containing the approval URL if the payment was created successfully,
-                          or an error message if the payment creation failed.
-                """
+        Returns:
+            dict: A dictionary containing the approval URL if the payment was created successfully,
+                  or an error message if the payment creation failed.
+        """
 
         payment = paypalrestsdk.Payment({
             "intent": "sale",
-            "payer": {"payment_method": "paypal"},
-            "redirect_urls": {
-                "return_url": os.getenv("PAYPAL_RETURN_URL", "http://localhost:3000/payment/execute"),
-                "cancel_url": os.getenv("PAYPAL_CANCEL_URL", "http://localhost:3000/subscription")
+            "payer": {
+                "payment_method": "paypal"
             },
             "transactions": [{
                 "item_list": {
@@ -102,7 +100,11 @@ class Paypal:
                     "total": f"{price:.2f}",
                     "currency": currency
                 }
-            }]
+            }],
+            "redirect_urls": {
+                "return_url": os.getenv("PAYPAL_RETURN_URL", "http://localhost:3000/payment/execute"),
+                "cancel_url": os.getenv("PAYPAL_CANCEL_URL", "http://localhost:3000/subscription")
+            }
         })
 
         if payment.create():
