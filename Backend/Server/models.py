@@ -23,6 +23,10 @@ operations across the system.
 from sqlalchemy import Column, String, Integer, DATE, Float, Boolean, ForeignKey, DateTime
 from sqlalchemy.orm import relationship, declarative_base
 from datetime import datetime
+import logging
+
+logging.basicConfig(filename='debugAll.log', level=logging.WARNING, format='%(asctime)s %(levelname)s:%(message)s')
+logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 

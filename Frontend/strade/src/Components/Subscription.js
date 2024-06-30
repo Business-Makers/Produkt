@@ -79,7 +79,7 @@ const Subscription = () => {
             <li>Access to 1 Portfolio</li>
             <li>Default Usage of $Comms</li>
           </ul>
-          <button className="sbmt-button" onClick={() => handlePriceButtonClick('basic')}>{buttonText[activeTab].basic}</button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('Basic')}>{buttonText[activeTab].basic}</button>
         </div>
         <div className="subscription silver">
           <h2>Silver Membership</h2>
@@ -88,7 +88,7 @@ const Subscription = () => {
             <li>Access to 4 different Portfolios</li>
             <li>Default Usage of $Comms</li>
           </ul>
-          <button className="sbmt-button" onClick={() => handlePriceButtonClick('silver')}>{buttonText[activeTab].silver}</button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('Silver')}>{buttonText[activeTab].silver}</button>
         </div>
         <div className="subscription gold">
           <h2>Gold Membership</h2>
@@ -99,7 +99,7 @@ const Subscription = () => {
             <li>Three Tradingbots</li>
             <li>Up to 30 Alarms</li>
           </ul>
-          <button className="sbmt-button" onClick={() => handlePriceButtonClick('gold')}>{buttonText[activeTab].gold}</button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('Gold')}>{buttonText[activeTab].gold}</button>
         </div>
       </div>
     </div>

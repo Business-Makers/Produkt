@@ -7,11 +7,8 @@ import ccxt
 from utils import get_api_credentials
 import logging
 
-logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
+logging.basicConfig(filename='debugAll.log', level=logging.WARNING, format='%(asctime)s %(levelname)s:%(message)s')
+logger = logging.getLogger(__name__)
 
 
 class ConnectionManager:

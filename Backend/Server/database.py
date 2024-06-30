@@ -10,6 +10,10 @@ Details:
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base
+import logging
+
+logging.basicConfig(filename='debugAll.log', level=logging.WARNING, format='%(asctime)s %(levelname)s:%(message)s')
+logger = logging.getLogger(__name__)
 
 DATABASE_URL = "sqlite:///Database.db"
 engine = create_engine(DATABASE_URL, echo=True)
