@@ -43,18 +43,21 @@ class TradeService:
                 Returns:
                     int: Account ID.
                 """
-
+        logger.warning("pre if auto")
         if auto is None:
+            logger.warning("in if auto")
             raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
-
-        # token = auto.split(" ")[1]
-        # logger.warning(f"pre verify token{token}")
-        payload = verify_trade_token(self.authorization)
-
+        logger.warning("post if auto")
+        token = auto.split(" ")[1]
+        logger.warning(f"pre verify token{token}")
+        logger.warning("pre payload")
+        payload = verify_trade_token(token)
+        logger.warning(f"post payload{payload} und auto {self.authorization} und auto {auto}")
         if payload is None:
+            logger.warning("payload is None")
             raise HTTPException(status_code=401, detail="Invalid or expired token",
                                 headers={"WWW-Authenticate": "Bearer"})
-
+        logger.warning(f"{payload.get('account_id')} account id nende")
         return payload.get("account_id")
 
     def get_api_id(self, order):
@@ -90,10 +93,11 @@ class TradeService:
                Returns:
                    Api: API key object.
                """
+        logger.warning("pre account idddd")
         account_id = self._get_account_id_from_token(self.authorization)
-
+        logger.warning(f"account id{account_id}")
         api_key = self.db.query(Api).filter(Api.accountID == account_id).first()
-
+        logger.warning(f"api key{api_key}")
         if not api_key:
             raise HTTPException(status_code=404, detail="API key not found for the account")
         return api_key
@@ -105,14 +109,19 @@ class TradeService:
                 Returns:
                     ccxt.Exchange: Exchange instance.
                 """
+        logger.warning("pre api_key")
         self.api_key = self._get_api_key()
+        logger.warning(f"apikey: {self.api_key}")
         exchange_class = getattr(ccxt, self.api_key.exchange_name)
+        logger.warning(f"exchange name {self.api_key.exchange_name}")
         exchange_args = {
             'apiKey': self.api_key.key,
             'secret': self.api_key.secret_Key
         }
+        logger.warning(f"exchange args {exchange_args}")
         if self.api_key.passphrase:
             exchange_args['password'] = self.api_key.passphrase
+        logger.warning(f"self.api_key.pass: {self.api_key.passphrase}")
         return exchange_class(exchange_args)
 
     def has_sufficient_usdt_balance(self, required_amount):
@@ -130,10 +139,14 @@ class TradeService:
                 """
         try:
             exchange = self._get_exchange_instance()
+            logger.warning(f"exchange instance {exchange} 2.0")
             balance = exchange.fetch_balance()
+            logger.warning(f"balance {balance}")
             usdt_balance = balance['free'].get('USDT', 0)
+            logger.warning("balance usdt balance {}".format(usdt_balance))
             return usdt_balance >= required_amount
         except Exception as e:
+            logger.warning("no moey 2.0")
             raise HTTPException(status_code=500, detail=f"Error fetching balance: {str(e)}")
 
     def create_order(self, order):
@@ -150,11 +163,13 @@ class TradeService:
                     dict: The created order details.
                 """
         try:
-
+            logger.warning("in try")
             if not self.has_sufficient_usdt_balance(order.amount * order.price):
+                logger.warning("kein money")
                 raise HTTPException(status_code=400, detail="Insufficient USDT balance")
-
+            logger.warning("pre exchange")
             exchange = self._get_exchange_instance()
+            logger.warning(f"{exchange}=exchange")
             order_params = {
                 'order_type': order.order_type
             }
@@ -169,31 +184,37 @@ class TradeService:
                     # 'params': {'timeInForce': 'GTC'}
                 }
                 order_params.update(additional_params)
-
+                logger.warning(f"oder params:{order_params}")
                 created_order = exchange.create_market_order(**additional_params)
+                logger.warning(f"{created_order} created order")
                 date_bought = datetime.now().date()
 
 
             elif order.order_type == 'limit':
+                logger.warning("in limit")
                 additional_params = {
                     'symbol': order.symbol,
                     'side': order.side,
                     'amount': order.amount,
-                    # 'price': order.price,
+                    'price': order.price,
                     # 'stop_price': order.stop_price,
                     # 'take_profit_price': order.take_profit_prices,
                     # 'stop_loss_price': order.stop_loss_prices,
-                    # 'params': {'timeInForce': 'GTC'}
+                    #'params': {'timeInForce': 'GTC'}
                 }
+                logger.warning(f"additional params:{additional_params}")
                 order_params.update(additional_params)
-
+                logger.warning(f"order params:{order_params}")
+                logger.warning(f"additional params:{additional_params}")
                 created_order = exchange.create_limit_order(**additional_params)
+                logger.warning("created order")
                 date_bought = None
 
             else:
                 raise HTTPException(status_code=400, detail="Invalid order type")
             new_trade = None
             api_id = self.get_api_id(order)
+            logger.warning(f"api_id={api_id}")
             if order.order_type == 'market':
                 new_trade = Trade(
                     trade_price=0,
