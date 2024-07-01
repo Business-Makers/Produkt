@@ -11,7 +11,7 @@ from fastapi import FastAPI, Depends, HTTPException, Header, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from database import get_db, init_db
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit, Subscription
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation, OrderRequest, \
     AddTakeProfitStopLossRequest, UpdateTradeRequest, Subscription_Info
@@ -609,7 +609,7 @@ def reset_password(reset_request: PasswordResetRequest, db: Session = Depends(ge
 
 
 @app.get('/payment/execute')
-def execute_payment(request: Request, db: Session = Depends(get_db), authorization: str = Header(None)):
+def execute_payment(request: Request, db: Session = Depends(get_db)): # authorization: str = Header(None)
     """
         Executes a PayPal payment and updates the subscription status in the database.
 
@@ -629,6 +629,7 @@ def execute_payment(request: Request, db: Session = Depends(get_db), authorizati
                               "message": "Payment executed successfully"
                           }
         """
+    """
     if authorization is None or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
 
@@ -636,7 +637,7 @@ def execute_payment(request: Request, db: Session = Depends(get_db), authorizati
     payload = verify_trade_token(token)
     if payload is None:
         raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
-
+    """
     paypal = Paypal()
     payment_id = request.query_params.get('paymentId')
     payer_id = request.query_params.get('PayerID')
@@ -648,7 +649,8 @@ def execute_payment(request: Request, db: Session = Depends(get_db), authorizati
         try:
             db.query(Subscription).filter(Subscription.payment_id == payment_id).update({"abo_status": "active"})
             db.commit()
-            return JSONResponse(content={"message": "Payment executed successfully"})
+            dashboard_url = "http://localhost:3000/dashboard"
+            return RedirectResponse(url=dashboard_url)
         except Exception as e:
             db.rollback()
             raise HTTPException(status_code=500, detail=str(e))
@@ -677,7 +679,6 @@ def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db
         JSONResponse: Contains a success message and approval URL if payment is created successfully, or an error message otherwise.
     """
 
-    logging.info("Begin create Payment")
 
     paypal = Paypal()
     if authorization is None or not authorization.startswith("Bearer "):
@@ -691,7 +692,6 @@ def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db
         raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
 
     account_id = payload.get("account_id")
-    logging.info(f"account_id: {account_id}")
 
     subscription_amount = 0
     if subscription.product_name == "Basic" and subscription.product_days == 365:
@@ -713,6 +713,7 @@ def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db
     result = paypal.create_payment(subscription.currency, subscription_amount, subscription.product_name)
     if "approval_url" in result:
         try:
+
             new_subscription = Subscription(
                 amount=subscription_amount,
                 date_start=date.today(),
@@ -723,10 +724,10 @@ def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db
                 account_id=account_id,
                 payment_id=result['payment_id']
             )
+            logging.warning(new_subscription)
             db.add(new_subscription)
             db.commit()
             db.refresh(new_subscription)
-            logging.info("Abo saved in DB")
             return JSONResponse(
                 content={"message": "Payment creation successfully", "approval_url": result["approval_url"]}
             )

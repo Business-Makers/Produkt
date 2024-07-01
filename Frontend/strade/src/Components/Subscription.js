@@ -51,27 +51,22 @@ const Subscription = () => {
       // Daten, die gesendet werden sollen
       const formData = {
         currency: 'USD',
-        product_name: periodInDays,
-        product_days: membershipName
+        product_name: membershipName,
+        product_days: periodInDays
       };
+  try {
+  const serverResponse = await connectWithServer(formData, token);
+  console.log('Erfolgreich gesendet:', serverResponse);
 
-      try {
-        // Aufruf der async Funktion zur Verbindung mit dem Server
-        const serverResponse = await connectWithServer(formData, token);
-        console.log('Erfolgreich gesendet:', serverResponse);
+  if(serverResponse.approval_url) {
+    window.location.href = serverResponse.approval_url;
+   // window.location.href(serverResponse.approval_url);
+  }
 
-        if (serverResponse.approval_url) {
-
-        window.location.href = serverResponse.url + serverResponse.payment_id;
-        }
-
-
-      } catch (error) {
-        console.error('Fehler beim Senden der Anfrage:', error);
-        alert('Fehler beim Senden der Anfrage. Bitte versuche es später erneut.'); // Fehlermeldung anzeigen
-      }
-
-      alert(`Erfolgreich ${membershipName} für ${periodInDays} Tage gekauft!`);
+  } catch (error) {
+      console.error('Fehler beim Senden der Anfrage:', error);
+      alert('Fehler beim Senden der Anfrage. Bitte versuche es später erneut.'); // Fehlermeldung anzeigen
+    }
     }
   };
 

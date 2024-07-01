@@ -262,7 +262,7 @@ class Subscription(Base):
         product_name (str): The name of the subscribed product.
         abo_status (str): The status of the subscription.
         currency (str): The currency in which the payment was made.
-        account_id (int): The identifier of the associated account.
+        accountID (int): The identifier of the associated account.
         account (relationship): The relationship to the associated Account object.
     """
 
@@ -274,7 +274,7 @@ class Subscription(Base):
     product_name = Column('product_name', String, nullable=False)
     abo_status = Column('abo_status', String, nullable=False)
     currency = Column('currency', String, nullable=False)
-    account_id = Column(Integer, ForeignKey('account.account_id'), unique=True, nullable=False)
+    account_id = Column("account_id", Integer, ForeignKey("account.account_id"), nullable=False)
     payment_id = Column(String, nullable=False, unique=True)
 
     account = relationship("Account", back_populates="subscriptions")
