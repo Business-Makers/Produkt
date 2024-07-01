@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Importiere Axios
+import useToken from './useToken';
 
 import '../Styles/LoggedIn.css';
 import '../Styles/Subscription.css';
 
 const Subscription = () => {
+  const { token } = useToken();
   const [activeTab, setActiveTab] = useState('Yearly');
   const buttonText = {
     Yearly: {
@@ -23,10 +25,14 @@ const Subscription = () => {
     setActiveTab(tab);
   };
 
-  const connectWithServer = async (formData) => {
+  const connectWithServer = async (formData, token) => {
     const url = 'http://localhost:8001/payment';
     try {
-      const response = await axios.post(url, formData);
+      const response = await axios.post(url, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data; // Rückgabe der Antwortdaten
     } catch (error) {
       console.error('Fehler beim Senden der Anfrage:', error);
@@ -51,7 +57,7 @@ const Subscription = () => {
 
       try {
         // Aufruf der async Funktion zur Verbindung mit dem Server
-        const serverResponse = await connectWithServer(formData);
+        const serverResponse = await connectWithServer(formData, token);
         console.log('Erfolgreich gesendet:', serverResponse);
 
         alert(`Erfolgreich ${membershipName} für ${periodInDays} Tage gekauft!`);
