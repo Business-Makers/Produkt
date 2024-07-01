@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Importiere Axios
+import useToken from './useToken';
+
 import '../Styles/LoggedIn.css';
 import '../Styles/Subscription.css';
-import { useToken } from './useToken'; // Stellen Sie sicher, dass der richtige Pfad zum useToken Hook verwendet wird
 
 const Subscription = () => {
-  const { token } = useToken(); // Verwenden Sie den useToken Hook, um den Token abzurufen
+  const { token } = useToken();
   const [activeTab, setActiveTab] = useState('Yearly');
-
   const buttonText = {
     Yearly: {
       basic: '99$ / Year',
@@ -35,8 +35,8 @@ const Subscription = () => {
       });
       return response.data; // Rückgabe der Antwortdaten
     } catch (error) {
-      console.error('Error purchasing membership:', error);
-      alert('Error purchasing membership. Please try again later.');
+      console.error('Fehler beim Senden der Anfrage:', error);
+      throw error; // Fehler weiterwerfen für die Fehlerbehandlung
     }
   };
 
@@ -50,21 +50,30 @@ const Subscription = () => {
     if (confirmed) {
       // Daten, die gesendet werden sollen
       const formData = {
-        currency: 'USD',
-        product_name: membershipName,
-        product_days: periodInDays
+        currency: 'Dollar',
+        product_name: periodInDays,
+        product_days: membershipName
       };
+
+
 
       try {
         // Aufruf der async Funktion zur Verbindung mit dem Server
         const serverResponse = await connectWithServer(formData, token);
         console.log('Erfolgreich gesendet:', serverResponse);
 
-        alert(`Erfolgreich ${membershipName} für ${periodInDays} Tage gekauft!`);
+        if (serverResponse.approval_url) {
+
+        window.location.href = serverResponse.url + serverResponse.payment_id;
+        }
+
+
       } catch (error) {
         console.error('Fehler beim Senden der Anfrage:', error);
         alert('Fehler beim Senden der Anfrage. Bitte versuche es später erneut.'); // Fehlermeldung anzeigen
       }
+
+      alert(`Erfolgreich ${membershipName} für ${periodInDays} Tage gekauft!`);
     }
   };
 
@@ -81,6 +90,7 @@ const Subscription = () => {
       <div className="subscriptions-container">
         <div className="subscription basic">
           <h2>Basic Membership</h2>
+          <p className="active-status">(Currently active)</p>
           <ul>
             <li>One Trade</li>
             <li>Access to 1 Portfolio</li>
@@ -102,7 +112,7 @@ const Subscription = () => {
           <ul>
             <li>Up to 100 Trades</li>
             <li>Access to 10 different Portfolios</li>
-            <li>Premium Usage of $Comms (includes creation of Chatrooms)</li>
+            <li>Premium Usage of $Comms <p>  </p>(includes creation of Chatrooms)</li>
             <li>Three Tradingbots</li>
             <li>Up to 30 Alarms</li>
           </ul>

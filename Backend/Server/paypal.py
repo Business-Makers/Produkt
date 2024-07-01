@@ -62,9 +62,9 @@ class Paypal:
                """
 
         paypalrestsdk.configure({
-            "mode": os.getenv("PAYPAL_MODE", "sandbox"),
-            "client_id": os.getenv("PAYPAL_CLIENT_ID"),
-            "client_secret": os.getenv("PAYPAL_CLIENT_SECRET")
+            "mode": "sandbox",
+            "client_id": "AVeNWfKsQumK7ComO_g60tC9LX_noDUI2hZ6BSToi_ZU6tcQVabHuGtxTJxSQq5C815pd622WoB7TI3D",
+            "client_secret": "EEa3DYYaAoWpGxDjfGw-gOk5TzgrZI_qiWvZY1KzoU_4KKK_sc93M7qmxvlW-iUG4fgNgXRZ1oWvM-QA"
         })
 
     def create_payment(self, currency, price, product_name):
@@ -102,7 +102,7 @@ class Paypal:
                 }
             }],
             "redirect_urls": {
-                "return_url": os.getenv("PAYPAL_RETURN_URL", "http://localhost:3000/payment/execute"),
+                "return_url": os.getenv("PAYPAL_RETURN_URL", "http://localhost:8001/payment/execute"),
                 "cancel_url": os.getenv("PAYPAL_CANCEL_URL", "http://localhost:3000/subscription")
             }
         })

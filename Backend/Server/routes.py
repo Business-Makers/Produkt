@@ -658,6 +658,8 @@ def execute_payment(request: Request, db: Session = Depends(get_db), authorizati
 
 @app.post('/payment')
 def create_payment(subscription: Subscription_Info, db: Session = Depends(get_db), authorization: str = Header(None)):
+    logging.debug(f"Received subscription data: {subscription}")
+
     """
     Creates a PayPal payment for a subscription and stores the subscription details in the database.
 
