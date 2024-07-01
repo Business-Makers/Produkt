@@ -35,7 +35,7 @@ def client():
 def user_registration_data():
     return {
         "firstname": "John",
-        "lastname": "Doe",
+        "lastname": "Doemann",
         "birthday": "2000-01-01",
         "eMail": "john.doe@example.com",
         "phone_number": "1234567890",
