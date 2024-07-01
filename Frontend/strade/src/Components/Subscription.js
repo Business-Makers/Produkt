@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from 'axios'; // Importiere Axios
 import '../Styles/LoggedIn.css';
 import '../Styles/Subscription.css';
 import { useToken } from './useToken'; // Stellen Sie sicher, dass der richtige Pfad zum useToken Hook verwendet wird
@@ -25,32 +25,46 @@ const Subscription = () => {
     setActiveTab(tab);
   };
 
-  const connectWithServer = async (membership, periodInDays) => {
+  const connectWithServer = async (formData, token) => {
     const url = 'http://localhost:8001/payment';
-    const formData = {
-      currency: 'USD',
-      product_name: membership,
-      product_days: periodInDays
-    };
-
     try {
       const response = await axios.post(url, formData, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-      console.log('Response from server:', response.data);
-      alert(`Successfully purchased ${membership} for ${periodInDays} days!`);
+      return response.data; // Rückgabe der Antwortdaten
     } catch (error) {
       console.error('Error purchasing membership:', error);
       alert('Error purchasing membership. Please try again later.');
     }
   };
 
-  const handlePriceButtonClick = (membership, periodInDays) => {
-    const confirmed = window.confirm(`Do you want to purchase ${membership} for ${periodInDays} days?`);
+  const handlePriceButtonClick = async (membership) => {
+    const periodInDays = activeTab === 'Yearly' ? 365 : 30; // 365 Tage für Yearly, 30 Tage für Monthly
+    const membershipName = membership; // basic, silver oder gold
+
+    // Zeige eine Bestätigungsdialogbox an
+    const confirmed = window.confirm(`Möchtest du den Kauf von ${membershipName} für ${periodInDays} Tage wirklich abschließen?`);
+
     if (confirmed) {
-      connectWithServer(membership, periodInDays);
+      // Daten, die gesendet werden sollen
+      const formData = {
+        currency: 'USD',
+        product_name: membershipName,
+        product_days: periodInDays
+      };
+
+      try {
+        // Aufruf der async Funktion zur Verbindung mit dem Server
+        const serverResponse = await connectWithServer(formData, token);
+        console.log('Erfolgreich gesendet:', serverResponse);
+
+        alert(`Erfolgreich ${membershipName} für ${periodInDays} Tage gekauft!`);
+      } catch (error) {
+        console.error('Fehler beim Senden der Anfrage:', error);
+        alert('Fehler beim Senden der Anfrage. Bitte versuche es später erneut.'); // Fehlermeldung anzeigen
+      }
     }
   };
 
@@ -72,9 +86,7 @@ const Subscription = () => {
             <li>Access to 1 Portfolio</li>
             <li>Default Usage of $Comms</li>
           </ul>
-          <button className="sbmt-button" onClick={() => handlePriceButtonClick('Basic', activeTab === 'Yearly' ? 365 : 30)}>
-            {buttonText[activeTab].basic}
-          </button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('basic')}>{buttonText[activeTab].basic}</button>
         </div>
         <div className="subscription silver">
           <h2>Silver Membership</h2>
@@ -83,9 +95,7 @@ const Subscription = () => {
             <li>Access to 4 different Portfolios</li>
             <li>Default Usage of $Comms</li>
           </ul>
-          <button className="sbmt-button" onClick={() => handlePriceButtonClick('Silver', activeTab === 'Yearly' ? 365 : 30)}>
-            {buttonText[activeTab].silver}
-          </button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('silver')}>{buttonText[activeTab].silver}</button>
         </div>
         <div className="subscription gold">
           <h2>Gold Membership</h2>
@@ -96,9 +106,7 @@ const Subscription = () => {
             <li>Three Tradingbots</li>
             <li>Up to 30 Alarms</li>
           </ul>
-          <button className="sbmt-button" onClick={() => handlePriceButtonClick('Gold', activeTab === 'Yearly' ? 365 : 30)}>
-            {buttonText[activeTab].gold}
-          </button>
+          <button className="sbmt-button" onClick={() => handlePriceButtonClick('gold')}>{buttonText[activeTab].gold}</button>
         </div>
       </div>
     </div>
