@@ -18,19 +18,15 @@ import mailText
 import smtp_infos
 from dotenv import load_dotenv
 import logging
-
-logging.getLogger('sqlalchemy.engine').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.pool').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.dialects').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.orm').setLevel(logging.ERROR)
-logging.getLogger('sqlalchemy.engine.Engine').setLevel(logging.ERROR)
+logging.basicConfig(filename='trade_debug.log', level=logging.WARNING, format='%(asctime)s %(levelname)s:%(message)s')
+logger = logging.getLogger(__name__)
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 20
 RESET_TOKEN_EXPIRE_MINUTES = 10
 TRADE_TOKEN_EXPIRE_MINUTES = 15
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'sk.env')
+dotenv_path = os.path.join(os.path.dirname(__file__),'sk.env')
 load_dotenv(dotenv_path)
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -86,16 +82,22 @@ def create_access_token(data: dict):
     Returns:
         str: The encoded JWT access token.
     """
+
     if not SECRET_KEY:
+
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No SECRET_KEY provided")
+
     expires_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode = data.copy()
+
     if expires_delta:
         expire = datetime.now() + expires_delta
     else:
         expire = datetime.now() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
+
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
     return encoded_jwt
 
 

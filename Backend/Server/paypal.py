@@ -62,31 +62,29 @@ class Paypal:
                """
 
         paypalrestsdk.configure({
-            "mode": "sandbox",  # oder "live"
+            "mode": "sandbox",
             "client_id": "AVeNWfKsQumK7ComO_g60tC9LX_noDUI2hZ6BSToi_ZU6tcQVabHuGtxTJxSQq5C815pd622WoB7TI3D",
             "client_secret": "EEa3DYYaAoWpGxDjfGw-gOk5TzgrZI_qiWvZY1KzoU_4KKK_sc93M7qmxvlW-iUG4fgNgXRZ1oWvM-QA"
         })
 
     def create_payment(self, currency, price, product_name):
         """
-                Creates a PayPal payment.
+        Creates a PayPal payment.
 
-                Args:
-                    currency (str): The currency code (e.g., 'USD').
-                    price (float): The price of the product.
-                    product_name (str): The name of the product.
+        Args:
+            currency (str): The currency code (e.g., 'USD').
+            price (float): The price of the product.
+            product_name (str): The name of the product.
 
-                Returns:
-                    dict: A dictionary containing the approval URL if the payment was created successfully,
-                          or an error message if the payment creation failed.
-                """
+        Returns:
+            dict: A dictionary containing the approval URL if the payment was created successfully,
+                  or an error message if the payment creation failed.
+        """
 
         payment = paypalrestsdk.Payment({
             "intent": "sale",
-            "payer": {"payment_method": "paypal"},
-            "redirect_urls": {
-                "return_url": os.getenv("PAYPAL_RETURN_URL", "http://localhost:3000/payment/execute"),
-                "cancel_url": os.getenv("PAYPAL_CANCEL_URL", "http://localhost:3000/subscription")
+            "payer": {
+                "payment_method": "paypal"
             },
             "transactions": [{
                 "item_list": {
@@ -102,13 +100,17 @@ class Paypal:
                     "total": f"{price:.2f}",
                     "currency": currency
                 }
-            }]
+            }],
+            "redirect_urls": {
+                "return_url": os.getenv("PAYPAL_RETURN_URL", "http://localhost:8001/payment/execute"),
+                "cancel_url": os.getenv("PAYPAL_CANCEL_URL", "http://localhost:3000/subscription")
+            }
         })
 
         if payment.create():
             for link in payment.links:
                 if link.rel == "approval_url":
-                    return {"approval_url": str(link.href)}
+                    return {"approval_url": str(link.href), "payment_id": payment.id}
         else:
             return {"error": payment.error}, 400
 
