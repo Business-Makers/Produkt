@@ -36,8 +36,8 @@ function App() {
   };
 
   const handleLogOut = () => {
-    sessionStorage.removeItem('access_token');
-    setIsAuthenticated(false);
+    localStorage.removeItem('access_token');
+    window.location.reload();
   };
 
   return (

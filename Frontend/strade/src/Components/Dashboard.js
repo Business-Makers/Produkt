@@ -19,6 +19,9 @@ import HTX from '../Images/htx.png';
 import KRAKEN from '../Images/kraken.png';
 import OKX from '../Images/OKX.png';
 
+import MyBalances from './MyBalances';
+import Donut from './DonutChart';
+
 import { mockDashboardData } from './mockData';
 
 export default function Dashboard() {
@@ -174,14 +177,8 @@ export default function Dashboard() {
           {exchanges && exchanges.length > 0 ? ( // Prüfen, ob dashboardData existiert und nicht leer ist
             <div>
               <h2>Exchange Data</h2>
-                {exchanges.map((exchange, index) => (
-                <div key={index}>
-                  <strong>{exchange.exchange_name}</strong>
-                  <p>Account Holder: {exchange.account_holder}</p>
-                  <p>Balance: {exchange.balance}</p>
-                  <p>Currency Count: {exchange.currency_count}</p>
-                </div>
-                ))}
+                <MyBalances exchanges={exchanges} />
+                <Donut data={exchanges} />
             </div>
           ) : (
             <div>No exchange connected.</div>

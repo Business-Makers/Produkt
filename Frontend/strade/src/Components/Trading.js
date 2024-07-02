@@ -16,7 +16,7 @@ const getTradeHistory = async (token) => {
       },
     });
     //console.log(response.data); // Falls nicht klappt, noch .trades_data anhaengen
-    return response.data;
+    return response.data.trades_data;
   } catch (error) {
     console.error('Error fetching trade history:', error);
   }
@@ -61,7 +61,7 @@ const CryptoChart = () => {
     };
     fetchData();
   }
-}, []);
+}, [token]);
 
 useEffect(() => {
     console.log("Exchanges", exchanges);
