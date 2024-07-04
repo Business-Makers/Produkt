@@ -500,11 +500,8 @@ def complete_trade(request: SellRequest, db: Session = Depends(get_db), authoriz
                       "error": "Error message"
                   }
         """
-    logger.warning("pre alles")
     trade_service = TradeService(db, authorization)
-    logger.warning(f"tarden {trade_service}")
     result = trade_service.complete_trade(request.trade_id)
-    logger.warning(f"result {result}")
     return result
 
 

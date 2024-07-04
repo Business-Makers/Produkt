@@ -43,21 +43,13 @@ class TradeService:
                 Returns:
                     int: Account ID.
                 """
-        logger.warning("pre if auto")
         if auto is None:
-            logger.warning("in if auto")
             raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
-        logger.warning("post if auto")
         token = auto.split(" ")[1]
-        logger.warning(f"pre verify token{token}")
-        logger.warning("pre payload")
         payload = verify_trade_token(token)
-        logger.warning(f"post payload{payload} und auto {self.authorization} und auto {auto}")
         if payload is None:
-            logger.warning("payload is None")
             raise HTTPException(status_code=401, detail="Invalid or expired token",
                                 headers={"WWW-Authenticate": "Bearer"})
-        logger.warning(f"{payload.get('account_id')} account id nende")
         return payload.get("account_id")
 
     def get_api_id(self, order):
@@ -93,11 +85,11 @@ class TradeService:
                Returns:
                    Api: API key object.
                """
-        logger.warning("pre account idddd")
+
         account_id = self._get_account_id_from_token(self.authorization)
-        logger.warning(f"account id{account_id}")
+
         api_key = self.db.query(Api).filter(Api.accountID == account_id).first()
-        logger.warning(f"api key{api_key}")
+
         if not api_key:
             raise HTTPException(status_code=404, detail="API key not found for the account")
         return api_key
@@ -109,19 +101,19 @@ class TradeService:
                 Returns:
                     ccxt.Exchange: Exchange instance.
                 """
-        logger.warning("pre api_key")
+
         self.api_key = self._get_api_key()
-        logger.warning(f"apikey: {self.api_key}")
+
         exchange_class = getattr(ccxt, self.api_key.exchange_name)
-        logger.warning(f"exchange name {self.api_key.exchange_name}")
+
         exchange_args = {
             'apiKey': self.api_key.key,
             'secret': self.api_key.secret_Key
         }
-        logger.warning(f"exchange args {exchange_args}")
+
         if self.api_key.passphrase:
             exchange_args['password'] = self.api_key.passphrase
-        logger.warning(f"self.api_key.pass: {self.api_key.passphrase}")
+
         return exchange_class(exchange_args)
 
     def has_sufficient_usdt_balance(self, required_amount):
@@ -139,14 +131,14 @@ class TradeService:
                 """
         try:
             exchange = self._get_exchange_instance()
-            logger.warning(f"exchange instance {exchange} 2.0")
+
             balance = exchange.fetch_balance()
-            logger.warning(f"balance {balance}")
+
             usdt_balance = balance['free'].get('USDT', 0)
-            logger.warning("balance usdt balance {}".format(usdt_balance))
+
             return usdt_balance >= required_amount
         except Exception as e:
-            logger.warning("no moey 2.0")
+
             raise HTTPException(status_code=500, detail=f"Error fetching balance: {str(e)}")
 
     def create_order(self, order):
@@ -163,17 +155,16 @@ class TradeService:
                     dict: The created order details.
                 """
         try:
-            logger.warning("in try")
+
             if not self.has_sufficient_usdt_balance(order.amount * order.price):
-                logger.warning("kein money")
                 raise HTTPException(status_code=400, detail="Insufficient USDT balance")
-            logger.warning("pre exchange")
+
             exchange = self._get_exchange_instance()
-            logger.warning(f"{exchange}=exchange")
+
             order_params = {
                 'order_type': order.order_type
             }
-            currency=order.symbol
+            currency = order.symbol
             created_order = None
             if order.order_type == 'market':
                 additional_params = {
@@ -185,14 +176,14 @@ class TradeService:
                     # 'params': {'timeInForce': 'GTC'}
                 }
                 order_params.update(additional_params)
-                logger.warning(f"oder params:{order_params}")
+
                 created_order = exchange.create_market_order(**additional_params)
-                logger.warning(f"{created_order} created order")
+
                 date_bought = datetime.now().date()
 
 
             elif order.order_type == 'limit':
-                logger.warning("in limit")
+
                 additional_params = {
                     'symbol': order.symbol,
                     'side': order.side,
@@ -201,22 +192,21 @@ class TradeService:
                     # 'stop_price': order.stop_price,
                     # 'take_profit_price': order.take_profit_prices,
                     # 'stop_loss_price': order.stop_loss_prices,
-                    #'params': {'timeInForce': 'GTC'}
+                    # 'params': {'timeInForce': 'GTC'}
                 }
-                logger.warning(f"additional params:{additional_params}")
+
                 order_params.update(additional_params)
-                logger.warning(f"order params:{order_params}")
-                logger.warning(f"additional params:{additional_params}")
+
                 created_order = exchange.create_limit_order(**additional_params)
-                logger.warning("created order")
+
                 date_bought = None
 
             else:
                 raise HTTPException(status_code=400, detail="Invalid order type")
             new_trade = None
             api_id = self.get_api_id(order)
-            logger.warning(f"api_id={api_id}")
-            current_price=self._get_current_market_price(currency)
+
+            current_price = self._get_current_market_price(currency)
             if order.order_type == 'market':
                 new_trade = Trade(
                     trade_price=0,
@@ -243,22 +233,20 @@ class TradeService:
             self.db.add(new_trade)
             self.db.commit()
             self.db.refresh(new_trade)
-            logger.warning("New Trade saved in db: %s", new_trade)
 
             # Optionally add Take-Profit and Stop-Loss orders
             if order.take_profit_prices:
                 self.add_take_profits(new_trade.trade_id, order.take_profit_prices)
-                logger.warning("Take-Profit success: %s", order.take_profit_prices)
+
             if order.stop_loss_price:
                 self.add_stop_loss(new_trade.trade_id, order.stop_loss_price)
-                logger.warning("Stop-Loss success: %s", order.stop_loss_price)
 
             return {"message": "Order created successfully", "order": created_order}
         except HTTPException as e:
-            logger.warning("HTTP-error creating order: %s", e.detail)
+
             raise e
         except Exception as e:
-            logger.warning("intern server error while creating order")
+
             raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
     def add_take_profits(self, trade_id, take_profit_prices):
@@ -385,23 +373,23 @@ class TradeService:
             Returns:
                 float: Profit or loss amount.
             """
-        logger.warning("hallihallo")
+
         trade = self.db.query(Trade).filter(Trade.trade_id == trade_id).first()
-        logger.warning(f"trade id: {trade}")
+
         if not trade:
             raise HTTPException(status_code=404, detail="Trade not found")
-        logger.warning("pre current price amount")
+
         current_price = self._get_current_market_price(trade.currency_name)
-        logger.warning(f"after current price {current_price}")
+
         profit_loss_amount = (current_price - trade.purchase_rate) * trade.currency_volume
         return profit_loss_amount
 
     def _get_current_market_price(self, currncy_name: str) -> float:
-        logger.warning("in current market price")
+
         exchange = self._get_exchange_instance()
-        logger.warning("after exchange in current price")
-        ticker =exchange.fetch_ticker(currncy_name)
-        logger.warning(f"ticker {ticker}")
+
+        ticker = exchange.fetch_ticker(currncy_name)
+
         return ticker['last']
 
     def calculate_profit_loss_percentage(self, trade_id: int) -> float:
@@ -421,9 +409,9 @@ class TradeService:
         trade = self.db.query(Trade).filter(Trade.trade_id == trade_id).first()
         if not trade:
             raise HTTPException(status_code=404, detail="Trade not found")
-        logger.warning("pre purchase rate %")
-        current_price=self._get_current_market_price(trade.currency_name)
-        logger.warning(f"after current price {current_price}")
+
+        current_price = self._get_current_market_price(trade.currency_name)
+
         profit_loss_percentage = ((current_price - trade.purchase_rate) / trade.purchase_rate) * 100
         return profit_loss_percentage
 
@@ -442,31 +430,30 @@ class TradeService:
             """
         trade = self.db.query(Trade).filter(Trade.trade_id == trade_id).first()
         if not trade:
-            logger.warning("no trade found")
             raise HTTPException(status_code=404, detail="Trade not found")
-        logger.warning("pre exchange")
+
         exchange = self._get_exchange_instance()
-        logger.warning(f"post exchange und exchange {exchange}")
-        apiTrade=self.db.query(Trade).filter(Trade.trade_id == trade_id and Trade.api_id==trade.api_id ).first()
-        logger.warning(f"api trade {apiTrade}")
+
+        apiTrade = self.db.query(Trade).filter(Trade.trade_id == trade_id and Trade.api_id == trade.api_id).first()
+
         try:
             additional_params = {
                 'symbol': trade.currency_name,
                 'side': 'sell',
                 'amount': trade.currency_volume,
             }
-            logger.warning(f"additional params:{additional_params}")
+
             created_order = exchange.create_market_order(**additional_params)
-            logger.warning(f"created order {created_order}")
+
 
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error cancelling Take-Profit order: {str(e)}")
-        logger.warning("post exept")
+
         # Calculate profit/loss
         profit_loss_amount = self.calculate_profit_loss_amount(trade_id)
-        logger.warning(f"profit_loss_amount {profit_loss_amount}")
+
         profit_loss_percentage = self.calculate_profit_loss_percentage(trade_id)
-        logger.warning(f"profit_loss_percentage {profit_loss_percentage}")
+
         trade.selling_rate = profit_loss_amount
         trade.date_sale = datetime.now()
         trade.purchase_rate = profit_loss_percentage
