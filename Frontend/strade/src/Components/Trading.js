@@ -16,11 +16,31 @@ const getTradeHistory = async (token) => {
       },
     });
     //console.log(response.data); // Falls nicht klappt, noch .trades_data anhaengen
-    return response.data.trades_data;
+    return response.data.trades;
   } catch (error) {
     console.error('Error fetching trade history:', error);
   }
 }
+
+const handleSell = async (trade_id, token) => {
+  try {
+    const response = await axios.post('http://localhost:8001/complete_trade/', { trade_id }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 200) {
+      alert('Trade completed successfully');
+      window.location.reload();
+    } else {
+      alert('Failed to complete trade');
+    }
+  } catch (error) {
+    console.error('There was an error completing the trade:', error);
+    alert('Error completing trade');
+  }
+};
 
 const fetchCurrentPrice = async (symbol) => {
   try {
@@ -117,7 +137,14 @@ useEffect(() => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('Order placed successfully', response.data);
+      if (response.status === 200) {
+          console.log('Order placed successfully', response.data);
+          alert("Trade created successfully");
+          window.location.reload();
+      }
+      else {
+          alert("Something went wrong creating your trade");
+      }
     } catch (error) {
           console.log(orderData);
       console.error('Error placing order', error);
@@ -212,33 +239,38 @@ useEffect(() => {
         </div>
       </div>
     </div>
-    <div className="trade-history-container">
-      <h2>Trade History</h2>
-      {trades && trades.length > 0 ? (
-          <div className="trade-history">
-              {trades.map((trade, index) => (
-                  <div key={index} className="trade-item">
-                      <div className="trade-left">
-                          <p><strong>Currency:</strong> {trade.currency_name}</p>
-                          <p><strong>Account Holder:</strong> {trade.account_Holder}</p>
-                      </div>
-                      <div className="trade-middle">
-                          <p><strong>Trade Date:</strong> {trade.date_create}</p>
-                          <p><strong>Trade ID:</strong> {trade.trade_id}</p>
-                      </div>
-                      <div className="trade-right">
-                          <p><strong>Volume:</strong> {trade.currency_volume}</p>
-                          <p><strong>Purchase Price:</strong> {trade.purchase_rate}</p>
-                      </div>
-                      <div className="trade-chart">
-                      </div>
-                  </div>
-              ))}
+        <div className="trade-history-container">
+            <h2>Trade History</h2>
+            {trades && trades.length > 0 ? (
+                <div className="trade-history">
+                    {trades.map((trade, index) => (
+                        <div key={index} className="trade-item">
+                            <div className="trade-left">
+                                <p><strong>Currency:</strong> {trade.currency_name}</p>
+                                <p><strong>Account Holder:</strong> {trade.account_holder}</p>
+                            </div>
+                            <div className="trade-middle">
+                                <p><strong>Trade Date:</strong> {trade.date_create}</p>
+                                <p><strong>Trade ID:</strong> {trade.trade_id}</p>
+                            </div>
+                            <div className="trade-right">
+                                <p><strong>Volume:</strong> {trade.currency_volume}</p>
+                                <p><strong>Purchase Rate:</strong> {trade.purchase_rate}</p>
+                                {(trade.trade_type === 'market' && !trade.date_sale) ? (
+                                    <button onClick={() => handleSell(trade.trade_id, token)}>Sell</button>
+                                ) : (
+                                    <p><strong>Selling Rate:</strong> {trade.selling_rate}</p>
+                                )}
+                            </div>
+                            <div className="trade-chart">
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <p>No trades available.</p>
+            )}
         </div>
-      ) : (
-          <p>No trades available.</p>
-      )}
-    </div>
     </div>
   );
 };

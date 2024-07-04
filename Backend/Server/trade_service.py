@@ -173,6 +173,7 @@ class TradeService:
             order_params = {
                 'order_type': order.order_type
             }
+            currency=order.symbol
             created_order = None
             if order.order_type == 'market':
                 additional_params = {
@@ -215,6 +216,7 @@ class TradeService:
             new_trade = None
             api_id = self.get_api_id(order)
             logger.warning(f"api_id={api_id}")
+            current_price=self._get_current_market_price(currency)
             if order.order_type == 'market':
                 new_trade = Trade(
                     trade_price=0,
@@ -224,7 +226,8 @@ class TradeService:
                     trade_status=created_order['status'],
                     date_create=datetime.now().date(),
                     date_bought=date_bought,
-                    api_id=api_id
+                    api_id=api_id,
+                    purchase_rate=current_price
                 )
             if order.order_type == 'limit':
                 new_trade = Trade(
@@ -382,20 +385,24 @@ class TradeService:
             Returns:
                 float: Profit or loss amount.
             """
+        logger.warning("hallihallo")
         trade = self.db.query(Trade).filter(Trade.trade_id == trade_id).first()
+        logger.warning(f"trade id: {trade}")
         if not trade:
             raise HTTPException(status_code=404, detail="Trade not found")
-
-        if trade.purchase_rate is None:
-            raise HTTPException(status_code=400, detail="Purchase rate not set for the trade")
-
-        exchange = self._get_exchange_instance()
-        ticker = exchange.fetch_ticker(trade.currency_name)
-        current_price = ticker['last']
-
+        logger.warning("pre current price amount")
+        current_price = self._get_current_market_price(trade.currency_name)
+        logger.warning(f"after current price {current_price}")
         profit_loss_amount = (current_price - trade.purchase_rate) * trade.currency_volume
-
         return profit_loss_amount
+
+    def _get_current_market_price(self, currncy_name: str) -> float:
+        logger.warning("in current market price")
+        exchange = self._get_exchange_instance()
+        logger.warning("after exchange in current price")
+        ticker =exchange.fetch_ticker(currncy_name)
+        logger.warning(f"ticker {ticker}")
+        return ticker['last']
 
     def calculate_profit_loss_percentage(self, trade_id: int) -> float:
         """
@@ -414,17 +421,9 @@ class TradeService:
         trade = self.db.query(Trade).filter(Trade.trade_id == trade_id).first()
         if not trade:
             raise HTTPException(status_code=404, detail="Trade not found")
-
-        if trade.purchase_rate is None:
-            raise HTTPException(status_code=400, detail="Purchase rate not set for the trade")
-
-        exchange = self._get_exchange_instance()
-        ticker = exchange.fetch_ticker(trade.currency_name)
-        current_price = ticker['last']
-
-        if trade.purchase_rate == 0:
-            raise ValueError("Purchase rate cannot be zero")
-
+        logger.warning("pre purchase rate %")
+        current_price=self._get_current_market_price(trade.currency_name)
+        logger.warning(f"after current price {current_price}")
         profit_loss_percentage = ((current_price - trade.purchase_rate) / trade.purchase_rate) * 100
         return profit_loss_percentage
 
@@ -443,27 +442,31 @@ class TradeService:
             """
         trade = self.db.query(Trade).filter(Trade.trade_id == trade_id).first()
         if not trade:
+            logger.warning("no trade found")
             raise HTTPException(status_code=404, detail="Trade not found")
-
+        logger.warning("pre exchange")
         exchange = self._get_exchange_instance()
+        logger.warning(f"post exchange und exchange {exchange}")
+        apiTrade=self.db.query(Trade).filter(Trade.trade_id == trade_id and Trade.api_id==trade.api_id ).first()
+        logger.warning(f"api trade {apiTrade}")
+        try:
+            additional_params = {
+                'symbol': trade.currency_name,
+                'side': 'sell',
+                'amount': trade.currency_volume,
+            }
+            logger.warning(f"additional params:{additional_params}")
+            created_order = exchange.create_market_order(**additional_params)
+            logger.warning(f"created order {created_order}")
 
-        # Cancel all open Take-Profit and Stop-Loss orders
-        for take_profit in trade.take_profits:
-            try:
-                exchange.cancel_order(take_profit.order_id, trade.currency_name)
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Error cancelling Take-Profit order: {str(e)}")
-
-        if trade.stop_loss_price:
-            try:
-                exchange.cancel_order(trade.stop_loss_order_id, trade.currency_name)
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Error cancelling Stop-Loss order: {str(e)}")
-
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error cancelling Take-Profit order: {str(e)}")
+        logger.warning("post exept")
         # Calculate profit/loss
         profit_loss_amount = self.calculate_profit_loss_amount(trade_id)
+        logger.warning(f"profit_loss_amount {profit_loss_amount}")
         profit_loss_percentage = self.calculate_profit_loss_percentage(trade_id)
-
+        logger.warning(f"profit_loss_percentage {profit_loss_percentage}")
         trade.selling_rate = profit_loss_amount
         trade.date_sale = datetime.now()
         trade.purchase_rate = profit_loss_percentage

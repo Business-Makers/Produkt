@@ -14,7 +14,7 @@ from database import get_db, init_db
 from fastapi.responses import JSONResponse
 from models import Account, Member, Api, AccountPages_Info, Trade, TakeProfit, Subscription
 from schemas import LoginCredentials, UserRegistration, PasswordResetRequest, ApiKeyCreation, OrderRequest, \
-    AddTakeProfitStopLossRequest, UpdateTradeRequest, Subscription_Info
+    AddTakeProfitStopLossRequest, UpdateTradeRequest, Subscription_Info, SellRequest
 from utils import get_hashed_password, verify_password, create_access_token, generate_reset_token, \
     send_password_reset_email, verify_reset_token, verify_access_token, find_mail, mailTheme, verify_trade_token
 from smtp import send_email
@@ -478,7 +478,7 @@ def add_take_profit_stop_loss(request: AddTakeProfitStopLossRequest, db: Session
 
 
 @app.post("/complete_trade/")
-def complete_trade(trade_id: int, db: Session = Depends(get_db), authorization: str = Header(None)):
+def complete_trade(request: SellRequest, db: Session = Depends(get_db), authorization: str = Header(None)):
     """
         Completes a trade based on the provided trade ID.
 
@@ -500,8 +500,11 @@ def complete_trade(trade_id: int, db: Session = Depends(get_db), authorization: 
                       "error": "Error message"
                   }
         """
+    logger.warning("pre alles")
     trade_service = TradeService(db, authorization)
-    result = trade_service.complete_trade(trade_id)
+    logger.warning(f"tarden {trade_service}")
+    result = trade_service.complete_trade(request.trade_id)
+    logger.warning(f"result {result}")
     return result
 
 

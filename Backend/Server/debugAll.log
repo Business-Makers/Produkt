@@ -1,0 +1,152 @@
+2024-07-04 20:04:51,163 WARNING:pre alles
+2024-07-04 20:04:51,164 WARNING:tarden <trade_service.TradeService object at 0x7f70395685e0>
+2024-07-04 20:04:51,167 INFO:BEGIN (implicit)
+2024-07-04 20:04:51,168 INFO:SELECT trade.trade_id AS trade_trade_id, trade.trade_type AS trade_trade_type, trade.trade_price AS trade_trade_price, trade.currency_name AS trade_currency_name, trade.currency_volume AS trade_currency_volume, trade.trade_status AS trade_trade_status, trade.date_create AS trade_date_create, trade.date_bought AS trade_date_bought, trade.date_sale AS trade_date_sale, trade.purchase_rate AS trade_purchase_rate, trade.selling_rate AS trade_selling_rate, trade.comment AS trade_comment, trade.api_id AS trade_api_id, trade.stop_loss_price AS trade_stop_loss_price 
+FROM trade 
+WHERE trade.trade_id = ?
+ LIMIT ? OFFSET ?
+2024-07-04 20:04:51,168 INFO:[generated in 0.00032s] (14, 1, 0)
+2024-07-04 20:04:51,172 WARNING:pre exchange
+2024-07-04 20:04:51,172 WARNING:pre api_key
+2024-07-04 20:04:51,172 WARNING:pre account idddd
+2024-07-04 20:04:51,172 WARNING:pre if auto
+2024-07-04 20:04:51,172 WARNING:post if auto
+2024-07-04 20:04:51,173 WARNING:pre verify tokeneyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM
+2024-07-04 20:04:51,173 WARNING:pre payload
+2024-07-04 20:04:51,173 WARNING:post payload{'sub': 'Mustermann12', 'account_id': 3, 'exp': 1720123945} und auto Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM und auto Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM
+2024-07-04 20:04:51,173 WARNING:3 account id nende
+2024-07-04 20:04:51,173 WARNING:account id3
+2024-07-04 20:04:51,175 INFO:SELECT api.secret_key AS api_secret_key, api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+ LIMIT ? OFFSET ?
+2024-07-04 20:04:51,175 INFO:[generated in 0.00033s] (3, 1, 0)
+2024-07-04 20:04:51,177 WARNING:api key<models.Api object at 0x7f70394eda80>
+2024-07-04 20:04:51,177 WARNING:apikey: <models.Api object at 0x7f70394eda80>
+2024-07-04 20:04:51,177 WARNING:exchange name kucoin
+2024-07-04 20:04:51,177 WARNING:exchange args {'apiKey': '66632d6e15ca3700015e27f2', 'secret': 'eea79c31-0a07-4e54-91b4-421e4281e853'}
+2024-07-04 20:04:51,177 WARNING:self.api_key.pass: test1710
+2024-07-04 20:04:51,182 WARNING:post exchange und exchange KuCoin
+2024-07-04 20:04:51,183 INFO:SELECT trade.trade_id AS trade_trade_id, trade.trade_type AS trade_trade_type, trade.trade_price AS trade_trade_price, trade.currency_name AS trade_currency_name, trade.currency_volume AS trade_currency_volume, trade.trade_status AS trade_trade_status, trade.date_create AS trade_date_create, trade.date_bought AS trade_date_bought, trade.date_sale AS trade_date_sale, trade.purchase_rate AS trade_purchase_rate, trade.selling_rate AS trade_selling_rate, trade.comment AS trade_comment, trade.api_id AS trade_api_id, trade.stop_loss_price AS trade_stop_loss_price 
+FROM trade 
+WHERE trade.trade_id = ?
+ LIMIT ? OFFSET ?
+2024-07-04 20:04:51,183 INFO:[cached since 0.01545s ago] (14, 1, 0)
+2024-07-04 20:04:51,186 WARNING:api trade <models.Trade object at 0x7f7039457c10>
+2024-07-04 20:04:51,186 WARNING:additional params:{'symbol': 'BTC/USDT', 'side': 'sell', 'amount': 1e-05}
+2024-07-04 20:04:54,330 WARNING:created order {'info': {'orderId': '66870065d698ee0007392673'}, 'id': '66870065d698ee0007392673', 'clientOrderId': None, 'symbol': 'BTC/USDT', 'type': None, 'timeInForce': None, 'postOnly': None, 'side': None, 'amount': None, 'price': None, 'stopPrice': None, 'triggerPrice': None, 'cost': None, 'filled': None, 'remaining': None, 'timestamp': None, 'datetime': None, 'fee': {'currency': None, 'cost': None}, 'status': None, 'lastTradeTimestamp': None, 'average': None, 'trades': [], 'fees': [{'currency': None, 'cost': None}], 'lastUpdateTimestamp': None, 'reduceOnly': None, 'takeProfitPrice': None, 'stopLossPrice': None}
+2024-07-04 20:04:54,332 WARNING:post exept
+2024-07-04 20:04:54,333 WARNING:hallihallo
+2024-07-04 20:04:54,336 INFO:SELECT trade.trade_id AS trade_trade_id, trade.trade_type AS trade_trade_type, trade.trade_price AS trade_trade_price, trade.currency_name AS trade_currency_name, trade.currency_volume AS trade_currency_volume, trade.trade_status AS trade_trade_status, trade.date_create AS trade_date_create, trade.date_bought AS trade_date_bought, trade.date_sale AS trade_date_sale, trade.purchase_rate AS trade_purchase_rate, trade.selling_rate AS trade_selling_rate, trade.comment AS trade_comment, trade.api_id AS trade_api_id, trade.stop_loss_price AS trade_stop_loss_price 
+FROM trade 
+WHERE trade.trade_id = ?
+ LIMIT ? OFFSET ?
+2024-07-04 20:04:54,337 INFO:[cached since 3.169s ago] (14, 1, 0)
+2024-07-04 20:04:54,346 WARNING:trade id: <models.Trade object at 0x7f7039457c10>
+2024-07-04 20:04:54,347 WARNING:pre current price amount
+2024-07-04 20:04:54,348 WARNING:in current market price
+2024-07-04 20:04:54,348 WARNING:pre api_key
+2024-07-04 20:04:54,349 WARNING:pre account idddd
+2024-07-04 20:04:54,349 WARNING:pre if auto
+2024-07-04 20:04:54,350 WARNING:post if auto
+2024-07-04 20:04:54,350 WARNING:pre verify tokeneyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM
+2024-07-04 20:04:54,350 WARNING:pre payload
+2024-07-04 20:04:54,351 WARNING:post payload{'sub': 'Mustermann12', 'account_id': 3, 'exp': 1720123945} und auto Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM und auto Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM
+2024-07-04 20:04:54,351 WARNING:3 account id nende
+2024-07-04 20:04:54,351 WARNING:account id3
+2024-07-04 20:04:54,352 INFO:SELECT api.secret_key AS api_secret_key, api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+ LIMIT ? OFFSET ?
+2024-07-04 20:04:54,352 INFO:[cached since 3.177s ago] (3, 1, 0)
+2024-07-04 20:04:54,354 WARNING:api key<models.Api object at 0x7f70394eda80>
+2024-07-04 20:04:54,354 WARNING:apikey: <models.Api object at 0x7f70394eda80>
+2024-07-04 20:04:54,354 WARNING:exchange name kucoin
+2024-07-04 20:04:54,355 WARNING:exchange args {'apiKey': '66632d6e15ca3700015e27f2', 'secret': 'eea79c31-0a07-4e54-91b4-421e4281e853'}
+2024-07-04 20:04:54,355 WARNING:self.api_key.pass: test1710
+2024-07-04 20:04:54,360 WARNING:after exchange in current price
+2024-07-04 20:04:56,706 WARNING:ticker {'symbol': 'BTC/USDT', 'timestamp': 1720123494010, 'datetime': '2024-07-04T20:04:54.010Z', 'high': 60499.9, 'low': 56759.6, 'bid': 58203.2, 'bidVolume': None, 'ask': 58203.3, 'askVolume': None, 'vwap': 58295.047265706286, 'open': 59697.2, 'close': 58203.2, 'last': 58203.2, 'previousClose': None, 'change': -1494.0, 'percentage': -2.5, 'average': 58478.31110929, 'baseVolume': 3528.81002157, 'quoteVolume': 205712146.99912116, 'info': {'time': 1720123494010, 'symbol': 'BTC-USDT', 'buy': '58203.2', 'sell': '58203.3', 'changeRate': '-0.025', 'changePrice': '-1494', 'high': '60499.9', 'low': '56759.6', 'vol': '3528.81002157', 'volValue': '205712146.999121157', 'last': '58203.2', 'averagePrice': '58478.31110929', 'takerFeeRate': '0.001', 'makerFeeRate': '0.001', 'takerCoefficient': '1', 'makerCoefficient': '1'}}
+2024-07-04 20:04:56,711 WARNING:after current price 58203.2
+2024-07-04 20:04:56,712 WARNING:profit_loss_amount -0.0008160000000000583
+2024-07-04 20:04:56,712 INFO:SELECT trade.trade_id AS trade_trade_id, trade.trade_type AS trade_trade_type, trade.trade_price AS trade_trade_price, trade.currency_name AS trade_currency_name, trade.currency_volume AS trade_currency_volume, trade.trade_status AS trade_trade_status, trade.date_create AS trade_date_create, trade.date_bought AS trade_date_bought, trade.date_sale AS trade_date_sale, trade.purchase_rate AS trade_purchase_rate, trade.selling_rate AS trade_selling_rate, trade.comment AS trade_comment, trade.api_id AS trade_api_id, trade.stop_loss_price AS trade_stop_loss_price 
+FROM trade 
+WHERE trade.trade_id = ?
+ LIMIT ? OFFSET ?
+2024-07-04 20:04:56,713 INFO:[cached since 5.545s ago] (14, 1, 0)
+2024-07-04 20:04:56,715 WARNING:pre purchase rate %
+2024-07-04 20:04:56,716 WARNING:in current market price
+2024-07-04 20:04:56,716 WARNING:pre api_key
+2024-07-04 20:04:56,716 WARNING:pre account idddd
+2024-07-04 20:04:56,716 WARNING:pre if auto
+2024-07-04 20:04:56,716 WARNING:post if auto
+2024-07-04 20:04:56,716 WARNING:pre verify tokeneyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM
+2024-07-04 20:04:56,716 WARNING:pre payload
+2024-07-04 20:04:56,717 WARNING:post payload{'sub': 'Mustermann12', 'account_id': 3, 'exp': 1720123945} und auto Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM und auto Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNdXN0ZXJtYW5uMTIiLCJhY2NvdW50X2lkIjozLCJleHAiOjE3MjAxMjM5NDV9.uBimWQTBwH5RvdKxP4lq3GMNM_THBPEFNR-8U2ATiKM
+2024-07-04 20:04:56,717 WARNING:3 account id nende
+2024-07-04 20:04:56,717 WARNING:account id3
+2024-07-04 20:04:56,718 INFO:SELECT api.secret_key AS api_secret_key, api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+ LIMIT ? OFFSET ?
+2024-07-04 20:04:56,718 INFO:[cached since 5.543s ago] (3, 1, 0)
+2024-07-04 20:04:56,719 WARNING:api key<models.Api object at 0x7f70394eda80>
+2024-07-04 20:04:56,719 WARNING:apikey: <models.Api object at 0x7f70394eda80>
+2024-07-04 20:04:56,720 WARNING:exchange name kucoin
+2024-07-04 20:04:56,720 WARNING:exchange args {'apiKey': '66632d6e15ca3700015e27f2', 'secret': 'eea79c31-0a07-4e54-91b4-421e4281e853'}
+2024-07-04 20:04:56,720 WARNING:self.api_key.pass: test1710
+2024-07-04 20:04:56,725 WARNING:after exchange in current price
+2024-07-04 20:04:58,890 WARNING:ticker {'symbol': 'BTC/USDT', 'timestamp': 1720123496009, 'datetime': '2024-07-04T20:04:56.009Z', 'high': 60499.9, 'low': 56759.6, 'bid': 58203.2, 'bidVolume': None, 'ask': 58203.3, 'askVolume': None, 'vwap': 58295.04724005948, 'open': 59697.2, 'close': 58203.3, 'last': 58203.3, 'previousClose': None, 'change': -1493.9, 'percentage': -2.5, 'average': 58478.31110929, 'baseVolume': 3528.81100705, 'quoteVolume': 205712204.3572216, 'info': {'time': 1720123496009, 'symbol': 'BTC-USDT', 'buy': '58203.2', 'sell': '58203.3', 'changeRate': '-0.025', 'changePrice': '-1493.9', 'high': '60499.9', 'low': '56759.6', 'vol': '3528.81100705', 'volValue': '205712204.357221618', 'last': '58203.3', 'averagePrice': '58478.31110929', 'takerFeeRate': '0.001', 'makerFeeRate': '0.001', 'takerCoefficient': '1', 'makerCoefficient': '1'}}
+2024-07-04 20:04:58,896 WARNING:after current price 58203.3
+2024-07-04 20:04:58,897 WARNING:profit_loss_percentage -0.13983062479411443
+2024-07-04 20:04:58,899 INFO:UPDATE trade SET date_sale=?, purchase_rate=?, selling_rate=? WHERE trade.trade_id = ?
+2024-07-04 20:04:58,899 INFO:[generated in 0.00042s] ('2024-07-04', -0.13983062479411443, -0.0008160000000000583, 14)
+2024-07-04 20:04:58,905 INFO:COMMIT
+2024-07-04 20:04:58,920 WARNING:result {'message': 'Trade completed successfully', 'profit_loss_amount': -0.0008160000000000583, 'profit_loss_percentage': -0.13983062479411443}
+2024-07-04 20:05:13,625 INFO:BEGIN (implicit)
+2024-07-04 20:05:13,627 INFO:SELECT api.secret_key AS api_secret_key, api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+2024-07-04 20:05:13,627 INFO:[cached since 172.2s ago] (3,)
+2024-07-04 20:05:13,628 INFO:BEGIN (implicit)
+2024-07-04 20:05:13,629 INFO:SELECT api.secret_key AS api_secret_key, api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+2024-07-04 20:05:13,629 INFO:[cached since 172.2s ago] (3,)
+2024-07-04 20:05:13,632 INFO:SELECT trade.trade_id AS trade_trade_id, trade.trade_type AS trade_trade_type, trade.trade_price AS trade_trade_price, trade.currency_name AS trade_currency_name, trade.currency_volume AS trade_currency_volume, trade.trade_status AS trade_trade_status, trade.date_create AS trade_date_create, trade.date_bought AS trade_date_bought, trade.date_sale AS trade_date_sale, trade.purchase_rate AS trade_purchase_rate, trade.selling_rate AS trade_selling_rate, trade.comment AS trade_comment, trade.api_id AS trade_api_id, trade.stop_loss_price AS trade_stop_loss_price 
+FROM trade 
+WHERE trade.api_id = ?
+2024-07-04 20:05:13,633 INFO:SELECT account_pages_info.info_id AS account_pages_info_info_id, account_pages_info.account_holder AS account_pages_info_account_holder, account_pages_info.balance AS account_pages_info_balance, account_pages_info.currency_count AS account_pages_info_currency_count, account_pages_info.last_updated AS account_pages_info_last_updated, account_pages_info.api_id AS account_pages_info_api_id 
+FROM account_pages_info 
+WHERE ? = account_pages_info.api_id
+2024-07-04 20:05:13,633 INFO:[cached since 172.2s ago] (1,)
+2024-07-04 20:05:13,633 INFO:[cached since 172.2s ago] (1,)
+2024-07-04 20:05:13,643 INFO:SELECT account_pages_info.info_id AS account_pages_info_info_id, account_pages_info.account_holder AS account_pages_info_account_holder, account_pages_info.balance AS account_pages_info_balance, account_pages_info.currency_count AS account_pages_info_currency_count, account_pages_info.last_updated AS account_pages_info_last_updated, account_pages_info.api_id AS account_pages_info_api_id 
+FROM account_pages_info 
+WHERE ? = account_pages_info.api_id
+2024-07-04 20:05:13,644 INFO:[cached since 172.2s ago] (1,)
+2024-07-04 20:05:13,650 INFO:ROLLBACK
+2024-07-04 20:05:13,702 INFO:BEGIN (implicit)
+2024-07-04 20:05:13,703 INFO:SELECT api.secret_key AS api_secret_key, api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+2024-07-04 20:05:13,703 INFO:[cached since 172.3s ago] (3,)
+2024-07-04 20:05:13,710 INFO:SELECT trade.trade_id AS trade_trade_id, trade.trade_type AS trade_trade_type, trade.trade_price AS trade_trade_price, trade.currency_name AS trade_currency_name, trade.currency_volume AS trade_currency_volume, trade.trade_status AS trade_trade_status, trade.date_create AS trade_date_create, trade.date_bought AS trade_date_bought, trade.date_sale AS trade_date_sale, trade.purchase_rate AS trade_purchase_rate, trade.selling_rate AS trade_selling_rate, trade.comment AS trade_comment, trade.api_id AS trade_api_id, trade.stop_loss_price AS trade_stop_loss_price 
+FROM trade 
+WHERE trade.api_id = ?
+2024-07-04 20:05:13,714 INFO:[cached since 172.3s ago] (1,)
+2024-07-04 20:05:13,722 INFO:SELECT account_pages_info.info_id AS account_pages_info_info_id, account_pages_info.account_holder AS account_pages_info_account_holder, account_pages_info.balance AS account_pages_info_balance, account_pages_info.currency_count AS account_pages_info_currency_count, account_pages_info.last_updated AS account_pages_info_last_updated, account_pages_info.api_id AS account_pages_info_api_id 
+FROM account_pages_info 
+WHERE ? = account_pages_info.api_id
+2024-07-04 20:05:13,723 INFO:[cached since 172.3s ago] (1,)
+2024-07-04 20:05:13,733 INFO:ROLLBACK
+2024-07-04 20:05:16,196 INFO:ROLLBACK
+2024-07-04 20:05:16,205 INFO:BEGIN (implicit)
+2024-07-04 20:05:16,206 INFO:SELECT api.secret_key AS api_secret_key, api.api_id AS api_api_id, api.exchange_name AS api_exchange_name, api."key" AS api_key, api.passphrase AS api_passphrase, api."accountID" AS "api_accountID" 
+FROM api 
+WHERE api."accountID" = ?
+2024-07-04 20:05:16,207 INFO:[cached since 174.8s ago] (3,)
+2024-07-04 20:05:16,212 INFO:SELECT account_pages_info.info_id AS account_pages_info_info_id, account_pages_info.account_holder AS account_pages_info_account_holder, account_pages_info.balance AS account_pages_info_balance, account_pages_info.currency_count AS account_pages_info_currency_count, account_pages_info.last_updated AS account_pages_info_last_updated, account_pages_info.api_id AS account_pages_info_api_id 
+FROM account_pages_info 
+WHERE ? = account_pages_info.api_id
+2024-07-04 20:05:16,213 INFO:[cached since 174.8s ago] (1,)
+2024-07-04 20:05:19,612 INFO:ROLLBACK
