@@ -6,7 +6,7 @@ const ExchangeBalance = ({ exchange }) => {
     <div className="exchange-balance">
       <h3>{exchange.exchange_name}</h3>
       <p><strong>Account Holder:</strong> {exchange.account_holder}</p>
-      <p><strong>Balance:</strong> {`${exchange.balance.toFixed(2)}$`}</p>
+      <p><strong>Balance:</strong> {`${exchange.balance.toFixed(2)} $`}</p>
       <p><strong>Currency Count:</strong> {exchange.currency_count}</p>
     </div>
   );
