@@ -1,30 +1,68 @@
+
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Homepage from '../Components/Homepage';
 
 describe('Homepage Component', () => {
-  test('renders homepage with all sections', () => {
-    render(<Homepage />);
-    
-    // Check for intro section
-    expect(screen.getByText(/Erleben Sie den Handel auf einer neuen Ebene/i)).toBeInTheDocument();
+  test('renders without crashing', () => {
+    const { getByText } = render(
+      <Router>
+        <Homepage />
+      </Router>
+    );
+    expect(getByText('Welcome to $Trade - your trusted crypto exchange platform with advanced trading bots')).toBeInTheDocument();
+  });
 
-    // Check for features section
-    expect(screen.getByText(/Warum unsere App einzigartig ist/i)).toBeInTheDocument();
-    expect(screen.getByText(/Sicherheit:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Analytik:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Automatisierung:/i)).toBeInTheDocument();
+  test('renders exchange list', () => {
+    const { getByAltText } = render(
+      <Router>
+        <Homepage />
+      </Router>
+    );
 
-    // Check for reviews section
-    expect(screen.getByText(/Bewertungen/i)).toBeInTheDocument();
-    expect(screen.getByText(/Lesen Sie, was unsere zufriedenen Kunden sagen/i)).toBeInTheDocument();
-    expect(screen.getByText(/Diese App hat meine Trading-Erfahrung revolutioniert!/i)).toBeInTheDocument();
-    expect(screen.getByText(/Sicher, schnell und zuverlässig. Absolut empfehlenswert./i)).toBeInTheDocument();
+    // Check if one of the exchange images is rendered
+    expect(getByAltText('kucoin')).toBeInTheDocument();
+    expect(getByAltText('binance')).toBeInTheDocument();
+    expect(getByAltText('binanceTR')).toBeInTheDocument();
+  });
 
-    // Check for FAQ section
-    expect(screen.getByText(/FAQ der wichtigsten fragen/i)).toBeInTheDocument();
-    expect(screen.getByText(/Wie sicher ist die App?/i)).toBeInTheDocument();
-    expect(screen.getByText(/Wie funktionieren die Trading-Bots?/i)).toBeInTheDocument();
+  test('renders features section', () => {
+    const { getByText } = render(
+      <Router>
+        <Homepage />
+      </Router>
+    );
+    expect(getByText('Why choose $Trade?')).toBeInTheDocument();
+    expect(getByText('Security first: Our platform uses the latest security technologies to protect your data and transactions. With two-factor authentication and encrypted communication, you can trade with peace of mind.')).toBeInTheDocument();
+  });
+
+  test('renders reviews section', () => {
+    const { getByText } = render(
+      <Router>
+        <Homepage />
+      </Router>
+    );
+    expect(getByText('Reviews')).toBeInTheDocument();
+  });
+
+  test('renders FAQ section', () => {
+    const { getByText } = render(
+      <Router>
+        <Homepage />
+      </Router>
+    );
+    expect(getByText('FAQ')).toBeInTheDocument();
+    expect(getByText('What is a crypto exchange?')).toBeInTheDocument();
+  });
+
+  test('renders SignUp link', () => {
+    const { getByText } = render(
+      <Router>
+        <Homepage />
+      </Router>
+    );
+    expect(getByText('Start trading now')).toBeInTheDocument();
   });
 });
