@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: simfed/frontend:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+
+  backend:
+    image: simfed/backend:latest 
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONUNBUFFERED=1
