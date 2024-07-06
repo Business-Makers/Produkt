@@ -55,7 +55,7 @@ class background_threads:
         try:
             while self.running:
                 trade_service.check_and_update_limit_orders()
-                time.sleep(5)
+                time.sleep(1000)
 
         finally:
             db.close()

@@ -308,3 +308,6 @@ class Subscription_Info(BaseModel):
     currency: str
     product_name: str
     product_days: int
+
+class SellRequest(BaseModel):
+    trade_id: int

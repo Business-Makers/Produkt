@@ -43,18 +43,13 @@ class TradeService:
                 Returns:
                     int: Account ID.
                 """
-
         if auto is None:
             raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
-
-        # token = auto.split(" ")[1]
-        # logger.warning(f"pre verify token{token}")
-        payload = verify_trade_token(self.authorization)
-
+        token = auto.split(" ")[1]
+        payload = verify_trade_token(token)
         if payload is None:
             raise HTTPException(status_code=401, detail="Invalid or expired token",
                                 headers={"WWW-Authenticate": "Bearer"})
-
         return payload.get("account_id")
 
     def get_api_id(self, order):
@@ -90,6 +85,7 @@ class TradeService:
                Returns:
                    Api: API key object.
                """
+
         account_id = self._get_account_id_from_token(self.authorization)
 
         api_key = self.db.query(Api).filter(Api.accountID == account_id).first()
@@ -105,14 +101,19 @@ class TradeService:
                 Returns:
                     ccxt.Exchange: Exchange instance.
                 """
+
         self.api_key = self._get_api_key()
+
         exchange_class = getattr(ccxt, self.api_key.exchange_name)
+
         exchange_args = {
             'apiKey': self.api_key.key,
             'secret': self.api_key.secret_Key
         }
+
         if self.api_key.passphrase:
             exchange_args['password'] = self.api_key.passphrase
+
         return exchange_class(exchange_args)
 
     def has_sufficient_usdt_balance(self, required_amount):
@@ -130,10 +131,14 @@ class TradeService:
                 """
         try:
             exchange = self._get_exchange_instance()
+
             balance = exchange.fetch_balance()
+
             usdt_balance = balance['free'].get('USDT', 0)
+
             return usdt_balance >= required_amount
         except Exception as e:
+
             raise HTTPException(status_code=500, detail=f"Error fetching balance: {str(e)}")
 
     def create_order(self, order):
@@ -155,9 +160,11 @@ class TradeService:
                 raise HTTPException(status_code=400, detail="Insufficient USDT balance")
 
             exchange = self._get_exchange_instance()
+
             order_params = {
                 'order_type': order.order_type
             }
+            currency = order.symbol
             created_order = None
             if order.order_type == 'market':
                 additional_params = {
@@ -171,29 +178,35 @@ class TradeService:
                 order_params.update(additional_params)
 
                 created_order = exchange.create_market_order(**additional_params)
+
                 date_bought = datetime.now().date()
 
 
             elif order.order_type == 'limit':
+
                 additional_params = {
                     'symbol': order.symbol,
                     'side': order.side,
                     'amount': order.amount,
-                    # 'price': order.price,
+                    'price': order.price,
                     # 'stop_price': order.stop_price,
                     # 'take_profit_price': order.take_profit_prices,
                     # 'stop_loss_price': order.stop_loss_prices,
                     # 'params': {'timeInForce': 'GTC'}
                 }
+
                 order_params.update(additional_params)
 
                 created_order = exchange.create_limit_order(**additional_params)
+
                 date_bought = None
 
             else:
                 raise HTTPException(status_code=400, detail="Invalid order type")
             new_trade = None
             api_id = self.get_api_id(order)
+
+            current_price = self._get_current_market_price(currency)
             if order.order_type == 'market':
                 new_trade = Trade(
                     trade_price=0,
@@ -203,7 +216,8 @@ class TradeService:
                     trade_status=created_order['status'],
                     date_create=datetime.now().date(),
                     date_bought=date_bought,
-                    api_id=api_id
+                    api_id=api_id,
+                    purchase_rate=current_price
                 )
             if order.order_type == 'limit':
                 new_trade = Trade(
@@ -219,22 +233,20 @@ class TradeService:
             self.db.add(new_trade)
             self.db.commit()
             self.db.refresh(new_trade)
-            logger.warning("New Trade saved in db: %s", new_trade)
 
             # Optionally add Take-Profit and Stop-Loss orders
             if order.take_profit_prices:
                 self.add_take_profits(new_trade.trade_id, order.take_profit_prices)
-                logger.warning("Take-Profit success: %s", order.take_profit_prices)
+
             if order.stop_loss_price:
                 self.add_stop_loss(new_trade.trade_id, order.stop_loss_price)
-                logger.warning("Stop-Loss success: %s", order.stop_loss_price)
 
             return {"message": "Order created successfully", "order": created_order}
         except HTTPException as e:
-            logger.warning("HTTP-error creating order: %s", e.detail)
+
             raise e
         except Exception as e:
-            logger.warning("intern server error while creating order")
+
             raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
     def add_take_profits(self, trade_id, take_profit_prices):
@@ -361,20 +373,24 @@ class TradeService:
             Returns:
                 float: Profit or loss amount.
             """
+
         trade = self.db.query(Trade).filter(Trade.trade_id == trade_id).first()
+
         if not trade:
             raise HTTPException(status_code=404, detail="Trade not found")
 
-        if trade.purchase_rate is None:
-            raise HTTPException(status_code=400, detail="Purchase rate not set for the trade")
-
-        exchange = self._get_exchange_instance()
-        ticker = exchange.fetch_ticker(trade.currency_name)
-        current_price = ticker['last']
+        current_price = self._get_current_market_price(trade.currency_name)
 
         profit_loss_amount = (current_price - trade.purchase_rate) * trade.currency_volume
-
         return profit_loss_amount
+
+    def _get_current_market_price(self, currncy_name: str) -> float:
+
+        exchange = self._get_exchange_instance()
+
+        ticker = exchange.fetch_ticker(currncy_name)
+
+        return ticker['last']
 
     def calculate_profit_loss_percentage(self, trade_id: int) -> float:
         """
@@ -394,15 +410,7 @@ class TradeService:
         if not trade:
             raise HTTPException(status_code=404, detail="Trade not found")
 
-        if trade.purchase_rate is None:
-            raise HTTPException(status_code=400, detail="Purchase rate not set for the trade")
-
-        exchange = self._get_exchange_instance()
-        ticker = exchange.fetch_ticker(trade.currency_name)
-        current_price = ticker['last']
-
-        if trade.purchase_rate == 0:
-            raise ValueError("Purchase rate cannot be zero")
+        current_price = self._get_current_market_price(trade.currency_name)
 
         profit_loss_percentage = ((current_price - trade.purchase_rate) / trade.purchase_rate) * 100
         return profit_loss_percentage
@@ -426,21 +434,24 @@ class TradeService:
 
         exchange = self._get_exchange_instance()
 
-        # Cancel all open Take-Profit and Stop-Loss orders
-        for take_profit in trade.take_profits:
-            try:
-                exchange.cancel_order(take_profit.order_id, trade.currency_name)
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Error cancelling Take-Profit order: {str(e)}")
+        apiTrade = self.db.query(Trade).filter(Trade.trade_id == trade_id and Trade.api_id == trade.api_id).first()
 
-        if trade.stop_loss_price:
-            try:
-                exchange.cancel_order(trade.stop_loss_order_id, trade.currency_name)
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Error cancelling Stop-Loss order: {str(e)}")
+        try:
+            additional_params = {
+                'symbol': trade.currency_name,
+                'side': 'sell',
+                'amount': trade.currency_volume,
+            }
+
+            created_order = exchange.create_market_order(**additional_params)
+
+
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"Error cancelling Take-Profit order: {str(e)}")
 
         # Calculate profit/loss
         profit_loss_amount = self.calculate_profit_loss_amount(trade_id)
+
         profit_loss_percentage = self.calculate_profit_loss_percentage(trade_id)
 
         trade.selling_rate = profit_loss_amount
