@@ -66,6 +66,7 @@ body, html, #root {
   .dropdown-menu li {
     padding: 10px 20px;
     cursor: pointer;
+    color: black;
   }
   
   .dropdown-menu li:hover {
