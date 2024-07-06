@@ -8,3 +8,4 @@ email-validator==1.2.1
 paypalrestsdk==1.13.3
 ccxt==4.0.53
 python-dotenv==1.0.0
+pytest==7.1.2
