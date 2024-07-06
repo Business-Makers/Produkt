@@ -10,7 +10,7 @@ import mockTrades from './mockTrades';
 
 const getTradeHistory = async (token) => {
   try {
-    const response = await axios.get('http://localhost:8001/trades/', {
+    const response = await axios.get('http://51.20.249.18:8001/trades/', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -24,7 +24,7 @@ const getTradeHistory = async (token) => {
 
 const handleSell = async (trade_id, token) => {
   try {
-    const response = await axios.post('http://localhost:8001/complete_trade/', { trade_id }, {
+    const response = await axios.post('http://51.20.249.18:8001/complete_trade/', { trade_id }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -132,7 +132,7 @@ useEffect(() => {
 
     try {
           console.log(orderData);
-      const response = await axios.post('http://localhost:8001/trades/create-order/', orderData, {
+      const response = await axios.post('http://51.20.249.18:8001/trades/create-order/', orderData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

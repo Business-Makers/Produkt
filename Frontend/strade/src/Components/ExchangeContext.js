@@ -12,7 +12,7 @@ export const ExchangeProvider = ({ children }) => {
   useEffect(() => {
     const fetchExchanges = async () => {
       try {
-        const response = await axios.get('http://localhost:8001/dashboard/', {
+        const response = await axios.get('http://51.20.249.18:8001/dashboard/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

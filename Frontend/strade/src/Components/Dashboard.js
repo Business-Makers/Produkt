@@ -191,7 +191,7 @@ export default function Dashboard() {
 
 async function connectAccount(formData, token) {
   try {
-    const response = await axios.post('http://localhost:8001/connect-exchange/', formData, {
+    const response = await axios.post('http://51.20.249.18:8001/connect-exchange/', formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -205,7 +205,7 @@ async function connectAccount(formData, token) {
 
 async function retrieveData(token) {
   try {
-    const response = await axios.get('http://localhost:8001/dashboard/', {
+    const response = await axios.get('http://51.20.249.18:8001/dashboard/', {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -8,7 +8,7 @@ import useToken from './useToken';
 async function loginUser(credentials) {
   try {
     // Send a POST request to the login endpoint
-    const response = await axios.post('http://localhost:8001/login/', credentials);
+    const response = await axios.post('http://51.20.249.18:8001/login/', credentials);
     return response.data;
 
   } catch (error) {

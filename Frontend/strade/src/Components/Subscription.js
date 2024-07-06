@@ -26,7 +26,7 @@ const Subscription = () => {
   };
 
   const connectWithServer = async (formData, token) => {
-    const url = 'http://localhost:8001/payment';
+    const url = 'http://51.20.249.18:8001/payment';
     try {
       const response = await axios.post(url, formData, {
         headers: {
