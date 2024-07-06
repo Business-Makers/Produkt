@@ -62,14 +62,14 @@ main {
 .login-container {
   background-color: #ADBC9F;
   padding: 40px 60px;
-  border-radius: 20px;
+  border-radius: 10px;
   width: 100%;
   max-width: 400px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px auto;
+  margin-top: 10px;
 }
 
 .login-container h1 {
@@ -127,13 +127,14 @@ main {
   background-color: #0E2C23;
 }
 
-a {
-  color: #12372A;
+.login-container a {
+  color: #356b58;
   text-decoration: none;
 }
 
-a:hover {
+.login-container a:hover {
   text-decoration: underline;
+  color: #1f4537;
 }
 
 p {
