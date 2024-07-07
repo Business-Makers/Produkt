@@ -50,10 +50,10 @@ body, html, #root {
     position: absolute;
     top: 50px;
     right: 0;
-    background-color: white;
+    background-color: rgb(0, 0, 0);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    border-radius: 4px;
+    border-radius: 15px;
     overflow: hidden;
   }
   
@@ -70,12 +70,12 @@ body, html, #root {
   }
   
   .dropdown-menu li:hover {
-    background-color: #f1f1f1;
+    background-color: #2b2b2b;
   }
   
   .dropdown-menu button {
     width: 100%;
-    background: none;
+    background-color: #045713;
     border: none;
     text-align: left;
     padding: 10px 20px;
