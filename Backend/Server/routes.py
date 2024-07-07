@@ -649,7 +649,7 @@ def execute_payment(request: Request, db: Session = Depends(get_db)): # authoriz
         try:
             db.query(Subscription).filter(Subscription.payment_id == payment_id).update({"abo_status": "active"})
             db.commit()
-            dashboard_url = "http://localhost:3000/dashboard"
+            dashboard_url = "http://51.20.249.18:3000/dashboard"
             return RedirectResponse(url=dashboard_url)
         except Exception as e:
             db.rollback()
