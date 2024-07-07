@@ -103,7 +103,7 @@ class Paypal:
             }],
             "redirect_urls": {
                 "return_url": os.getenv("PAYPAL_RETURN_URL", "http://51.20.249.18:8001/payment/execute"),
-                "cancel_url": os.getenv("PAYPAL_CANCEL_URL", "http://51.20.249.18:3000//subscription")
+                "cancel_url": os.getenv("PAYPAL_CANCEL_URL", "http://51.20.249.18:3000/subscription")
             }
         })
 
