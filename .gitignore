@@ -1,2 +1,9 @@
-pyvenv.cfg
+backend/venv/pyvenv.cfg
+.start_Frontend.bat
+.start_Backend.bat
+backend/Server/smtp_infos.py
+.idea/dataSources.xml
+Backend/Server/sk.env
+node_modules/
 __pycache__/
+.idea/

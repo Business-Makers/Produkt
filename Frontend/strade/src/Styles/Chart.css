@@ -1,0 +1,33 @@
+
+.custom-apexcharts-tooltip {
+    background-color: #333 !important;
+    color: #fff !important;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .custom-apexcharts-tooltip .apexcharts-tooltip-title {
+    font-size: 14px !important;
+    font-weight: bold !important;
+  }
+  
+  .custom-apexcharts-tooltip .apexcharts-tooltip-series-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .custom-apexcharts-tooltip .apexcharts-marker {
+    margin-right: 5px;
+  }
+  
+  /* Options Icon Styling */
+  .apexcharts-menu-icon {
+    fill: #FFA41B !important; /* Farbe des Optionen-Icons */
+    width: 24px; /* Größe des Icons */
+    height: 24px; /* Größe des Icons */
+    cursor: pointer; /* Cursor beim Hovern */
+  }
+  
+  .apexcharts-menu-icon:hover {
+    fill: #fff !important; /* Farbe des Icons beim Hovern */
+  }

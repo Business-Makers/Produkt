@@ -1,0 +1,160 @@
+.home {
+  padding: 80px;
+  color: #c5c5c5;
+  background-color: #1c331d;
+  border-radius: 25px;
+  background: radial-gradient(to right, #0F2310, #1c331d);
+}
+
+a {
+  color: #ADBC9F;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: rgb(33, 207, 100);
+}
+
+
+.intro {
+  text-align: center;
+  margin-bottom: 40px;
+  color: #ADBC9F;
+  stroke: #000000;
+}
+
+.intro h1 {
+  font-size: 4em;
+}
+
+.intro p {
+  font-size: 1.5em;
+}
+
+
+.exchanges-container {
+  justify-content: center;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ADBC9F;;
+
+  max-width: 800px;
+  margin: 0 auto 35px auto;
+}
+
+.exchange-header {
+  text-align: center;
+  color: #ADBC9F;;
+}
+
+.exchange-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.exchange-item {
+  margin: 10px;
+}
+
+.exchange-image {
+  width: 75px;
+  height: 75px;
+}
+
+.features,
+.faq,
+.reviews {
+
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq{
+
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.reviews{
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+
+.review {
+  flex: 1 1 200px;
+  background-color: #ADBC9F;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #006600;
+}
+
+.review-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+
+.features, .reviews, .faq {
+  margin-bottom: 40px;
+
+}
+
+.features h2, .reviews h2, .faq h2 {
+  font-size: 2em;
+  color: #ADBC9F;
+  margin-bottom: 20px;
+
+}
+
+.features ul {
+  list-style-type: none;
+  padding: 0;
+
+}
+
+.features li {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  color: #ADBC9F;
+}
+
+.reviews p {
+  background-color: #ffff;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  color: #006600;
+}
+
+.reviews small{
+  display: block;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  color: #ADBC9F;
+}
+
+.faq .faq-item {
+  margin-bottom: 20px;
+}
+
+.faq .faq-item h3 {
+  font-size: 1.2em;
+  color: #ADBC9F;
+}
+
+.faq .faq-item p {
+  font-size: 1em;
+  color: #ADBC9F;
+}
+
