@@ -45,7 +45,7 @@ const Subscription = () => {
     const membershipName = membership; // basic, silver oder gold
 
     // Zeige eine Bestätigungsdialogbox an
-    const confirmed = window.confirm(`Möchtest du den Kauf von ${membershipName} für ${periodInDays} Tage wirklich abschließen?`);
+    const confirmed = window.confirm(`Do you really want to complete the purchase of ${membershipName} for ${periodInDays} days?`);
 
     if (confirmed) {
       // Daten, die gesendet werden sollen
