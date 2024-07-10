@@ -4,44 +4,8 @@ A class that provides PayPal payment integration for an application.
 This class uses the PayPal SDK to create and execute payments. It configures the SDK with the necessary credentials and offers methods for creating and executing payments.
 
 """
-"""
-Initializes the Paypal class and configures the PayPal SDK with credentials.
-
-Args:
-    None
-"""
-"""
-Creates a PayPal payment.
-
-Creates a payment with the specified parameters and returns the approval_url if the payment is successfully created, or an error if something goes wrong.
-
-Args:
-    currency (str): The currency of the payment.
-    price (float): The amount of the payment.
-    product_name (str): The name of the product or service being paid for.
-
-Returns:
-    dict: A dictionary with the approval_url if the payment is successfully created, or an error.
-"""
-
-"""
-
-Executes a PayPal payment.
-
-Executes a payment with the given payment_id and payer_id and returns a success message if the payment was successful, or an error if something goes wrong.
-
-Args:
-    payment_id (str): The ID of the payment to be executed.
-    payer_id (str): The ID of the payer who approved the payment.
-
-Returns:
-    str: A success message if the payment was successfully executed, or an error.
-
-"""
-
 import paypalrestsdk
 import os
-
 
 class Paypal:
     """

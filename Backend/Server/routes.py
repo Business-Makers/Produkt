@@ -89,13 +89,13 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
                 data={"sub": db_user.login_name, "account_id": account_id}
             )
 
-            mailAdress = find_mail(db_user, db)
-            if mailAdress:
+           # mailAdress = find_mail(db_user, db)
+           # if mailAdress:
                 # send_email(mailAdress, mailTheme.login.name, db)
-                pass
-            background.set_authorization(access_token)
+           #     pass
+           # background.set_authorization(access_token)
 
-            background.start_background_tasks()
+           #background.start_background_tasks()
 
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
@@ -161,7 +161,7 @@ def register(user: UserRegistration, db: Session = Depends(get_db)):
         db.add(new_account)
         db.commit()
 
-        send_email(user.eMail, mailTheme.registration.name, db)
+        #send_email(user.eMail, mailTheme.registration.name, db)
         return {"message": "Registration successful! We're excited to have you with us."}
     except Exception as e:
         db.rollback()
@@ -609,7 +609,7 @@ def reset_password(reset_request: PasswordResetRequest, db: Session = Depends(ge
 
 
 @app.get('/payment/execute')
-def execute_payment(request: Request, db: Session = Depends(get_db)): # authorization: str = Header(None)
+def execute_payment(request: Request, db: Session = Depends(get_db)):
     """
         Executes a PayPal payment and updates the subscription status in the database.
 
@@ -629,15 +629,6 @@ def execute_payment(request: Request, db: Session = Depends(get_db)): # authoriz
                               "message": "Payment executed successfully"
                           }
         """
-    """
-    if authorization is None or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Authorization header missing or invalid.")
-
-    token = authorization.split(" ")[1]
-    payload = verify_trade_token(token)
-    if payload is None:
-        raise HTTPException(status_code=401, detail="Invalid or expired token", headers={"WWW-Authenticate": "Bearer"})
-    """
     paypal = Paypal()
     payment_id = request.query_params.get('paymentId')
     payer_id = request.query_params.get('PayerID')
