@@ -89,13 +89,12 @@ def login(credentials: LoginCredentials, db: Session = Depends(get_db)):
                 data={"sub": db_user.login_name, "account_id": account_id}
             )
 
-           # mailAdress = find_mail(db_user, db)
-           # if mailAdress:
-                # send_email(mailAdress, mailTheme.login.name, db)
-           #     pass
-           # background.set_authorization(access_token)
+            #mailAdress = find_mail(db_user, db)
+            #if mailAdress:
+            #      send_email(mailAdress, mailTheme.login.name, db)
 
-           #background.start_background_tasks()
+            background.set_authorization(access_token)
+            background.start_background_tasks()
 
             return {"message": "Logged in successfully", "access_token": access_token, "token_type": "bearer"}
         else:
